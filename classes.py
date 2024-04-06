@@ -266,3 +266,92 @@ class games:
         await message.channel.send(f"You've earned {s} points for your house!")
         currUser.house.points += s
         return True
+
+    async def crossword(self, client, currUser, message):
+
+        cross = {
+            'cross1.png': {'1': 'Caldron', '2': 'Glasses', '3': 'Wand', '4': 'Owl', '5': 'Potion', '6': 'Sortinghat',
+                           '7': 'Cloak', '8': 'Goldensnitch', '9': 'Broomstick', '10': 'Scar', '11': 'Cupboard'},
+            'cross2.png': {'1': 'Voldemort', '2': 'Dumbledore', '3': 'Ron', '4': 'Broom', '5': 'Draco',
+                           '6': 'Slytherin', '7': 'Hagrid', '8': 'Hedwig', '9': 'Scabbers', '10': 'Fluffy',
+                           '11': 'Dudley'},
+            'cross3.png': {'1': 'Muggle', '2a': 'Hogwarts', '2d': 'Hogsmeade', '3': 'Sirius', '4': 'Scabbers',
+                           '5': 'Hedwig', '6': 'Honeydukes', '7': 'Alohomora', '8': 'Azkaban', '9': 'Always',
+                           '10a': 'Dumbledore', '10d': 'Dobby', '11': 'Quidditch', '12': 'Fluffy', '13': 'Voldemort'},
+            'cross4.png': {'1': 'Hedwig', '2': 'Weasley', '3': 'Hermione', '4': 'Neville', '5': 'Scabbers',
+                           '6': 'Hagrid', '7': 'Dudley', '8': 'Draco', '9': 'Dumbledore'},
+            'cross5.png': {'1': 'Hogwartsexpress', '2': 'Hufflepuff', '3': 'Ravenclaw', '4': 'Owls', '5': 'Boats',
+                           '6': 'Diagonalley', '7': 'Toads', '8': 'Slytherin', '9': 'Sortinghat', '10': 'Hogwarts'},
+            'cross6.png': {'1': 'Expelliarmus', '2': 'Lumos', '3': 'Dumbledoresarmy', '4': 'Darkmark',
+                           '5': 'Goldensnitch', '6': 'Hufflepuff', '7': 'Hagrid', '8': 'Tomriddle', '9': 'Hogwarts',
+                           '10': 'Basilisk', '11': 'Hermionegranger', '12': 'Hedwig'},
+            'cross7.png': {'1': 'Voldemort', '2': 'Theburrow', '3': 'Crookshanks', '4': 'Dobby', '5': 'Snape',
+                           '6': 'Privetdrive', '7': 'Diagon', '8': 'Scared', '9a': 'Every', '9d': 'Errol'},
+            'cross8.png': {'1': 'Riddikulus', '2': 'Hedwig', '3': 'Hufflepuff', '4': 'Slytherin', '5': 'Ravenclaw',
+                           '6': 'Fluffy', '7': 'Trolls', '8': 'Muggle', '9': 'Opens', '10': 'Tea', '11': 'Die',
+                           '12': 'Hogwarts'},
+            'cross9.png': {'1': 'Deluminator', '2': 'Howler', '3': 'Wand', '4': 'Invisibilitycloak', '5': 'Voldemort',
+                           '6': 'Rubeushagrid', '7': 'AvadaKedavra', '8': 'Gryffindor', '9': 'Hufflepuff',
+                           '10': 'Quidditch'}
+            }
+
+        chosen_one = random.choice(list(cross.keys()))
+        await message.channel.send("Here's your crossword!\n Please don't put a space between 2 words in your answer.",
+                                   file=discord.File(chosen_one))
+        await message.channel.send(
+            "You can type your answers in any order, but the format must be 'question_number answer'. For example, if the answer to the first question is Harry Potter, type '1 HarryPotter'. The answers are not case sensitive.")
+        await message.channel.send(
+            "For the crosswords that have both across and down on the same number, follow the following format: For example, if the answer for 1 across is HarryPotter, type '1a HarryPotter'. And '1d Hermione' if the answer for 1 down is Hermione.")
+        await message.channel.send("Type 'I'm done' when you wish to end the game and reveal the answers.")
+
+        user_answers = {}
+        for i in cross[chosen_one]:
+            user_answers[i] = ''
+
+        while True:
+            response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+            if user_answers == cross[chosen_one]:
+                await message.channel.send("Congrats! You've successfully solved the crossword.")
+                await message.channel.send(f"You've earned {user_answers} points for your house!")
+                currUser.house.add_points(len(user_answers))
+                return True
+            elif response.channel.name == "potterbot-mini-games":
+                if response.content == "exit":
+                    await response.channel.send("Farewell for now, come back again soon!")
+                    return False
+
+                elif response.content.lower() == "i'm done":
+                    for i in cross[chosen_one]:
+                        await response.channel.send(f"{i} : {cross[chosen_one][i]}")
+                    await message.channel.send(f"You've earned {user_answers} points for your house!")
+                    currUser.house.add_points(len(user_answers))
+                    return True
+
+                n = response.content.find(' ')
+
+                try:
+                    if response.content[n + 1:].title() == cross[chosen_one][response.content[0:n]]:
+                        await response.channel.send("You're right, of course!")
+                        user_answers[response.content[0:n]
+                        ] = response.content[n + 1:].title()
+                    else:
+                        await response.channel.send(f"That's not right. Try again.")
+                        user_answers[response.content[0:n]
+                        ] = response.content[n + 1:].title()
+
+                except KeyError:
+                    if (n == -1):
+                        await response.channel.send(f"There is no {response.content}")
+
+                    elif (response.content[n - 1].isdigit()):
+                        await response.channel.send(
+                            f"{response.content[0:n]} has both across and down. Please specify which one you're answering.")
+
+                    else:
+                        await response.channel.send(f"There is no {response.content[0:n]}")
+            else:
+                await response.channel.send("A game is already in progress. Do you want to exit crossword? (yes/no)")
+                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                if response.content == "yes":
+                    await response.channel.send("Farewell for now, come back again soon!")
+                    return False
