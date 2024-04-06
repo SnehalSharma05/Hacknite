@@ -102,3 +102,19 @@ class user():
 
     def get_points_info(self):
         return self.name + " has " + self.points + " points."
+
+class games:
+    async def introduction(self, bot, message):
+        '''
+        This function is used whenever the user wants to login and use the bot.
+        '''
+        await bot.send(message, "Greetings! Welcome to the whimsical world of PotterBot, where the whispers of ancient spells and the flicker of wands weave tales of wonder reminiscent of Dumbledore's office. Here, amid the hallowed halls of Hogwarts, where portraits come to life and enchanted creatures roam, embark on a journey beyond the pages of the Marauder's Map, where mischief and magic await your command!")
+        await bot.send(message, "If you wish to leave at any point in the game, just type 'exit'.")
+
+        if message.author.id in user.ids:
+            await bot.send(message, "Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!")
+            return user.ids[message.author.id]
+
+        currUser = await self.new_user(bot, message)
+
+        return currUser
