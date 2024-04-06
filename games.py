@@ -82,7 +82,7 @@ class games:
         response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
 
         if response.content == "ready":
-            # await bot.send(response, "Let the magic begin!")
+
             msg = "***Let the magic begin!***"
             em.description = msg
             await bot.create_embed(em, message)
@@ -96,39 +96,33 @@ class games:
                     response = await bot.wait_for('message', check=lambda message1: bot.check(message, message1), timeout=5.0)
 
                     if response.content == "exit":
-                        # await bot.send(message, "Looks like you are in need of a little more practice my friend. Farewell for now, come back to try again soon!")
                         msg = "***Looks like you are in need of a little more practice my friend. Farewell for now, come back to try again soon!***"
                         em.description = msg
                         await bot.create_embed(em, message)
                         return False
 
                     if response.content == "Hogwarts Express":
-                        # await bot.send(message, "Merlin's Beard! You made it! You are ready to board the Hogwarts Express!")
                         msg = "***Merlin's Beard! You made it! You are ready to board the Hogwarts Express!***"
                         em.description = msg
                         await bot.create_embed(em, message)
                         return True
 
                     else:
-                        # await bot.send(message, "Blimey! That's not the correct phrase. Please try again.")
                         msg = "***Blimey! That's not the correct phrase. Please try again.***"
                         em.description = msg
                         await bot.create_embed(em, message)
 
                 except asyncio.TimeoutError:
-                    # await bot.send(message, "Ahhhh, you didn't make it in time. Please try again.")
                     msg = "***Ahhhh, you didn't make it in time. Please try again.***"
                     em.description = msg
                     await bot.create_embed(em, message)
 
-                # await message.channel.send("Type 'ready' to try again or 'exit' to leave.")
                 msg = "***Type 'ready' to try again or 'exit' to leave.***"
                 em.description = msg
                 await bot.create_embed(em, message)
 
                 response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
                 if response.content == "exit":
-                    # await bot.send(response, "Farewell for now, come back again soon!")
                     msg = "***Farewell for now, come back again soon!***"
                     em.description = msg
                     await bot.create_embed(em, message)
@@ -136,7 +130,6 @@ class games:
                 elif response.content == "ready":
                     continue
         else:
-            # await bot.send(response, "Farewell for now, come back again soon!")
             msg = "***Farewell for now, come back again soon!***"
             em.description = msg
             await bot.create_embed(em, message)
@@ -536,38 +529,58 @@ class games:
             return True
 
     async def key(self, client, currUser, message):
-        await message.channel.send("Would you like to buy a key for 50 Galleons to continue the game?")
+        # await message.channel.send("Would you like to buy a key for 50 Galleons to continue the game?")
+        em = embedMessage(colour=discord.Colour.blue(
+        ), description="***Would you like to buy a key for 50 Galleons to continue the game?***")
+        await client.create_embed(em, message)
+
         while True:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
             if response.channel.name == message.channel.name:
                 if response.content == "exit":
-                    await response.channel.send("Farewell for now, come back again soon!")
+                    # await response.channel.send("Farewell for now, come back again soon!")
+                    em.description = "***Farewell for now, come back again soon!***"
+                    await client.create_embed(em, message)
                     return False
 
                 elif response.content.lower() == "yes":
                     if currUser.wealth < 50:
-                        await response.channel.send(
-                            f"Uh oh! You only have {currUser.wealth} Galleons in your Gringotts account. You lose.")
+                        # await response.channel.send(
+                        # f"Uh oh! You only have {currUser.wealth} Galleons in your Gringotts account. You lose.")
+                        em.description = f"***Uh oh! You only have {
+                            currUser.wealth} Galleons in your Gringotts account. You lose.***"
+                        await client.create_embed(em, message)
                         key = 0
                         break
                     else:
                         currUser.wealth -= 50
                         key = 1
-                        await response.channel.send(
-                            "Congrats! You have successfully purchased the key and are now free to continue the game.")
+                        # await response.channel.send(
+                        #     "Congrats! You have successfully purchased the key and are now free to continue the game.")
+                        em.description = "***Congrats! You have successfully purchased the key and are now free to continue the game.***"
+                        await client.create_embed(em, message)
                         break
                 elif response.content.lower() == "no":
                     key = 0
-                    await response.channel.send("Good game, see you soon!")
+                    # await response.channel.send("Good game, see you soon!")
+                    em.description = "***Good game, see you soon!***"
+                    await client.create_embed(em, message)
                     break
 
                 else:
-                    await response.channel.send("Please answer with only yes or no.")
+                    # await response.channel.send("Please answer with only yes or no.")
+                    em.description = "***Please answer with only yes or no.***"
+                    await client.create_embed(em, message)
             else:
-                await response.channel.send("A game is already in progress in another channel. Do you want to exit the game? (yes/anything else)")
+                # await response.channel.send("A game is already in progress in another channel. Do you want to exit the game? (yes/anything else)")
+                em.description = "***A game is already in progress in another channel. Do you want to exit the game? (yes/anything else)***"
+                await client.create_embed(em, message)
+
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
-                    await response.channel.send("Farewell for now, come back again soon!")
+                    # await response.channel.send("Farewell for now, come back again soon!")
+                    em.description = "***Farewell for now, come back again soon!***"
+                    await client.create_embed(em, message)
 
         return key
 
