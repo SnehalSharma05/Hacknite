@@ -17,7 +17,8 @@ class bot(discord.Client):
         self.categ = None
         self.userDataHandler.read(readAmajeDataUser)
         self.houseDataHandler.read(readAmajeDataHouse)
-        self.notFree = []
+        self.notFreeUser = []
+        self.notFreeChannel = []
 
     def check(self, m1, m2):
         '''
@@ -111,14 +112,20 @@ class bot(discord.Client):
         """
         if isinstance(message.channel, discord.DMChannel):
             pass
-        elif (message.author == self.user) or (message.channel.category.name.casefold() != "potterbot") or (message.author.id in self.notFree):
+        elif (message.author == self.user) or (message.channel.category.name.casefold() != "potterbot") or (message.author.id in self.notFreeUser):
+            return
+
+        if message.channel.id in self.notFreeChannel:
+            await message.channel.send("Please wait for the current game to finish.")
             return
 
         print(message.content)
 
         currUser = self.getUser(message)
-        self.notFree.append(message.author.id)
+        self.notFreeUser.append(message.author.id)
         if message.content.casefold() == "~revelio" and message.channel.name == "general":
+            # adding channel to not free channel
+            self.notFreeChannel.append(message.channel.id)
             currUser = await self.games.introduction(self, message)
             # if the user is playing for the first time
             if currUser and currUser.progress < 1:
@@ -144,7 +151,12 @@ class bot(discord.Client):
             if currUser and currUser.progress == 4:
                 await message.channel.send("You've completed all the introduction quests, Congratulations!\n Head to different channels to explore further games!")
 
+            # freeing the channel
+            self.notFreeChannel.append(message.channel.id)
+
         if currUser:
+            # adding channel to not free channel
+            self.notFreeChannel.append(message.channel.id)
             if message.channel.name == "dueling-club" and message.content.find("~duel") != -1:
                 await self.games.duel(bot, currUser, message)
 
@@ -166,9 +178,12 @@ class bot(discord.Client):
                 if message.content == "~trivia":
                     await self.games.Trivia(bot, currUser, message)
 
+            # removing channel
+            self.notFreeChannel.append(message.channel.id)
+
             currUser.update_level()
             self.save(currUser)
-            self.notFree.remove(message.author.id)
+            self.notFreeUser.remove(message.author.id)
 
 
 potter = bot(dataHandler)
