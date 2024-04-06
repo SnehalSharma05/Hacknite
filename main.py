@@ -54,7 +54,7 @@ class bot(discord.Client):
 
     async def create_embed(self, embed: embedMessage, message: discord.Message):
         '''
-        Takes in an embedded messaage object and sends it to the channel of the message.
+        Takes in an embedded message object and sends it to the channel of the message.
         '''
         embed.send(message)
 
