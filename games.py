@@ -64,6 +64,14 @@ class games:
         The first level of our game.
         '''
 
+        msg = """
+        The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.
+        In order to cross the brick wall, please type 'Hogwarts Express' in under 5 seconds.
+        Type 'ready' when you are ready to begin. If you wish to exit, type anything else.
+        """
+
+        em = embedMessage(colour=discord.Colour.purple(), description=msg, image="https://i.pinimg.com/originals/25/ce/3f/25ce3f11dda654caab19841c389b2878.gif")
+
         await bot.send(message, "The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.")
         await bot.send(message, "In order to cross the brick wall, please type 'Hogwarts Express' in under 5 seconds.")
         await bot.send(message, "Type 'ready' when you are ready to begin. If you wish to exit, type anything else.")
@@ -119,25 +127,25 @@ class games:
                 return False
             elif response.channel.name == "general":
                 if response.content == "a":
-                    currUser.set_house(Hufflepuff)
+                    currUser.set_house(bot, Hufflepuff)
                     Hufflepuff.add_student(currUser)
                     await bot.send(response, "Ah, Hufflepuff it is! The house of the loyal and the kind, where friendship and hard work are valued above all. Welcome to the house of the badger!")
                     return True
 
                 elif response.content == "b":
-                    currUser.set_house(Ravenclaw)
+                    currUser.set_house(bot, Ravenclaw)
                     Ravenclaw.add_student(currUser)
                     await bot.send(response, "Ah, Ravenclaw it is! The house of the wise and the clever, where wit and intelligence are revered. Welcome to the house of the eagle!")
                     return True
 
                 elif response.content == "c":
-                    currUser.set_house(Gryffindor)
+                    currUser.set_house(bot, Gryffindor)
                     Gryffindor.add_student(currUser)
                     await bot.send(response, "Ah, Gryffindor it is! The house of the brave and the bold, where courage and loyalty reign supreme. Welcome to the house of the lion!")
                     return True
 
                 elif response.content == "d":
-                    currUser.set_house(Slytherin)
+                    currUser.set_house(bot, Slytherin)
                     Slytherin.add_student(currUser)
                     await bot.send(response, "Ah, Slytherin it is! The house of the cunning and the ambitious, where resourcefulness and determination are prized. Welcome to the house of the serpent!")
                     return True
