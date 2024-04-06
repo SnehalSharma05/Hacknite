@@ -77,13 +77,13 @@ def readAmajeDataUser(data):
         u = user(x["name"], x["id"], eval(x["house"]), x["wand"], x["points"], x["wealth"],
                  x["potions"], x["spells"], x["items"], x["progress"], x["enemiesDefeated"])
 
-        if u.house == "Gryffindor":
+        if u.house.name == "Gryffindor":
             Gryffindor.students.append(u)
-        elif u.house == "Ravenclaw":
+        elif u.house.name == "Ravenclaw":
             Ravenclaw.students.append(u)
-        elif u.house == "Hufflepuff":
+        elif u.house.name == "Hufflepuff":
             Hufflepuff.students.append(u)
-        elif u.house == "Slytherin":
+        elif u.house.name == "Slytherin":
             Slytherin.students.append(u)
 
         if (u.house):
