@@ -1,3 +1,6 @@
+import discord
+
+
 class house():
     def __init__(self, name):
         self.name = name
@@ -26,6 +29,9 @@ class house():
         return self.name
 
     def get_info(self):
+        '''
+        Retures the name of the house, the number of points it has and the students.
+        '''
         return self.name + f" has {self.points} points. The following students are in {self.name}:\n" + "\n".join([x.name for x in self.students])
 
     def get_student_info(self):
@@ -33,6 +39,14 @@ class house():
 
     def get_points_info(self):
         return self.name + f" has {self.points} points."
+
+    def get_role(self, bot):
+        '''
+        Gets the roles for the corresponding house.
+        '''
+
+        self.role = discord.utils.get(bot.guild.roles, name=self.name)
+        print(f"{self.name} has been alloted its role.")
 
 
 Hufflepuff = house("Hufflepuff")
@@ -78,7 +92,6 @@ class user():
         user.users.append(self)
         user.names.append(self.name)
         user.ids[self.id] = self
-        self.revealed = False
 
     def add_points(self, points):
         self.points += points
@@ -92,8 +105,9 @@ class user():
     def add_item(self, item):
         self.items.append(item)
 
-    def set_house(self, house):
+    async def set_house(self, bot, house):
         self.house = house
+        await bot.guild.get_member(self.id).add_roles(house.role)
 
     def get_info(self):
         return self.name + " is in " + self.house + f" and has {self.points} points."
@@ -120,7 +134,7 @@ class user():
         match self.level:
             case 0:
                 self.spells = ["stupefy",
-                                   "expelliarmus", "protego"]
+                               "expelliarmus", "protego"]
                 self.health = 150
                 self.max_health = 150
             case 1:
@@ -145,21 +159,21 @@ class user():
                 self.max_health = 275
             case 5:
                 self.spells = ["stupefy", "expelliarmus", "protego",
-                                   "reducto", "expulso", "bombarda", "sectumsempra", "confringo"]
+                               "reducto", "expulso", "bombarda", "sectumsempra", "confringo"]
                 self.health = 300
                 self.max_health = 300
             case 6:
                 self.spells = ["stupefy", "expelliarmus", "protego", "reducto",
-                                   "expulso", "bombarda", "sectumsempra", "confringo", "episkey"]
+                               "expulso", "bombarda", "sectumsempra", "confringo", "episkey"]
                 self.health = 325
                 self.max_health = 325
             case 7:
                 self.spells = ["stupefy", "expelliarmus", "protego", "reducto",
-                                   "expulso", "bombarda", "sectumsempra", "confringo", "fiendfyre", "episkey"]
+                               "expulso", "bombarda", "sectumsempra", "confringo", "fiendfyre", "episkey"]
                 self.health = 350
                 self.max_health = 350
             case 8:
                 self.spells = ["stupefy", "expelliarmus", "protego", "reducto", "expulso",
-                                   "bombarda", "sectumsempra", "confringo", "fiendfyre", "episkey", "vulnera_sanentur"]
+                               "bombarda", "sectumsempra", "confringo", "fiendfyre", "episkey", "vulnera_sanentur"]
                 self.health = 375
                 self.max_health = 375

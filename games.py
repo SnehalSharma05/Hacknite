@@ -6,6 +6,7 @@ from assets.enemies import *
 import random
 from classes import *
 
+
 class games:
     async def introduction(self, bot, message):
         '''
@@ -101,31 +102,32 @@ class games:
                 return False
 
             elif response.content == "a":
-                currUser.set_house(Hufflepuff)
+                await currUser.set_house(bot, Hufflepuff)
                 Hufflepuff.add_student(currUser)
                 await bot.send(response, "Ah, Hufflepuff it is! The house of the loyal and the kind, where friendship and hard work are valued above all. Welcome to the house of the badger!")
                 return True
 
             elif response.content == "b":
-                currUser.set_house(Ravenclaw)
+                await currUser.set_house(bot, Ravenclaw)
                 Ravenclaw.add_student(currUser)
                 await bot.send(response, "Ah, Ravenclaw it is! The house of the wise and the clever, where wit and intelligence are revered. Welcome to the house of the eagle!")
                 return True
 
             elif response.content == "c":
-                currUser.set_house(Gryffindor)
+                await currUser.set_house(bot, Gryffindor)
                 Gryffindor.add_student(currUser)
                 await bot.send(response, "Ah, Gryffindor it is! The house of the brave and the bold, where courage and loyalty reign supreme. Welcome to the house of the lion!")
                 return True
 
             elif response.content == "d":
-                currUser.set_house(Slytherin)
+                await currUser.set_house(bot, Slytherin)
                 Slytherin.add_student(currUser)
                 await bot.send(response, "Ah, Slytherin it is! The house of the cunning and the ambitious, where resourcefulness and determination are prized. Welcome to the house of the serpent!")
                 return True
 
             else:
                 await bot.send(response, "I'm sorry, I didn't catch that. Please try again. Type exit to leave the game.")
+
     async def Ollivanders(self, bot, currUser, message):
         '''
         Assigns a wand to the player.
@@ -178,7 +180,8 @@ class games:
 
                 if response.content == random.choice(selected):
                     await bot.send(message, "Congratulations your choice matched! The wand has chosen you!")
-                    currUser.wand = f"{wood_choice}, {core_choice} core, {length_choice} inches"
+                    currUser.wand = f"{wood_choice}, {
+                        core_choice} core, {length_choice} inches"
                     await bot.send(message, "You have successfully acquired your wand!")
                     return True
 
@@ -186,6 +189,7 @@ class games:
                     await bot.send(message, "Please choose a creature from the list.")
                 else:
                     await bot.send(message, "Not quite, let's try another one")
+
     async def duel(self, bot, currUser, message):
         accepted = False
         opponent_id = message.content.split(" ")[1][2:-1]
@@ -194,7 +198,7 @@ class games:
             response = await bot.recieve(message)
             if response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "yes":
                 accepted = True
-                bot.notFree.append(int(opponent_id))
+                bot.notFreeUser.append(int(opponent_id))
                 opponent = bot.getUser(response)
                 break
             elif response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "no":
@@ -234,7 +238,8 @@ class games:
                 opponent.level = opponent.points//30
                 opponent.house.points -= 5
                 break
-            fighters = {opponent.id: {"me": opponent,"opponent": currUser}, currUser.id: {"me": currUser,"opponent": opponent}}
+            fighters = {opponent.id: {"me": opponent, "opponent": currUser}, currUser.id: {
+                "me": currUser, "opponent": opponent}}
             while True:
                 response1 = await bot.wait_for('message')
                 if response1.author.id == currUser.id or response1.author.id == opponent.id:
@@ -272,8 +277,9 @@ class games:
         currUser.health = currUser.max_health
         opponent.health = opponent.max_health
         opponent.update_level()
-        bot.notFree.remove(int(opponent.id))
+        bot.notFreeUser.remove(int(opponent.id))
         bot.save(opponent)
+
     async def staircase(self, client, currUser, message):
         total_stairs = 20
         moves_left = total_stairs//2
@@ -468,10 +474,8 @@ class games:
                     s += 1
 
                 else:
-                    await response.channel.send(f"That's not right. The correct answer is {ans[0]}.")
-                    key = await self.key(client, currUser, message)
-                    if key == 0:
-                        break
+                    await response.channel.send(f"That's not right. The correct answer is {ans[0]}")
+                    break
             else:
                 await response.channel.send("A game is already in progress. Do you want to exit trivia? (yes/no)")
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
@@ -486,32 +490,6 @@ class games:
         return True
 
     async def crossword(self, client, currUser, message):
-
-        cross = {
-            'cross1.png': {'1': 'Caldron', '2': 'Glasses', '3': 'Wand', '4': 'Owl', '5': 'Potion', '6': 'Sortinghat',
-                           '7': 'Cloak', '8': 'Goldensnitch', '9': 'Broomstick', '10': 'Scar', '11': 'Cupboard'},
-            'cross2.png': {'1': 'Voldemort', '2': 'Dumbledore', '3': 'Ron', '4': 'Broom', '5': 'Draco',
-                           '6': 'Slytherin', '7': 'Hagrid', '8': 'Hedwig', '9': 'Scabbers', '10': 'Fluffy',
-                           '11': 'Dudley'},
-            'cross3.png': {'1': 'Muggle', '2a': 'Hogwarts', '2d': 'Hogsmeade', '3': 'Sirius', '4': 'Scabbers',
-                           '5': 'Hedwig', '6': 'Honeydukes', '7': 'Alohomora', '8': 'Azkaban', '9': 'Always',
-                           '10a': 'Dumbledore', '10d': 'Dobby', '11': 'Quidditch', '12': 'Fluffy', '13': 'Voldemort'},
-            'cross4.png': {'1': 'Hedwig', '2': 'Weasley', '3': 'Hermione', '4': 'Neville', '5': 'Scabbers',
-                           '6': 'Hagrid', '7': 'Dudley', '8': 'Draco', '9': 'Dumbledore'},
-            'cross5.png': {'1': 'Hogwartsexpress', '2': 'Hufflepuff', '3': 'Ravenclaw', '4': 'Owls', '5': 'Boats',
-                           '6': 'Diagonalley', '7': 'Toads', '8': 'Slytherin', '9': 'Sortinghat', '10': 'Hogwarts'},
-            'cross6.png': {'1': 'Expelliarmus', '2': 'Lumos', '3': 'Dumbledoresarmy', '4': 'Darkmark',
-                           '5': 'Goldensnitch', '6': 'Hufflepuff', '7': 'Hagrid', '8': 'Tomriddle', '9': 'Hogwarts',
-                           '10': 'Basilisk', '11': 'Hermionegranger', '12': 'Hedwig'},
-            'cross7.png': {'1': 'Voldemort', '2': 'Theburrow', '3': 'Crookshanks', '4': 'Dobby', '5': 'Snape',
-                           '6': 'Privetdrive', '7': 'Diagon', '8': 'Scared', '9a': 'Every', '9d': 'Errol'},
-            'cross8.png': {'1': 'Riddikulus', '2': 'Hedwig', '3': 'Hufflepuff', '4': 'Slytherin', '5': 'Ravenclaw',
-                           '6': 'Fluffy', '7': 'Trolls', '8': 'Muggle', '9': 'Opens', '10': 'Tea', '11': 'Die',
-                           '12': 'Hogwarts'},
-            'cross9.png': {'1': 'Deluminator', '2': 'Howler', '3': 'Wand', '4': 'Invisibilitycloak', '5': 'Voldemort',
-                           '6': 'Rubeushagrid', '7': 'AvadaKedavra', '8': 'Gryffindor', '9': 'Hufflepuff',
-                           '10': 'Quidditch'}
-            }
 
         chosen_one = random.choice(list(cross.keys()))
         await message.channel.send("Here's your crossword!\n Please don't put a space between 2 words in your answer.",
@@ -534,6 +512,7 @@ class games:
                 currUser.house.add_points(len(user_answers))
                 currUser.wealth+=len(user_answers)*2
                 return True
+
             elif response.channel.name == "mini-games":
                 if response.content == "exit":
                     await response.channel.send("Farewell for now, come back again soon!")
@@ -552,11 +531,11 @@ class games:
                     if response.content[n + 1:].title() == cross[chosen_one][response.content[0:n]]:
                         await response.channel.send("You're right, of course!")
                         user_answers[response.content[0:n]
-                        ] = response.content[n + 1:].title()
+                                     ] = response.content[n + 1:].title()
                     else:
                         await response.channel.send(f"That's not right. Try again.")
                         user_answers[response.content[0:n]
-                        ] = response.content[n + 1:].title()
+                                     ] = response.content[n + 1:].title()
 
                 except KeyError:
                     if (n == -1):
@@ -574,6 +553,7 @@ class games:
                 if response.content == "yes":
                     await response.channel.send("Farewell for now, come back again soon!")
                     return False
+
     async def botDuel(self, bot, currUser, message):
         opponent = enemies[currUser.enemiesDefeated]
         await message.channel.send(f'''Your opponent is {opponent.name}''')
@@ -686,45 +666,66 @@ class games:
                     else:
                         await response1.channel.send(opponent.name + "'s attack missed.")
 
+    async def WordChain(self, client, currUser, message):
+        words = terms + spells + characters + creatures
+        done = []
+        await message.channel.send("Welcome to WordChain, a game where you put your vocabulary of the Wizarding World to the test!")
+        await message.channel.send("Basically, you've to type a Harry Potter related word that starts with the ending letter of the last word. You and the Potterbot take turns. Be careful to not repeat any word.")
+        await message.channel.send("You get to start! Please type your word.")
+        while True:
+            response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+            if response.content == "exit" and response.channel.name == "potterbot-mini-games":
+                await response.channel.send("Farewell for now, come back again soon!")
+                return False
+            elif response.channel.name == "potterbot-mini-games":
+                if response.content.title() not in words:
+                    await response.channel.send("That word is not related to Harry Potter. You lose.")
+                    key = await self.key(client, currUser, message)
+                    if key == 0:
+                        break
+
+                elif response.content.title() in done:
+                    await response.channel.send("Oops! That word is already done. You lose.")
+                    key = await self.key(client, currUser, message)
+                    if key == 0:
+                        break
+
+                elif len(done) > 0:
+                    if response.content[0].lower() != myword[-1]:
+                        await response.channel.send(
+                            f"Your word does not start with '{myword[-1].upper()}'. You've lost.")
+                        key = await self.key(client, currUser, message)
+                        if key == 0:
+                            break
+                else:
+                    done.append(response.content.title())
+                    valid = [x for x in words if x[0] ==
+                             response.content[-1].upper() and x not in done]
+                    myword = random.choices(valid)[0]
+                    done.append(myword)
+                    await response.channel.send(myword)
+            else:
+                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/no)")
+                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                if response.content == "yes":
+                    await response.channel.send("Farewell for now, come back again soon!")
+                    return False
+                continue
+        await message.channel.send(f"You've earned {len(done) // 2} points for your house!")
+        currUser.house.points += len(done) // 2
+        return True
+
     async def emojis(self, client, currUser, message):
-
-        d = {":zap: :owl: :broom: ": ["Harry", "Harry Potter"],
-             ":books: :cat2: :100: ": ["Hermione", "Hermione Granger"],
-             ":ear: :man_red_haired: :fireworks: ": ["George", "George Weasley"],
-             ":spider_web: :crown: :chess_pawn:": ["Ron", "Ron Weasley"],
-             ":skull: :man_bald: :snake: ": ["Tom Riddle", "Voldemort"],
-             ":man_mage: :european_castle: :lemon: ": ["Dumbledore", "Albus Dumbledore"],
-             ":closed_umbrella: :hut: :dog: ": ["Hagrid", "Rubeus Hagrid"],
-             ":ribbon: :cat: :writing_hand: ": ["Umbridge", "Dolores Umbridge"],
-             ":flag_fr: :blond_haired_woman: :sparkles: ": ["Fleur", "Fleur Delacour"],
-             " :moneybag: :green_apple: :snake: ": ["Draco", "Draco Malfoy"], ":socks: :dagger: :chains: ": ["Dobby"],
-             ":wolf: :full_moon: :chocolate_bar: ": ["Lupin", "Remus Lupin", "Remus", "Moony"],
-             ":rat: :knife: :rightwards_hand: ": ["Peter", "Peter Pettigrew", "Pettigrew", "Wormtail"],
-             ":eagle: :blond_haired_woman: :crescent_moon: ": [
-                 'Luna', 'Luna Lovegood'], ":ghost: :knife: :head_bandage: ": ['Sir Nicholas', 'Nearly Headless Nick'],
-             ":crystal_ball: :coffee: :eyes: ": ["Trelawney", "Sybill Trelawney"],
-             ":ghost: :toilet: :weary: ": ["Myrtle", "Moaning Myrtle"],
-             ":badger: :trophy: :skull: ": ["Cedric", "Cedric Diggory"],
-             ":woman_wearing_turban: :garlic: :skull: ": ["Quirrell", "Quirinus Quirrell"],
-             ":woman_red_haired: :yarn: :fork_knife_plate: ": ["Molly", "Molly Weaasley"],
-             ":frog: :potted_plant: :lion_face: ": ["Neville", "Neville Longbottom"],
-             ":woman_red_haired: :broom: :lion_face: ": ["Ginny", "Ginny Weasley"],
-             ":black_circle: :dog: :chains: ": ["Sirius", "Sirius Black"],
-             ":woman_mage: :cat: :sparkles: ": ["Mcgonagall", "Minerva Mcgonagall"],
-             ":deer: :eyeglasses: :lion_face: ": ["James", "James Potter"],
-             ":duck: :oncoming_automobile: :telephone: ": ["Arthur", "Arthur Weasley"],
-             ":flag_bg:  :stadium: :broom: ": ["Krum", "Victor Krum"]}
-
         await message.channel.send("You and your friends snuck out of bed for a midnight stroll around the castle, but came face to face with Peeves!")
         await message.channel.send("He's now threatening to sell you out to Filch unless you agree to play a game of charades with him. Cuz poltergeists get bored too, you know!")
         await message.channel.send("You have no choice but to agree. Anything to escape the wrath of Filch, am I right? ")
         await message.channel.send("Here are the rules: Peeves acts out a character and you've to guess who he's mimicking. (Basically, the good old game of guessing the character from the emojis). You'll have 7 questions in total. Type 'play' to start playing.")
         while True:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
-            if response.content == "exit" and response.channel.name == "mini-games":
+            if response.content == "exit" and response.channel.name == "potterbot-mini-games":
                 await response.channel.send("Farewell for now, come back again soon!")
                 return False
-            elif response.channel.name == "mini-games":
+            elif response.channel.name == "potterbot-mini-games":
                 if response.content == 'play':
                     break
                 else:
@@ -752,7 +753,7 @@ class games:
             if response.content == "exit":
                 await response.channel.send("Farewell for now, come back again soon!")
                 return False
-            elif response.channel.name == "mini-games":
+            elif response.channel.name == "potterbot-mini-games":
                 if response.content.title() in ans:
                     await response.channel.send("You're correct!")
                     s += 1

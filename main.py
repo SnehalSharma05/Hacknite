@@ -2,7 +2,7 @@ import discord
 from utilities import *
 from classes import *
 from games import *
-from EmbededMsg import *
+from EmbedMsg import *
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -17,7 +17,8 @@ class bot(discord.Client):
         self.categ = None
         self.userDataHandler.read(readAmajeDataUser)
         self.houseDataHandler.read(readAmajeDataHouse)
-        self.notFree = []
+        self.notFreeUser = []
+        self.notFreeChannel = []
 
     def check(self, m1, m2):
         '''
@@ -84,6 +85,12 @@ class bot(discord.Client):
         if not y:
             await self.on_guild_join(self.guild)
 
+        # Getting the roles for the houses.
+        Ravenclaw.get_role(self)
+        Gryffindor.get_role(self)
+        Slytherin.get_role(self)
+        Hufflepuff.get_role(self)
+
     async def on_guild_join(self, guild: discord.Guild):
         categ = await guild.create_category('PotterBot')
         await guild.create_voice_channel("chill", category=categ)
@@ -97,20 +104,28 @@ class bot(discord.Client):
         await guild.create_role(name="Hufflepuff")
         await guild.create_role(name="Slytherin")
 
+        print("Created the channels and roles.")
+
     async def on_message(self, message: discord.Message):
         """
         Does the following everytime there is a message on the server.
         """
         if isinstance(message.channel, discord.DMChannel):
             pass
-        elif (message.author == self.user) or (message.channel.category.name.casefold() != "potterbot") or (message.author in self.notFree):
+        elif (message.author == self.user) or (message.channel.category.name.casefold() != "potterbot") or (message.author.id in self.notFreeUser):
+            return
+
+        if message.channel.id in self.notFreeChannel:
+            await message.channel.send("Please wait for the current game to finish.")
             return
 
         print(message.content)
 
         currUser = self.getUser(message)
-        self.notFree.append(message.author)
+        self.notFreeUser.append(message.author.id)
         if message.content.casefold() == "~revelio" and message.channel.name == "general":
+            # adding channel to not free channel
+            self.notFreeChannel.append(message.channel.id)
             currUser = await self.games.introduction(self, message)
             # if the user is playing for the first time
             if currUser and currUser.progress < 1:
@@ -136,8 +151,13 @@ class bot(discord.Client):
             if currUser and currUser.progress == 4:
                 await message.channel.send("You've completed all the introduction quests, Congratulations!\n Head to different channels to explore further games!")
 
+            # freeing the channel
+            self.notFreeChannel.append(message.channel.id)
+
         if currUser:
             if currUser.progress >= 4:
+                # adding channel to not free channel
+                self.notFreeChannel.append(message.channel.id)
                 if message.channel.name == "dueling-club" and message.content.find("~duel") != -1:
                     await self.games.duel(self, currUser, message)
 
@@ -146,34 +166,42 @@ class bot(discord.Client):
 
                 if message.channel.name == "general":
                     if message.content == "~myStats":
-                        await bot.send(message, currUser.get_full_info())
+                        await self.send(message, currUser.get_full_info())
 
                     if message.content == "~houseStats":
-                        await bot.send(message, eval(currUser.house).get_info())
+                        await self.send(message, eval(currUser.house).get_info())
 
-                    if message.content == "~leaderboard":
-                        houses = [Slytherin, Gryffindor, Ravenclaw, Hufflepuff]
-                        houses.sort(key=lambda x: x.points, reverse=True)
-                        await bot.send(self,message,f"1){houses[0].get_points_info()}\n2){houses[1].get_points_info()}\n3){houses[2].get_points_info()}\n4){houses[3].get_points_info()}")
+                        if message.content == "~leaderboard":
+                            houses = [Slytherin, Gryffindor,
+                                      Ravenclaw, Hufflepuff]
+                            houses.sort(key=lambda x: x.points, reverse=True)
+                            await bot.send(self, message, f"1){houses[0].get_points_info()}\n2){houses[1].get_points_info()}\n3){houses[2].get_points_info()}\n4){houses[3].get_points_info()}")
 
-                if message.channel.name == "mini-games":
-                    if message.content == "~emoGuess":
-                        await self.games.emojis(bot, currUser, message)
+                    if message.channel.name == "mini-games":
+                        if message.content == "~emoGuess":
+                            await self.games.emojis(self, currUser, message)
 
-                    if message.content == "~wordChain":
-                        await self.games.WordChain(bot, currUser, message)
+                        if message.content == "~wordChain":
+                            await self.games.WordChain(self, currUser, message)
 
-                    if message.content == "~crossword":
-                        await self.games.crossword(self, currUser, message)
+                        if message.content == "~crossword":
+                            await self.games.crossword(self, currUser, message)
 
-                if message.channel.name == "newts":
-                    if message.content == "~trivia":
-                        await self.games.Trivia(self, currUser, message)
+                    if message.channel.name == "newts":
+                        if message.content == "~trivia":
+                            await self.games.Trivia(self, currUser, message)
+
+                # removing channel
+                self.notFreeChannel.append(message.channel.id)
+
             else:
                 await bot.send(message, "You need to complete the introduction quests first!")
+
             currUser.update_level()
             self.save(currUser)
-            self.notFree.remove(message.author)
+            self.notFreeUser.remove(message.author.id)
+
 
 potter = bot(dataHandler)
-potter.run("MTIyMDQxOTY2OTM3OTM4MzM3Ng.Gz7ug4.AwIcTXV57TEwlfR2GPTKAOwJayghwiI2RCy3TE")
+potter.run(
+    "MTIyMDQxOTY2OTM3OTM4MzM3Ng.Gz7ug4.AwIcTXV57TEwlfR2GPTKAOwJayghwiI2RCy3TE")
