@@ -490,32 +490,6 @@ class games:
 
     async def crossword(self, client, currUser, message):
 
-        cross = {
-            'cross1.png': {'1': 'Caldron', '2': 'Glasses', '3': 'Wand', '4': 'Owl', '5': 'Potion', '6': 'Sortinghat',
-                           '7': 'Cloak', '8': 'Goldensnitch', '9': 'Broomstick', '10': 'Scar', '11': 'Cupboard'},
-            'cross2.png': {'1': 'Voldemort', '2': 'Dumbledore', '3': 'Ron', '4': 'Broom', '5': 'Draco',
-                           '6': 'Slytherin', '7': 'Hagrid', '8': 'Hedwig', '9': 'Scabbers', '10': 'Fluffy',
-                           '11': 'Dudley'},
-            'cross3.png': {'1': 'Muggle', '2a': 'Hogwarts', '2d': 'Hogsmeade', '3': 'Sirius', '4': 'Scabbers',
-                           '5': 'Hedwig', '6': 'Honeydukes', '7': 'Alohomora', '8': 'Azkaban', '9': 'Always',
-                           '10a': 'Dumbledore', '10d': 'Dobby', '11': 'Quidditch', '12': 'Fluffy', '13': 'Voldemort'},
-            'cross4.png': {'1': 'Hedwig', '2': 'Weasley', '3': 'Hermione', '4': 'Neville', '5': 'Scabbers',
-                           '6': 'Hagrid', '7': 'Dudley', '8': 'Draco', '9': 'Dumbledore'},
-            'cross5.png': {'1': 'Hogwartsexpress', '2': 'Hufflepuff', '3': 'Ravenclaw', '4': 'Owls', '5': 'Boats',
-                           '6': 'Diagonalley', '7': 'Toads', '8': 'Slytherin', '9': 'Sortinghat', '10': 'Hogwarts'},
-            'cross6.png': {'1': 'Expelliarmus', '2': 'Lumos', '3': 'Dumbledoresarmy', '4': 'Darkmark',
-                           '5': 'Goldensnitch', '6': 'Hufflepuff', '7': 'Hagrid', '8': 'Tomriddle', '9': 'Hogwarts',
-                           '10': 'Basilisk', '11': 'Hermionegranger', '12': 'Hedwig'},
-            'cross7.png': {'1': 'Voldemort', '2': 'Theburrow', '3': 'Crookshanks', '4': 'Dobby', '5': 'Snape',
-                           '6': 'Privetdrive', '7': 'Diagon', '8': 'Scared', '9a': 'Every', '9d': 'Errol'},
-            'cross8.png': {'1': 'Riddikulus', '2': 'Hedwig', '3': 'Hufflepuff', '4': 'Slytherin', '5': 'Ravenclaw',
-                           '6': 'Fluffy', '7': 'Trolls', '8': 'Muggle', '9': 'Opens', '10': 'Tea', '11': 'Die',
-                           '12': 'Hogwarts'},
-            'cross9.png': {'1': 'Deluminator', '2': 'Howler', '3': 'Wand', '4': 'Invisibilitycloak', '5': 'Voldemort',
-                           '6': 'Rubeushagrid', '7': 'AvadaKedavra', '8': 'Gryffindor', '9': 'Hufflepuff',
-                           '10': 'Quidditch'}
-        }
-
         chosen_one = random.choice(list(cross.keys()))
         await message.channel.send("Here's your crossword!\n Please don't put a space between 2 words in your answer.",
                                    file=discord.File(chosen_one))
