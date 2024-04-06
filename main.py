@@ -132,11 +132,15 @@ class bot(discord.Client):
                 isSuccess = await self.games.plat9_3_4(self, currUser, message)
                 if (isSuccess):
                     currUser.progress = 1
+                # need this to wait for embed to register
+                await asyncio.sleep(0.25)
 
             if currUser and currUser.progress == 1:
                 isSuccess = await self.games.house_sort(self, currUser, message)
                 if (isSuccess):
                     currUser.progress += 1
+                    # need this to wait for embed to register
+                    await asyncio.sleep(0.25)
 
             if currUser and currUser.progress == 2:
                 isSuccess = await self.games.Ollivanders(self, currUser, message)
