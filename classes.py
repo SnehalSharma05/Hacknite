@@ -314,10 +314,22 @@ class games:
             print(opponent.id)
             if currUser.health <= 0:
                 await message.channel.send(f"{currUser.name} has been defeated! Better luck next time.")
-                return [opponent, currUser]
+                opponent.points += 10
+                opponent.level = opponent.points//30
+                opponent.house.points += 5
+                currUser.points -= 10
+                currUser.level = currUser.points//30
+                currUser.house.points -= 5
+                break
             if opponent.health <= 0:
                 await message.channel.send(f"{opponent.name} has been defeated! Better luck next time.")
-                return [currUser, opponent]
+                currUser.points += 10
+                currUser.level = currUser.points//30
+                currUser.house.points += 5
+                opponent.points -= 10
+                opponent.level = opponent.points//30
+                opponent.house.points -= 5
+                break
             fighters = {opponent.id: {"me": opponent,"opponent": currUser}, currUser.id: {"me": currUser,"opponent": opponent}}
             while True:
                 response1 = await bot.wait_for('message')
@@ -326,7 +338,7 @@ class games:
             print(response1.author.id)
             if response1.content == "exit":
                 await response1.channel.send("Farewell for now, come back again soon!")
-                return None
+                break
             if response1.content in fighters[response1.author.id]["me"].spells:
                 block = False
                 spell = eval(f"{response1.content}")
@@ -353,3 +365,7 @@ class games:
                             fighters[response1.author.id]["me"].health = fighters[response1.author.id]["me"].max_health
                         else:
                             fighters[response1.author.id]["me"].health += heal_amount
+        currUser.health = currUser.max_health
+        opponent.health = opponent.max_health
+        opponent.update_level()
+        bot.save(opponent)
