@@ -16,7 +16,7 @@ class games:
         msg = "***Greetings! Welcome to the whimsical world of PotterBot, where the whispers of ancient spells and the flicker of wands weave tales of wonder reminiscent of Dumbledore's office. Here, amid the hallowed halls of Hogwarts, where portraits come to life and enchanted creatures roam, embark on a journey beyond the pages of the Marauder's Map, where mischief and magic await your command!***"
         em = embedMessage(colour=discord.Colour.blue(),
                           image="https://i.pinimg.com/originals/25/ce/3f/25ce3f11dda654caab19841c389b2878.gif",
-                          description=msg,title="Welcome to Hogwarts")
+                          description=msg, title="Welcome to Hogwarts")
         await bot.create_embed(em, message)
 
         msg = "***If you wish to leave at any point in the game, just type 'exit'.***"
@@ -24,7 +24,8 @@ class games:
         await bot.create_embed(em, message)
 
         if message.author.id in user.ids:
-            msg = f"***Welcome back to Hogwarts, {user.ids[message.author.id].name}!***"
+            msg = f"***Welcome back to Hogwarts, {
+                user.ids[message.author.id].name}!***"
             em = embedMessage(colour=discord.Colour.blue(), description=msg)
             await bot.create_embed(em, message)
             return user.ids[message.author.id]
@@ -132,25 +133,25 @@ class games:
                 return False
             elif response.channel.name == "general":
                 if response.content == "a":
-                    currUser.set_house(bot, Hufflepuff)
+                    await currUser.set_house(bot, Hufflepuff)
                     Hufflepuff.add_student(currUser)
                     await bot.send(response, "Ah, Hufflepuff it is! The house of the loyal and the kind, where friendship and hard work are valued above all. Welcome to the house of the badger!")
                     return True
 
                 elif response.content == "b":
-                    currUser.set_house(bot, Ravenclaw)
+                    await currUser.set_house(bot, Ravenclaw)
                     Ravenclaw.add_student(currUser)
                     await bot.send(response, "Ah, Ravenclaw it is! The house of the wise and the clever, where wit and intelligence are revered. Welcome to the house of the eagle!")
                     return True
 
                 elif response.content == "c":
-                    currUser.set_house(bot, Gryffindor)
+                    await currUser.set_house(bot, Gryffindor)
                     Gryffindor.add_student(currUser)
                     await bot.send(response, "Ah, Gryffindor it is! The house of the brave and the bold, where courage and loyalty reign supreme. Welcome to the house of the lion!")
                     return True
 
                 elif response.content == "d":
-                    currUser.set_house(bot, Slytherin)
+                    await currUser.set_house(bot, Slytherin)
                     Slytherin.add_student(currUser)
                     await bot.send(response, "Ah, Slytherin it is! The house of the cunning and the ambitious, where resourcefulness and determination are prized. Welcome to the house of the serpent!")
                     return True
@@ -175,27 +176,33 @@ class games:
         Please type 'wand' to proceed to Ollivanders.***
         """
 
-        author="Garrick Ollivanders"
-        author_icon="https://i.pinimg.com/564x/4c/00/80/4c00800646234a222219ebaa17c41c17.jpg"
+        author = "Garrick Ollivanders"
+        author_icon = "https://i.pinimg.com/564x/4c/00/80/4c00800646234a222219ebaa17c41c17.jpg"
 
         em = embedMessage(colour=discord.Colour.blue(), description=msgs,
-                          image="https://i.pinimg.com/564x/96/cb/72/96cb72d67bef839ccba6d5af4a9c328d.jpg", author=author, author_icon=author_icon)
+                          image="https://i.pinimg.com/564x/96/cb/72/96cb72d67bef839ccba6d5af4a9c328d.jpg", author=author, author_url=author_icon)
         await bot.create_embed(em, message)
 
-        await bot.send(message, "Now that you have been sorted into your house, it is time to equip yourself with the tools of the trade. You will need a wand, a spellbook, and a potion to begin your journey.")
-        await bot.send(message, "Let's head to Ollivanders where you will choose your wand, or to put it better, a wand will choose you!")
-        await bot.send(message, "Please type 'wand' to proceed to Ollivanders.")
+        # await bot.send(message, "Now that you have been sorted into your house, it is time to equip yourself with the tools of the trade. You will need a wand, a spellbook, and a potion to begin your journey.")
+        # await bot.send(message, "Let's head to Ollivanders where you will choose your wand, or to put it better, a wand will choose you!")
+        # await bot.send(message, "Please type 'wand' to proceed to Ollivanders.")
 
         while True:
             response = await bot.recieve(message, check=lambda message1: bot.check(message, message1))
             if response.content == "exit" and response.channel.name == "general":
-                await bot.send(response, "Farewell for now, come back again soon!")
+                # await bot.send(response, "Farewell for now, come back again soon!")
+                msg = "Farewell for now, come back again soon!"
+                em.description = msg
+                await bot.create_embed(em, message)
                 return False
             elif response.channel.name == "general":
                 if response.content == "wand":
                     break
                 else:
-                    await bot.send(response, "I'm sorry, I didn't catch that. Please try again.")
+                    # await bot.send(response, "I'm sorry, I didn't catch that. Please try again.")
+                    msg = "I'm sorry, I didn't catch that. Please try again."
+                    em.description = msg
+                    await bot.create_embed(em, message)
             else:
                 await bot.send(response, "A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)")
                 response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
@@ -235,7 +242,8 @@ class games:
 
                 if response.content == random.choice(selected):
                     await bot.send(message, "Congratulations your choice matched! The wand has chosen you!")
-                    currUser.wand = f"{wood_choice}, {core_choice} core, {length_choice} inches"
+                    currUser.wand = f"{wood_choice}, {
+                        core_choice} core, {length_choice} inches"
                     await bot.send(message, "You have successfully acquired your wand!")
                     return True
 
@@ -247,8 +255,10 @@ class games:
     async def duel(self, bot, currUser, message):
         accepted = False
         opponent_id = message.content.split(" ")[1][2:-1]
-        msg = f'''***{currUser.name} has challenged {message.content.split(" ")[1]} to a duel! Do you accept {message.content.split(" ")[1]}? (yes/no)***'''
-        em = embedMessage(colour=discord.Colour.blue(), description=msg,image="https://giphy.com/gifs/warnerbrosde-harry-potter-phantastische-tierwesen-dumbledores-geheimnisse-zEvwh3NJBpqMoVj96q")
+        msg = f'''***{currUser.name} has challenged {message.content.split(
+            " ")[1]} to a duel! Do you accept {message.content.split(" ")[1]}? (yes/no)***'''
+        em = embedMessage(colour=discord.Colour.blue(), description=msg,
+                          image="https://giphy.com/gifs/warnerbrosde-harry-potter-phantastische-tierwesen-dumbledores-geheimnisse-zEvwh3NJBpqMoVj96q")
         await bot.create_embed(em, message)
         while (True):
             response = await bot.recieve(message)
