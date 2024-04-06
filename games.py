@@ -20,9 +20,7 @@ class games:
         await bot.send(message, "If you wish to leave at any point in the game, just type 'exit'.")
 
         if message.author.id in user.ids:
-            em = embedMessage(colour = discord.Colour.blue())
-            msg = "Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!"
-            await bot.create_embed(em, msg)
+            await bot.send(message, "Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!")
             return user.ids[message.author.id]
 
         currUser = await self.new_user(bot, message)
@@ -35,9 +33,9 @@ class games:
         '''
         msg = "Welcome, new user! Please choose your username."
         em = embedMessage(colour=discord.Colour.blue(),
-                          image="https://i.pinimg.com/originals/25/ce/3f/25ce3f11dda654caab19841c389b2878.gif",
+                          image="https://i.pinimg.com/564x/84/55/7c/84557c07e99c33dc9c65a0d105aeb195.jpg",
                           description=msg, title="Welcome to Hogwarts!")
-        await bot.send(message, )
+        await bot.create_embed(em,message)
         while True:
             response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
             if response.content == "exit" and response.channel.name == "general":
