@@ -211,6 +211,9 @@ class games:
         return True
 
     async def Trivia(self, client, currUser, message):
+        await message.channel.send("7 years of calling Hogwarts home and here you are...\n Finally putting all your years of top level magical eductaion to the test!")
+        await message.channel.send("And not just any test - the most important one of 'em of all, the test that'll decide your future in the Wizarding World - the NEWTs!")
+        await message.channel.send("I hope you've done your revision! Good luck!")
         ques_done = []
         s = 0
         while True:
