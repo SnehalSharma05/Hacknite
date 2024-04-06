@@ -1,6 +1,7 @@
 import asyncio
 import discord
 import random
+from assets.constants import *
 
 
 class house():
@@ -228,3 +229,40 @@ class games:
             await message.channel.send(f"L! You couldn't maneuver the staircases on time and now you're late to class. Your excuse was lame and Professor McGonagall has deducted 5 house points from {currUser.house.get_name()}.")
             currUser.house.add_points(-5)
             return True
+
+    async def Trivia(self, client, currUser, message):
+        ques_done = []
+        s = 0
+        while True:
+            while True:
+                ques, ans = random.choice(list(trivia.items()))
+                if ques not in ques_done:
+                    ques_done.append(ques)
+                    break
+                else:
+                    continue
+            await message.channel.send(ques)
+            response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+            if response.content == "exit" and response.channel.name == "potterbot-newts":
+                await response.channel.send("Farewell for now, come back again soon!")
+                return False
+            elif response.channel.name == "potterbot-newts":
+                if response.content.title() in ans:
+                    await response.channel.send("You're correct!")
+                    s += 1
+
+                else:
+                    await response.channel.send(f"That's not right. The correct answer is {ans[0]}")
+                    break
+            else:
+                await response.channel.send("A game is already in progress. Do you want to exit trivia? (yes/no)")
+                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                if response.content == "yes":
+                    await response.channel.send("Farewell for now, come back again soon!")
+                    return False
+                continue
+
+        await response.channel.send(f"You were right {s} times!")
+        await message.channel.send(f"You've earned {s} points for your house!")
+        currUser.house.points += s
+        return True
