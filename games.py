@@ -197,6 +197,7 @@ class games:
             response = await bot.recieve(message)
             if response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "yes":
                 accepted = True
+                bot.notFree.append(opponent_id)
                 opponent = bot.getUser(response)
                 break
             elif response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "no":
@@ -275,6 +276,7 @@ class games:
         currUser.health = currUser.max_health
         opponent.health = opponent.max_health
         opponent.update_level()
+        bot.notFree.remove(opponent.id)
         bot.save(opponent)
 
     async def staircase(self, client, currUser, message):
