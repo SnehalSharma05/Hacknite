@@ -283,3 +283,73 @@ class games:
                     await bot.send(message, "Please choose a creature from the list.")
                 else:
                     await bot.send(message, "Not quite, let's try another one")
+    async def duel(self, bot, currUser, message):
+        accepted = False
+        opponent_id = message.content.split(" ")[1][2:-1]
+        await message.channel.send(f'''{currUser.name} has challenged {message.content.split(" ")[1]} to a duel! Do you accept {message.content.split(" ")[1]}? (yes/no)''')
+        while (True):
+            response = await bot.wait_for('message')
+            if response.author.id == int(opponent_id) and response.channel.name == "potterbot-dueling-club" and response.content == "yes":
+                accepted = True
+                opponent = bot.getUser(response)
+                break
+            elif response.author.id == int(opponent_id) and response.channel.name == "potterbot-dueling-club" and response.content == "no":
+                await message.channel.send("The duel has been declined.")
+                return None
+            elif response.channel.name == "potterbot-dueling-club":
+                if response.author.id == int(opponent_id):
+                    await message.channel.send("Invalid response.")
+                elif response.content.find("~duel") != -1:
+                    await message.channel.send("Pending duel request has been cancelled ")
+                    break
+
+        while True and accepted:
+            await message.channel.send(f"{currUser.name}'s health points: {currUser.health}")
+            await message.channel.send("|||||" + "|" * (currUser.health) * 3)
+            await message.channel.send(f'''{currUser.name}'s spells: {",".join(currUser.spells)}\n ''')
+            await message.channel.send(f"{opponent.name}'s health points: {opponent.health}")
+            await message.channel.send("|||||" + "|" * (opponent.health) * 3)
+            await message.channel.send(f'''{opponent.name}'s spells: {",".join(opponent.spells)}\n ''')
+            print(currUser.id)
+            print(opponent.id)
+            if currUser.health <= 0:
+                await message.channel.send(f"{currUser.name} has been defeated! Better luck next time.")
+                return [opponent, currUser]
+            if opponent.health <= 0:
+                await message.channel.send(f"{opponent.name} has been defeated! Better luck next time.")
+                return [currUser, opponent]
+            fighters = {opponent.id: {"me": opponent,"opponent": currUser}, currUser.id: {"me": currUser,"opponent": opponent}}
+            while True:
+                response1 = await bot.wait_for('message')
+                if response1.author.id == currUser.id or response1.author.id == opponent.id:
+                    break
+            print(response1.author.id)
+            if response1.content == "exit":
+                await response1.channel.send("Farewell for now, come back again soon!")
+                return None
+            if response1.content in fighters[response1.author.id]["me"].spells:
+                block = False
+                spell = eval(f"{response1.content}")
+                if spell.heal == 0:
+                    try:
+                        response2 = await bot.wait_for('message', timeout=3.0)
+                    except asyncio.TimeoutError:
+                        response2 = False
+                    if response2:
+                        if response2.author.id == fighters[response1.author.id]["opponent"].id:
+                            if response2.content in fighters[response1.author.id]["opponent"].spells and response2.content == "protego":
+                                await response1.channel.send(fighters[response1.author.id]["opponent"].name + " has cast Protego and blocked the spell!")
+                                block = True
+                if not block:
+                    await response1.channel.send(fighters[response1.author.id]["me"].name + " has cast " + response1.content + " successfully!")
+                    damage_amount = spell.damage
+                    heal_amount = spell.heal
+                    if damage_amount > 0:
+                        fighters[response1.author.id]["opponent"].health -= damage_amount
+                        await response1.channel.send(fighters[response1.author.id]["opponent"].name + " has taken " + str(damage_amount) + " damage!")
+                    if heal_amount > 0:
+                        await response1.channel.send(fighters[response1.author.id]["me"].name + " has healed for " + str(heal_amount) + " health points!")
+                        if fighters[response1.author.id]["me"].health + heal_amount > fighters[response1.author.id]["me"].max_health:
+                            fighters[response1.author.id]["me"].health = fighters[response1.author.id]["me"].max_health
+                        else:
+                            fighters[response1.author.id]["me"].health += heal_amount
