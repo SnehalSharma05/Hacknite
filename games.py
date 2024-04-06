@@ -5,6 +5,7 @@ from assets.constants import *
 from assets.enemies import *
 import random
 from classes import *
+from EmbedMsg import *
 
 class games:
     async def introduction(self, bot, message):
@@ -15,7 +16,9 @@ class games:
         await bot.send(message, "If you wish to leave at any point in the game, just type 'exit'.")
 
         if message.author.id in user.ids:
-            await bot.send(message, "Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!")
+            em = embedMessage(colour = 'blue')
+            msg = "Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!"
+            await bot.create_embed(em, msg)
             return user.ids[message.author.id]
 
         currUser = await self.new_user(bot, message)

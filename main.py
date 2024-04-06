@@ -54,7 +54,7 @@ class bot(discord.Client):
 
     async def create_embed(self, embed: embedMessage, message: discord.Message):
         '''
-        Takes in an embedded messaage object and sends it to the channel of the message.
+        Takes in an embedded message object and sends it to the channel of the message.
         '''
         embed.send(message)
 
@@ -200,6 +200,62 @@ class bot(discord.Client):
             currUser.update_level()
             self.save(currUser)
             self.notFreeUser.remove(message.author.id)
+
+        ######### moderator commands #########
+
+        command_prefix = ">"
+
+        if (message.content.startswith(command_prefix)):
+            if (message.author.guild_permissions.administrator):
+                command = message.content[len(command_prefix):]
+
+                if (command.startswith("kick")):
+                    user = command.split(" ")[1][2:-1]
+                    user = self.get_user(int(user))
+                    reason = " ".join(command.split(" ")[2:])
+                    await self.guild.kick(user, reason=reason)
+                    await self.send(message, f"{user} has been kicked.")
+
+                elif (command.startswith("ban")):
+                    user = command.split(" ")[1][2:-1]
+                    user = self.get_user(int(user))
+                    reason = " ".join(command.split(" ")[2:])
+                    await self.guild.ban(user, reason=reason)
+                    await self.send(message, f"{user} has been banned.")
+
+                elif (command.startswith("softban")):
+                    user = command.split(" ")[1][2:-1]
+                    user = self.get_user(int(user))
+                    await self.guild.ban(user)
+                    await self.guild.unban(user)
+                    await self.send(message, f"{user} has been softbanned.")
+
+                elif (command.startswith("unban")):
+                    user = command.split(" ")[1][2:-1]
+                    user = self.get_user(int(user))
+                    await self.guild.unban(user)
+                    await self.send(message, f"{user} has been unbanned.")
+
+                elif (command.startswith("mute")):
+                    user = command.split(" ")[1][2:-1]
+                    user = self.get_user(int(user))
+                    await self.guild.mute(user)
+                    await self.send(message, f"{user} has been muted.")
+
+                elif (command.startswith("unmute")):
+                    user = command.split(" ")[1][2:-1]
+                    user = self.get_user(int(user))
+                    await self.guild.unmute(user)
+                    await self.send(message, f"{user} has been unmuted.")
+
+                elif (command.startswith("clear")):
+                    await message.channel.purge()
+
+                elif (command.startswith("slowmode")):
+                    time = command.split(" ")[1]
+                    await message.channel.edit(slowmode_delay=time)
+                    await message.channel.send(f"Slowmode set to {time} seconds.")
+                    await self.send(message, f"Slowmode set to {time} seconds.")
 
 
 potter = bot(dataHandler)
