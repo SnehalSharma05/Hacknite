@@ -12,15 +12,20 @@ class games:
         '''
         This function is used whenever the user wants to login and use the bot.
         '''
-        msg = "Greetings! Welcome to the whimsical world of PotterBot, where the whispers of ancient spells and the flicker of wands weave tales of wonder reminiscent of Dumbledore's office. Here, amid the hallowed halls of Hogwarts, where portraits come to life and enchanted creatures roam, embark on a journey beyond the pages of the Marauder's Map, where mischief and magic await your command!"
+        msg = "# Welcome to Hogwarts \n ### Greetings! Welcome to the whimsical world of PotterBot, where the whispers of ancient spells and the flicker of wands weave tales of wonder reminiscent of Dumbledore's office. Here, amid the hallowed halls of Hogwarts, where portraits come to life and enchanted creatures roam, embark on a journey beyond the pages of the Marauder's Map, where mischief and magic await your command!"
         em = embedMessage(colour=discord.Colour.blue(),
                           image="https://i.pinimg.com/originals/25/ce/3f/25ce3f11dda654caab19841c389b2878.gif",
-                          description=msg, title="Welcome to Hogwarts!")
+                          description=msg)
         await bot.create_embed(em, message)
-        await bot.send(message, "If you wish to leave at any point in the game, just type 'exit'.")
+
+        msg = "If you wish to leave at any point in the game, just type 'exit'."
+        em = embedMessage(colour=discord.Colour.blue(), description=msg)
+        await bot.create_embed(em, message)
 
         if message.author.id in user.ids:
-            await bot.send(message, "Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!")
+            msg = "Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!"
+            em = embedMessage(colour=discord.Colour.blue(), description=msg)
+            await bot.create_embed(em, message)
             return user.ids[message.author.id]
 
         currUser = await self.new_user(bot, message)
@@ -32,9 +37,7 @@ class games:
         Function to initiate a new user.
         '''
         msg = "Welcome, new user! Please choose your username."
-        em = embedMessage(colour=discord.Colour.blue(),
-                          image="https://i.pinimg.com/564x/84/55/7c/84557c07e99c33dc9c65a0d105aeb195.jpg",
-                          description=msg, title="Welcome to Hogwarts!")
+        em = embedMessage(colour=discord.Colour.blue(),image="https://i.pinimg.com/564x/84/55/7c/84557c07e99c33dc9c65a0d105aeb195.jpg",description=msg)
         await bot.create_embed(em,message)
         while True:
             response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
