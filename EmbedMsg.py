@@ -78,7 +78,7 @@ class embedMessage(Embed):
             self.set_footer(text=footer, icon_url=footer_url)
 
         if (author):
-            self.set_author(name=author, url=author_url)
+            self.set_author(name=author, icon_url=author_url)
 
     async def send(self, message):
         '''

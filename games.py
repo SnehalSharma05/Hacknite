@@ -174,11 +174,12 @@ class games:
         """
 
         author = "Garrick Ollivanders"
-        author_icon = "https://i.pinimg.com/564x/4c/00/80/4c00800646234a222219ebaa17c41c17.jpg"
+        author_icon = "https://i.pinimg.com/564x/6a/7b/c4/6a7bc4448eb1632df3ee78359f3149fb.jpg"
 
-        em = embedMessage(colour=discord.Colour.blue(), description=msgs,
-                          image="https://i.pinimg.com/564x/96/cb/72/96cb72d67bef839ccba6d5af4a9c328d.jpg", author=author, author_url=author_icon)
+        em = embedMessage(colour=discord.Colour.from_rgb(135,62,35), description=msgs,
+                          image="https://i.pinimg.com/564x/d3/81/13/d38113d3bbdd1a136fa3d83b6ca8a5b0.jpg", author=author, author_url=author_icon)
         await bot.create_embed(em, message)
+        em.set_image(url=None)
 
         # await bot.send(message, "Now that you have been sorted into your house, it is time to equip yourself with the tools of the trade. You will need a wand, a spellbook, and a potion to begin your journey.")
         # await bot.send(message, "Let's head to Ollivanders where you will choose your wand, or to put it better, a wand will choose you!")
@@ -201,24 +202,48 @@ class games:
                     em.description = msg
                     await bot.create_embed(em, message)
             else:
-                await bot.send(response, "A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)")
+                # await bot.send(response, "A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)")
+                msg = "A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)"
+                em.description = msg
+                await bot.create_embed(em, message)
                 response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
                 if response.content == "yes":
-                    await bot.send(response, "Farewell for now, come back again soon!")
+                    # await bot.send(response, "Farewell for now, come back again soon!")
+                    msg = "Farewell for now, come back again soon!"
+                    em.description = msg
+                    await bot.create_embed(em, message)
                     return False
 
-        await bot.send(message, "Welcome to Ollivanders, the finest wand shop in all of Diagon Alley! Let's see which wand chooses you.")
-        await bot.send(message, "Please type 'ready' when you are ready to begin or type 'exit' to leave.")
+        # await bot.send(message, "Welcome to Ollivanders, the finest wand shop in all of Diagon Alley! Let's see which wand chooses you.")
+        # await bot.send(message, "Please type 'ready' when you are ready to begin or type 'exit' to leave.")
+
+        msg = """
+        ***Welcome to Ollivanders, the finest wand shop in all of Diagon Alley! Let's see which wand chooses you.
+        Please type 'ready' when you are ready to begin or type 'exit' to leave.***
+        """
+        em = embedMessage(colour=discord.Colour.from_rgb(135,62,35), description=msg, author=author ,author_url=author_icon,
+                          image="https://i.pinimg.com/564x/96/cb/72/96cb72d67bef839ccba6d5af4a9c328d.jpg")
+        await bot.create_embed(em, message)
+        em.set_image(url=None)
 
         response = await bot.recieve(message, check=lambda message1: bot.check(message, message1))
 
         if response.content == "exit":
-            await bot.send(response, "Farewell for now, come back again soon!")
+            # await bot.send(response, "Farewell for now, come back again soon!")
+            msg = "Farewell for now, come back again soon!"
+            em.description = msg
+            await bot.create_embed(em, message)
             return False
 
         if response.content == "ready":
-            await bot.send(message, "Let's begin then, shall we?")
-            await bot.send(message, f"Hmmmm, let's see... maybe this one?")
+            # await bot.send(message, "Let's begin then, shall we?")
+            # await bot.send(message, f"Hmmmm, let's see... maybe this one?")
+            msg = """
+            ***Let's begin then, shall we?
+            Hmmm, let's see... maybe this one?***
+            """
+            em.description = msg
+            await bot.create_embed(em, message)
 
             while True:
                 length_choice = random.choice(length)
@@ -227,27 +252,47 @@ class games:
 
                 await asyncio.sleep(1)
 
-                await bot.send(message, f"{wood_choice}, {core_choice} core, {length_choice} inches")
+                # await bot.send(message, f"{wood_choice}, {core_choice} core, {length_choice} inches")
+                msg = f"***{wood_choice}, {core_choice} core, {length_choice} inches***"
+                em.description = msg
+                await bot.create_embed(em, message)
                 selected = random.sample(creatures, 3)
 
-                await bot.send(message, f"In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {selected[0]}, {selected[1]} or {selected[2]}.")
+                # await bot.send(message, f"In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {selected[0]}, {selected[1]} or {selected[2]}.")
+                msg = f"***In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {
+                    selected[0]}, {selected[1]} or {selected[2]}.***"
+                em.description = msg
+                await bot.create_embed(em, message)
 
                 response = await bot.recieve(message, check=lambda message1: bot.check(message, message1))
                 if response.content == "exit":
-                    await bot.send(response, "Farewell for now, come back again soon!")
+                    # await bot.send(response, "Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon!***"
+                    em.description = msg
+                    await bot.create_embed(em, message)
                     return False
 
                 if response.content == random.choice(selected):
-                    await bot.send(message, "Congratulations your choice matched! The wand has chosen you!")
+                    # await bot.send(message, "Congratulations your choice matched! The wand has chosen you!")
+                    # await bot.send(message, "You have successfully acquired your wand!")
                     currUser.wand = f"{wood_choice}, {
                         core_choice} core, {length_choice} inches"
-                    await bot.send(message, "You have successfully acquired your wand!")
+                    msg = f"***Congratulations! You have successfully acquired your wand: {
+                        currUser.wand}!***"
+                    em.description = msg
+                    await bot.create_embed(em, message)
                     return True
 
                 elif response.content not in selected:
-                    await bot.send(message, "Please choose a creature from the list.")
+                    # await bot.send(message, "Please choose a creature from the list.")
+                    msg = "***Please choose a creature from the list.***"
+                    em.description = msg
+                    await bot.create_embed(em, message)
                 else:
-                    await bot.send(message, "Not quite, let's try another one")
+                    # await bot.send(message, "Not quite, let's try another one")
+                    msg = "***Not quite, let's try another one***"
+                    em.description = msg
+                    await bot.create_embed(em, message)
 
     async def duel(self, bot, currUser, message):
         accepted = False
