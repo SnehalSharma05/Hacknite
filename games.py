@@ -1,5 +1,6 @@
 import asyncio
 import discord
+import random
 from assets.constants import *
 from assets.enemies import *
 import random
@@ -370,6 +371,86 @@ class games:
             currUser.house.add_points(-5)
             return True
 
+    async def key(self, client, currUser, message):
+        await message.channel.send("Would you like to buy a key for 50 Galleons to continue the game?")
+        while True:
+            response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+            if response.content == "exit":
+                await response.channel.send("Farewell for now, come back again soon!")
+                return False
+
+            elif response.content.lower() == "yes":
+                if currUser.wealth < 50:
+                    await response.channel.send(
+                        f"Uh oh! You only have {currUser.wealth} Galleons in your Gringotts account. You lose.")
+                    key = 0
+                    break
+                else:
+                    currUser.wealth -= 50
+                    key = 1
+                    await response.channel.send(
+                        "Congrats! You have successfully purchased the key and are now free to continue the game.")
+                    break
+
+            elif response.content.lower() == "no":
+                key = 0
+                await response.channel.send("Good game, see you soon!")
+                break
+
+            else:
+                await response.channel.send("Please answer with only yes or no.")
+
+        return key
+
+    async def WordChain(self, client, currUser, message):
+        words = terms + spells + characters + creatures
+        done = []
+        await message.channel.send("Welcome to WordChain, a game where you put your vocabulary of the Wizarding World to the test!")
+        await message.channel.send("Basically, you've to type a Harry Potter related word that starts with the ending letter of the last word. You and the Potterbot take turns. Be careful to not repeat any word.")
+        await message.channel.send("You get to start! Please type your word.")
+        while True:
+            response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+            if response.content == "exit" and response.channel.name == "mini-games":
+                await response.channel.send("Farewell for now, come back again soon!")
+                return False
+            elif response.channel.name == "mini-games":
+                if response.content.title() not in words:
+                    await response.channel.send("That word is not related to Harry Potter. You lose.")
+                    key = await self.key(client, currUser, message)
+                    if key == 0:
+                        break
+
+                elif response.content.title() in done:
+                    await response.channel.send("Oops! That word is already done. You lose.")
+                    key = await self.key(client, currUser, message)
+                    if key == 0:
+                        break
+
+                elif len(done) > 0:
+                    if response.content[0].lower() != myword[-1]:
+                        await response.channel.send(
+                            f"Your word does not start with '{myword[-1].upper()}'. You've lost.")
+                        key = await self.key(client, currUser, message)
+                        if key == 0:
+                            break
+                else:
+                    done.append(response.content.title())
+                    valid = [x for x in words if x[0] ==
+                             response.content[-1].upper() and x not in done]
+                    myword = random.choices(valid)[0]
+                    done.append(myword)
+                    await response.channel.send(myword)
+            else:
+                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/no)")
+                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                if response.content == "yes":
+                    await response.channel.send("Farewell for now, come back again soon!")
+                    return False
+                continue
+        await message.channel.send(f"You've earned {len(done) // 2} points for your house!")
+        currUser.house.points += len(done) // 2
+        return True
+
     async def Trivia(self, client, currUser, message):
         ques_done = []
         s = 0
@@ -455,6 +536,7 @@ class games:
                 await message.channel.send(f"You've earned {user_answers} points for your house!")
                 currUser.house.add_points(len(user_answers))
                 return True
+
             elif response.channel.name == "mini-games":
                 if response.content == "exit":
                     await response.channel.send("Farewell for now, come back again soon!")
