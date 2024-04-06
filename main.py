@@ -110,7 +110,6 @@ class bot(discord.Client):
 
         currUser = self.getUser(message)
         self.notFree.append(message.author)
-        
         if message.content.casefold() == "~revelio" and message.channel.name == "general":
             currUser = await self.games.introduction(self, message)
             # if the user is playing for the first time
