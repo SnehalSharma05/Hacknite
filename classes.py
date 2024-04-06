@@ -1,7 +1,7 @@
 import asyncio
 import discord
-
-
+from assets.constants import *
+import random
 
 class house():
     def __init__(self, name):
@@ -223,3 +223,63 @@ class games:
 
             else:
                 await bot.send(response, "I'm sorry, I didn't catch that. Please try again. Type exit to leave the game.")
+    async def Ollivanders(self, bot, currUser, message):
+        '''
+        Assigns a wand to the player.
+        '''
+        # supplies
+
+        await bot.send(message, "Now that you have been sorted into your house, it is time to equip yourself with the tools of the trade. You will need a wand, a spellbook, and a potion to begin your journey.")
+        await bot.send(message, "Let's head to Ollivanders where you will choose your wand, or to put it better, a wand will choose you!")
+        await bot.send(message, "Please type 'wand' to proceed to Ollivanders.")
+
+        while True:
+            response = await bot.recieve(message, check=lambda message1: bot.check(message, message1))
+            if response.content == "exit":
+                await bot.send(response, "Farewell for now, come back again soon!")
+                return False
+            elif response.content == "wand":
+                break
+            else:
+                await bot.send(response, "I'm sorry, I didn't catch that. Please try again.")
+
+        await bot.send(message, "Welcome to Ollivanders, the finest wand shop in all of Diagon Alley! Let's see which wand chooses you.")
+        await bot.send(message, "Please type 'ready' when you are ready to begin or type 'exit' to leave.")
+
+        response = await bot.recieve(message, check=lambda message1: bot.check(message, message1))
+
+        if response.content == "exit":
+            await bot.send(response, "Farewell for now, come back again soon!")
+            return False
+
+        if response.content == "ready":
+            await bot.send(message, "Let's begin then, shall we?")
+            await bot.send(message, f"Hmmmm, let's see... maybe this one?")
+
+            while True:
+                length_choice = random.choice(length)
+                wood_choice = random.choice(wood)
+                core_choice = random.choice(core)
+
+                await asyncio.sleep(1)
+
+                await bot.send(message, f"{wood_choice}, {core_choice} core, {length_choice} inches")
+                selected = random.sample(creatures, 3)
+
+                await bot.send(message, f"In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {selected[0]}, {selected[1]} or {selected[2]}.")
+
+                response = await bot.recieve(message, check=lambda message1: bot.check(message, message1))
+                if response.content == "exit":
+                    await bot.send(response, "Farewell for now, come back again soon!")
+                    return False
+
+                if response.content == random.choice(selected):
+                    await bot.send(message, "Congratulations your choice matched! The wand has chosen you!")
+                    currUser.wand = f"{wood_choice}, {core_choice} core, {length_choice} inches"
+                    await bot.send(message, "You have successfully acquired your wand!")
+                    return True
+
+                elif response.content not in selected:
+                    await bot.send(message, "Please choose a creature from the list.")
+                else:
+                    await bot.send(message, "Not quite, let's try another one")
