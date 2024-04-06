@@ -1,8 +1,10 @@
 import asyncio
 import discord
 from assets.constants import *
+from assets.enemies import *
 import random
 from classes import *
+
 
 class games:
     async def introduction(self, bot, message):
@@ -486,3 +488,110 @@ class games:
                 if response.content == "yes":
                     await response.channel.send("Farewell for now, come back again soon!")
                     return False
+    async def botDuel(self, bot, currUser, message):
+        opponent = enemies[currUser.enemiesDefeated]
+        await message.channel.send(f'''Your opponent is {opponent.name}''')
+        while True:
+            await message.channel.send(f"{currUser.name}'s health points: {currUser.health}")
+            await message.channel.send(f'''{"|||||" + "|" * (0 if currUser.health < 0 else currUser.health) * 3} \n {currUser.name}'s spells: {",".join(currUser.spells)}\n ''')
+            await message.channel.send(f"{opponent.name}'s health points: {opponent.health}")
+            if opponent.name not in ["Basilisk", "Werewolf", "Acromantula"]:
+                await message.channel.send(f'''{"|||||" + "|" * (0 if opponent.health < 0 else opponent.health) * 3} \n {opponent.name}'s spells: protego,{",".join(spell.name for spell in opponent.spells)}\n ''')
+            else:
+                await message.channel.send(f'''{"|||||" + "|" * (0 if opponent.health < 0 else opponent.health) * 3} \n {opponent.name}'s damage: {opponent.damage}\n ''')
+                await message.channel.send(f"Type 'dodge' to dodge an attack.")
+            print(currUser.id)
+            if currUser.health <= 0:
+                await message.channel.send(f"Oh no, you have been defeated! Better luck next time.")
+                return False
+            elif opponent.health <= 0:
+                await message.channel.send(f"Merlin's beard! {opponent.name} has been defeated! You have won the duel!")
+                currUser.enemiesDefeated += 1
+                currUser.health = currUser.max_health
+                currUser.points += 10
+                currUser.level = currUser.points // 30
+                exec(f"{currUser.house}.points+=5")
+                return True
+            response1 = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
+            if response1.content == "exit":
+                await response1.channel.send("Farewell for now, come back again soon!")
+                return None
+            if response1.content in currUser.spells:
+                spell = eval(f"{response1.content}")
+                if random.random() < opponent.prob:
+                    if opponent.name not in ["Basilisk", "Werewolf", "Acromantula"]:
+                        await response1.channel.send(opponent.name + " has cast Protego and blocked the spell!")
+                    else:
+                        await response1.channel.send(opponent.name + " has dodged the spell!")
+                else:
+                    await response1.channel.send("You have cast " + response1.content + " successfully!")
+                    damage_amount = spell.damage
+                    heal_amount = spell.heal
+                    if damage_amount > 0:
+                        opponent.health -= damage_amount
+                        await response1.channel.send(opponent.name + " has taken " + str(damage_amount) + " damage!")
+                    if heal_amount > 0:
+                        await response1.channel.send("You have healed for " + str(heal_amount) + " health points!")
+                        if currUser + heal_amount > currUser.max_health:
+                            currUser.health = currUser.max_health
+                        else:
+                            currUser.health += heal_amount
+                    if currUser.health <= 0:
+                        await message.channel.send(f"Oh no, you have been defeated! Better luck next time.")
+                        return False
+                    elif opponent.health <= 0:
+                        await message.channel.send(
+                            f"Merlin's beard! {opponent.name} has been defeated! You have won the duel!")
+                        return True
+                if opponent.name not in ["Basilisk", "Werewolf", "Acromantula"]:
+                    oppSpell = random.choice(opponent.spells)
+                    if random.random() < opponent.prob:
+                        await response1.channel.send(opponent.name + " : " + oppSpell.name)
+                        if oppSpell.heal == 0:
+                            response1 = await bot.recieve(message, check=lambda message1: bot.check(message1, message), timeout=3.0)
+                            if response1 != None:
+                                if response1.content == "exit":
+                                    await response1.channel.send("Farewell for now, come back again soon!")
+                                    return False
+                                elif response1.content == "protego":
+                                    await response1.channel.send("You have cast Protego and blocked the spell!")
+                                else:
+                                    await response1.channel.send(opponent.name + " has cast " + oppSpell.name + " successfully!")
+                                    damage_amount = oppSpell.damage
+                                    if damage_amount > 0:
+                                        currUser.health -= damage_amount
+                                        await response1.channel.send("You have taken " + str(damage_amount) + " damage!")
+
+                            else:
+                                await message.channel.send(opponent.name + " has cast " + oppSpell.name + " successfully!")
+                                damage_amount = oppSpell.damage
+                                if damage_amount > 0:
+                                    currUser.health -= damage_amount
+                                    await message.channel.send("You have taken " + str(damage_amount) + " damage!")
+                        else:
+                            heal_amount = oppSpell.heal
+                            await response1.channel.send(opponent.name + " has healed for " + str(heal_amount) + " health points!")
+                            if opponent.health + heal_amount > opponent.max_health:
+                                opponent.health = opponent.max_health
+                            else:
+                                opponent.health += heal_amount
+                    else:
+                        await response1.channel.send(opponent.name + " has missed the spell!")
+                else:
+                    if random.random() < opponent.prob:
+                        await response1.channel.send(opponent.name + " has launched an attack! Type 'dodge' to dodge the attack.")
+                        response1 = await bot.recieve(message, check=lambda message1: bot.check(message1, message), timeout=3.0)
+                        if response1 != None:
+                            if response1.content == "exit":
+                                await response1.channel.send("Farewell for now, come back again soon!")
+                                return False
+                            if response1.content == "dodge":
+                                await response1.channel.send("You have successfully dodged the attack!")
+                            else:
+                                await response1.channel.send(opponent.name + "'s attack hit successfully.")
+                                currUser.health -= opponent.damage
+                        else:
+                            await message.channel.send(opponent.name + "'s attack hit successfully.")
+                            currUser.health -= opponent.damage
+                    else:
+                        await response1.channel.send(opponent.name + "'s attack missed.")
