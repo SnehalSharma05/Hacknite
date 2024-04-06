@@ -594,7 +594,7 @@ class games:
                 currUser.health = currUser.max_health
                 currUser.points += 10
                 currUser.level = currUser.points // 30
-                exec(f"{currUser.house}.points+=5")
+                currUser.house.points+=5
                 return True
             response1 = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
             if response1.content == "exit":
@@ -624,8 +624,12 @@ class games:
                         await message.channel.send(f"Oh no, you have been defeated! Better luck next time.")
                         return False
                     elif opponent.health <= 0:
-                        await message.channel.send(
-                            f"Merlin's beard! {opponent.name} has been defeated! You have won the duel!")
+                        await message.channel.send(f"Merlin's beard! {opponent.name} has been defeated! You have won the duel!")
+                        currUser.enemiesDefeated += 1
+                        currUser.health = currUser.max_health
+                        currUser.points += 10
+                        currUser.level = currUser.points // 30
+                        currUser.house.points+=5
                         return True
                 if opponent.name not in ["Basilisk", "Werewolf", "Acromantula"]:
                     oppSpell = random.choice(opponent.spells)
