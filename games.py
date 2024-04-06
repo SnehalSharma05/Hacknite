@@ -24,7 +24,8 @@ class games:
         await bot.create_embed(em, message)
 
         if message.author.id in user.ids:
-            msg = f"***Welcome back to Hogwarts, {user.ids[message.author.id].name}!***"
+            msg = f"***Welcome back to Hogwarts, {
+                user.ids[message.author.id].name}!***"
             em = embedMessage(colour=discord.Colour.blue(), description=msg)
             await bot.create_embed(em, message)
             return user.ids[message.author.id]
@@ -262,7 +263,8 @@ class games:
                 em.description = msg
                 await bot.create_embed(em, message)
                 selected = random.sample(creatures, 3)
-                msg = f"***In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {selected[0]}, {selected[1]} or {selected[2]}.***"
+                msg = f"***In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {
+                    selected[0]}, {selected[1]} or {selected[2]}.***"
                 em.description = msg
                 await bot.create_embed(em, message)
 
@@ -274,8 +276,10 @@ class games:
                     return False
 
                 if response.content == random.choice(selected):
-                    currUser.wand = f"{wood_choice}, {core_choice} core, {length_choice} inches"
-                    msg = f"***Congratulations! You have successfully acquired your wand: {currUser.wand}!***"
+                    currUser.wand = f"{wood_choice}, {
+                        core_choice} core, {length_choice} inches"
+                    msg = f"***Congratulations! You have successfully acquired your wand: {
+                        currUser.wand}!***"
                     em.description = msg
                     await bot.create_embed(em, message)
                     return True
@@ -306,29 +310,34 @@ class games:
                 break
             elif response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "no":
                 msg = "***The duel has been declined.***"
-                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                em = embedMessage(
+                    colour=discord.Colour.blue(), description=msg)
                 await bot.create_embed(em, message)
                 return None
             elif response.channel.name == "dueling-club":
                 if response.author.id == int(opponent_id):
                     msg = "***Invalid response***"
-                    em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                    em = embedMessage(
+                        colour=discord.Colour.blue(), description=msg)
                     await bot.create_embed(em, message)
                 elif response.content.find("~duel") != -1:
                     msg = "***Pending duel request has been cancelled.***"
-                    em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                    em = embedMessage(
+                        colour=discord.Colour.blue(), description=msg)
                     await bot.create_embed(em, message)
                     break
 
         while True and accepted:
-            msg = f'''***{currUser.name}'s health points: {currUser.health}***\n'''+("🟩" + "🟩" * (currUser.health // 6))+f'''\n***{currUser.name}'s spells: {",".join(currUser.spells)}***\n''' +"\n"+ f"***{opponent.name}'s health points: {opponent.health}***\n" + ("🟩" + "🟩" * (opponent.health // 6)) + f'''***\n{opponent.name}'s spells: {",".join(opponent.spells)}\n***'''
+            msg = f'''***{currUser.name}'s health points: {currUser.health}***\n'''+("🟩" + "🟩" * (currUser.health // 6))+f'''\n***{currUser.name}'s spells: {",".join(currUser.spells)}***\n''' + "\n" + f"***{
+                opponent.name}'s health points: {opponent.health}***\n" + ("🟩" + "🟩" * (opponent.health // 6)) + f'''***\n{opponent.name}'s spells: {",".join(opponent.spells)}\n***'''
             em = embedMessage(colour=discord.Colour.blue(), description=msg)
             await bot.create_embed(em, message)
             print(currUser.id)
             print(opponent.id)
             if currUser.health <= 0:
                 msg = f"***{currUser.name} has been defeated! Better luck next time.***"
-                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                em = embedMessage(
+                    colour=discord.Colour.blue(), description=msg)
                 await bot.create_embed(em, message)
                 opponent.points += 10
                 opponent.level = opponent.points//30
@@ -339,7 +348,8 @@ class games:
                 break
             if opponent.health <= 0:
                 msg = f"***{opponent.name} has been defeated! Better luck next time.***"
-                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                em = embedMessage(
+                    colour=discord.Colour.blue(), description=msg)
                 await bot.create_embed(em, message)
                 currUser.points += 10
                 currUser.level = currUser.points//30
@@ -357,7 +367,8 @@ class games:
             print(response1.author.id)
             if response1.content == "exit" and response1.channel.name == "dueling-club":
                 msg = "***Farewell for now, come back again soon!***"
-                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                em = embedMessage(
+                    colour=discord.Colour.blue(), description=msg)
                 await bot.create_embed(em, message)
                 break
             elif response1.channel.name == "dueling-club":
@@ -372,8 +383,11 @@ class games:
                         if response2:
                             if response2.author.id == fighters[response1.author.id]["opponent"].id:
                                 if response2.content in fighters[response1.author.id]["opponent"].spells and response2.content == "protego":
-                                    msg = "***"+fighters[response1.author.id]["opponent"].name + " has cast Protego and blocked the spell!***"
-                                    em = embedMessage(colour=discord.Colour.blue(), description=msg,image="https://i.pinimg.com/originals/b7/b6/78/b7b678bdc295fb6dcaac5a5a630b9fa4.gif")
+                                    msg = "***" + \
+                                        fighters[response1.author.id]["opponent"].name + \
+                                        " has cast Protego and blocked the spell!***"
+                                    em = embedMessage(colour=discord.Colour.blue(
+                                    ), description=msg, image="https://i.pinimg.com/originals/b7/b6/78/b7b678bdc295fb6dcaac5a5a630b9fa4.gif")
                                     await bot.create_embed(em, message)
                                     block = True
                     if not block:
@@ -382,12 +396,18 @@ class games:
                         heal_amount = spell.heal
                         if damage_amount > 0:
                             fighters[response1.author.id]["opponent"].health -= damage_amount
-                            msg = "***"+fighters[response1.author.id]["opponent"].name + " has taken " + str(damage_amount) + " damage!***"
-                            em = embedMessage(colour=discord.Colour.red(), description=msg)
+                            msg = "***"+fighters[response1.author.id]["opponent"].name + \
+                                " has taken " + \
+                                str(damage_amount) + " damage!***"
+                            em = embedMessage(
+                                colour=discord.Colour.red(), description=msg)
                             await bot.create_embed(em, message)
                         if heal_amount > 0:
-                            msg = "***" + fighters[response1.author.id]["me"].name + " has healed for " + str(heal_amount) + " health points!***"
-                            em = embedMessage(colour=discord.Colour.green(), description=msg)
+                            msg = "***" + fighters[response1.author.id]["me"].name + \
+                                " has healed for " + \
+                                str(heal_amount) + " health points!***"
+                            em = embedMessage(
+                                colour=discord.Colour.green(), description=msg)
                             await bot.create_embed(em, message)
                             if fighters[response1.author.id]["me"].health + heal_amount > fighters[response1.author.id]["me"].max_health:
                                 fighters[response1.author.id]["me"].health = fighters[response1.author.id]["me"].max_health
@@ -395,7 +415,8 @@ class games:
                                 fighters[response1.author.id]["me"].health += heal_amount
                 else:
                     msg = "***You do not have that spell.***"
-                    em = embedMessage(colour=discord.Colour.red(), description=msg)
+                    em = embedMessage(
+                        colour=discord.Colour.red(), description=msg)
                     await bot.create_embed(em, message)
             else:
                 msg = "***A game is already in progress in the channel 'dueling-club'. Do you want to exit the duel? (yes/anything else)***"
@@ -404,7 +425,8 @@ class games:
                 response1 = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
                 if response1.content == "yes":
                     msg = "***Farewell for now, come back again soon!***"
-                    em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                    em = embedMessage(
+                        colour=discord.Colour.blue(), description=msg)
                     await bot.create_embed(em, message)
                     break
         currUser.health = currUser.max_health
@@ -512,7 +534,6 @@ class games:
             return True
 
     async def key(self, client, currUser, message):
-        # await message.channel.send("Would you like to buy a key for 50 Galleons to continue the game?")
         em = embedMessage(colour=discord.Colour.blue(
         ), description="***Would you like to buy a key for 50 Galleons to continue the game?***")
         await client.create_embed(em, message)
@@ -521,15 +542,12 @@ class games:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
             if response.channel.name == message.channel.name:
                 if response.content == "exit":
-                    # await response.channel.send("Farewell for now, come back again soon!")
                     em.description = "***Farewell for now, come back again soon!***"
                     await client.create_embed(em, message)
                     return False
 
                 elif response.content.lower() == "yes":
                     if currUser.wealth < 50:
-                        # await response.channel.send(
-                        # f"Uh oh! You only have {currUser.wealth} Galleons in your Gringotts account. You lose.")
                         em.description = f"***Uh oh! You only have {
                             currUser.wealth} Galleons in your Gringotts account. You lose.***"
                         await client.create_embed(em, message)
@@ -538,30 +556,24 @@ class games:
                     else:
                         currUser.wealth -= 50
                         key = 1
-                        # await response.channel.send(
-                        #     "Congrats! You have successfully purchased the key and are now free to continue the game.")
                         em.description = "***Congrats! You have successfully purchased the key and are now free to continue the game.***"
                         await client.create_embed(em, message)
                         break
                 elif response.content.lower() == "no":
                     key = 0
-                    # await response.channel.send("Good game, see you soon!")
                     em.description = "***Good game, see you soon!***"
                     await client.create_embed(em, message)
                     break
 
                 else:
-                    # await response.channel.send("Please answer with only yes or no.")
                     em.description = "***Please answer with only yes or no.***"
                     await client.create_embed(em, message)
             else:
-                # await response.channel.send("A game is already in progress in another channel. Do you want to exit the game? (yes/anything else)")
                 em.description = "***A game is already in progress in another channel. Do you want to exit the game? (yes/anything else)***"
                 await client.create_embed(em, message)
 
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
-                    # await response.channel.send("Farewell for now, come back again soon!")
                     em.description = "***Farewell for now, come back again soon!***"
                     await client.create_embed(em, message)
 
