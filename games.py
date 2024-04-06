@@ -69,9 +69,13 @@ class games:
         The first level of our game.
         '''
 
-        msg = "***The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.\nIn order to cross the brick wall, please type 'Hogwarts Express' in under 5 seconds.\nType 'ready' when you are ready to begin. If you wish to exit, type anything else.***"
+        msg = """
+        ***The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.
+        In order to cross the brick wall, please type 'Hogwarts Express' in under 5 seconds.
+        Type 'ready' when you are ready to begin. If you wish to exit, type anything else.***
+        """
 
-        em = embedMessage(colour=discord.Colour.purple(), description=msg,
+        em = embedMessage(colour=discord.Colour.red(), description=msg,
                           image="https://i.pinimg.com/originals/48/c4/b0/48c4b08c488bb6b888eb72eb0230b34b.gif")
         await bot.create_embed(em, message)
 
@@ -162,7 +166,16 @@ class games:
         '''
         Assigns a wand to the player.
         '''
-        # supplies
+
+        msgs = """
+        ***Congratulations on being sorted into your house! Now it's time to equip yourself with the tools of the trade. You will need a wand!
+        Let's head to Ollivanders where you will choose your wand, or to put it better, a wand will choose you!
+        Please type 'wand' to proceed to Ollivanders.***
+        """
+
+        em = embedMessage(colour=discord.Colour.blue(), description=msgs,
+                          image="https://i.pinimg.com/564x/96/cb/72/96cb72d67bef839ccba6d5af4a9c328d.jpg")
+        await bot.create_embed(em, message)
 
         await bot.send(message, "Now that you have been sorted into your house, it is time to equip yourself with the tools of the trade. You will need a wand, a spellbook, and a potion to begin your journey.")
         await bot.send(message, "Let's head to Ollivanders where you will choose your wand, or to put it better, a wand will choose you!")
