@@ -18,12 +18,12 @@ class games:
                           description=msg)
         await bot.create_embed(em, message)
 
-        msg = "If you wish to leave at any point in the game, just type 'exit'."
+        msg = "*** If you wish to leave at any point in the game, just type 'exit'.***"
         em = embedMessage(colour=discord.Colour.blue(), description=msg)
         await bot.create_embed(em, message)
 
         if message.author.id in user.ids:
-            msg = "Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!"
+            msg = "***Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!***"
             em = embedMessage(colour=discord.Colour.blue(), description=msg)
             await bot.create_embed(em, message)
             return user.ids[message.author.id]
@@ -118,7 +118,10 @@ class games:
         '''
         Sorts users into different houses based on choice.
         '''
-        await bot.send(message, "Ah, but before you venture further into the realm of magic, let us unveil the essence of your true nature. Answer me this: When faced with a challenging dilemma, do you find solace in the warmth of companionship(a), the pursuit of knowledge(b), the thrill of adventure(c), or the allure of power(d)?")
+
+        msg = " *** Ah, but before you venture further into the realm of magic, let us unveil the essence of your true nature. Answer me this: When faced with a challenging dilemma, do you find solace in:***\n *(a) the warmth of companionship,*\n *(b) the pursuit of knowledge,*\n *(c) the thrill of adventure, or,*\n *(d) the allure of power?*"
+        em = embedMessage(colour=discord.Colour.blue(), title = "The Sorting Ceremony", description=msg, image = "https://i.pinimg.com/originals/8f/29/26/8f292677875dc83ce30c40c94a72c0e3.gif")
+        await bot.create_embed(em, message)
 
         while True:
             response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
