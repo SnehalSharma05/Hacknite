@@ -146,14 +146,20 @@ class bot(discord.Client):
                 isSuccess = await self.games.Ollivanders(self, currUser, message)
                 if (isSuccess):
                     currUser.progress += 1
+                    # need this to wait for embed to register
+                    await asyncio.sleep(0.25)
 
             if currUser and currUser.progress == 3:
                 isSuccess = await self.games.staircase(self, currUser, message)
                 if (isSuccess):
                     currUser.progress += 1
+                    # need this to wait for embed to register
+                    await asyncio.sleep(0.25)
 
             if currUser and currUser.progress == 4:
-                await message.channel.send("You've completed all the introduction quests, Congratulations!\n Head to different channels to explore further games!")
+                em = embedMessage(title="Introduction Complete!",
+                                  description="***You've completed all the introduction quests, Congratulations!\n Head to different channels to explore further games!***")
+                await self.create_embed(em, message)
 
             # freeing the channel
             self.notFreeChannel.append(message.channel.id)
@@ -171,6 +177,25 @@ class bot(discord.Client):
                 if message.channel.name == "general":
                     if message.content == "~myStats":
                         await self.send(message, currUser.get_full_info())
+
+                        use = self.get_user(currUser.id)
+
+                        em = embedMessage(
+                            title="My Stats", author=user.name, thumbnail=use.display_avatar.url)
+                        em.add_field(
+                            name="House", value=currUser.house, inline=True)
+                        em.add_field(
+                            name="Points", value=currUser.points, inline=True)
+                        em.add_field(
+                            name="wand", value=currUser.wand, inline=True)
+                        em.add_field(
+                            name="Wealth", value=currUser.wealth, inline=True)
+                        em.add_field(name="Potions",
+                                     value=currUser.potions, inline=True)
+                        em.add_field(
+                            name="Spells", value=currUser.spells, inline=True)
+                        em.add_field(name="Enemies Defeated",
+                                     value=currUser.enemiesDefeated, inline=True)
 
                     if message.content == "~houseStats":
                         await self.send(message, eval(currUser.house).get_info())
@@ -199,7 +224,9 @@ class bot(discord.Client):
                 self.notFreeChannel.append(message.channel.id)
 
             else:
-                await self.send(message, "You need to complete the introduction quests first!")
+                em = embedMessage(title="Introduction Quests",
+                                  description="***Complete the introduction quests to unlock further games!***")
+                await self.create_embed(em, message)
 
         if currUser:
             currUser.update_level()
