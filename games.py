@@ -72,7 +72,7 @@ class games:
         msg = """
         ***The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.
         In order to cross the brick wall, please type 'Hogwarts Express' in under 5 seconds.
-        Type 'ready' when you are ready to begin. If you wish to exit, type anything else.***
+        Type 'ready' when you are ready to begin. If you wish to exit, type anything else.
         """
 
         em = embedMessage(colour=discord.Colour.red(), description=msg,
@@ -121,7 +121,10 @@ class games:
         '''
         Sorts users into different houses based on choice.
         '''
-        await bot.send(message, "Ah, but before you venture further into the realm of magic, let us unveil the essence of your true nature. Answer me this: When faced with a challenging dilemma, do you find solace in the warmth of companionship(a), the pursuit of knowledge(b), the thrill of adventure(c), or the allure of power(d)?")
+
+        msg = " *** Ah, but before you venture further into the realm of magic, let us unveil the essence of your true nature. Answer me this: When faced with a challenging dilemma, do you find solace in:***\n *(a) the warmth of companionship,*\n *(b) the pursuit of knowledge,*\n *(c) the thrill of adventure, or,*\n *(d) the allure of power?*"
+        em = embedMessage(colour=discord.Colour.blue(), title = "The Sorting Ceremony", description=msg, image = "https://i.pinimg.com/originals/8f/29/26/8f292677875dc83ce30c40c94a72c0e3.gif")
+        await bot.create_embed(em, message)
 
         while True:
             response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
