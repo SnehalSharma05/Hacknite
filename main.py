@@ -154,7 +154,7 @@ class bot(discord.Client):
             # freeing the channel
             self.notFreeChannel.append(message.channel.id)
 
-        if currUser:
+        elif currUser:
             if currUser.progress >= 4:
                 # adding channel to not free channel
                 self.notFreeChannel.append(message.channel.id)
