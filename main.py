@@ -2,7 +2,7 @@ import discord
 from utilities import *
 from classes import *
 from games import *
-from EmbededMsg import *
+from EmbedMsg import *
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -84,6 +84,12 @@ class bot(discord.Client):
         if not y:
             await self.on_guild_join(self.guild)
 
+        # Getting the roles for the houses.
+        Ravenclaw.get_role(self)
+        Gryffindor.get_role(self)
+        Slytherin.get_role(self)
+        Hufflepuff.get_role(self)
+
     async def on_guild_join(self, guild: discord.Guild):
         categ = await guild.create_category('PotterBot')
         await guild.create_voice_channel("chill", category=categ)
@@ -96,6 +102,8 @@ class bot(discord.Client):
         await guild.create_role(name="Ravenclaw")
         await guild.create_role(name="Hufflepuff")
         await guild.create_role(name="Slytherin")
+
+        print("Created the channels and roles.")
 
     async def on_message(self, message: discord.Message):
         """
@@ -157,3 +165,12 @@ class bot(discord.Client):
             if message.channel.name == "newts":
                 if message.content == "~trivia":
                     await self.games.Trivia(bot, currUser, message)
+
+            currUser.update_level()
+            self.save(currUser)
+            self.notFree.remove(message.author)
+
+
+potter = bot(dataHandler)
+potter.run(
+    "MTIyMDQxOTY2OTM3OTM4MzM3Ng.Gz7ug4.AwIcTXV57TEwlfR2GPTKAOwJayghwiI2RCy3TE")

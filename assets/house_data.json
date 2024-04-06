@@ -1,0 +1,20 @@
+{
+    "house": [
+        {
+            "name": "Slytherin",
+            "points": 0
+        },
+        {
+            "name": "Gryffindor",
+            "points": 0
+        },
+        {
+            "name": "Ravenclaw",
+            "points": 0
+        },
+        {
+            "name": "Hufflepuff",
+            "points": 0
+        }
+    ]
+}

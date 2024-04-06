@@ -32,6 +32,7 @@ def getDumpUser(lst):
     for x in lst:
         l = vars(x)
         l['house'] = str(l['house'])
+        del l['revealed']
         dic.append(l)
 
     return dic
@@ -51,6 +52,7 @@ def getDumpHouse(lst):
         l = vars(x)
         if 'students' in l:
             del l['students']
+        del l['role']
         dic.append(l)
 
     return dic
