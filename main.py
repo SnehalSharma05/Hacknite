@@ -201,6 +201,7 @@ class bot(discord.Client):
             else:
                 await self.send(message, "You need to complete the introduction quests first!")
 
+        if currUser:
             currUser.update_level()
             self.save(currUser)
             self.notFreeUser.remove(message.author.id)

@@ -288,8 +288,7 @@ class games:
                 em.description = msg
                 await bot.create_embed(em, message)
                 selected = random.sample(creatures, 3)
-                msg = f"***In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {
-                    selected[0]}, {selected[1]} or {selected[2]}.***"
+                msg = f"***In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {selected[0]}, {selected[1]} or {selected[2]}.***"
                 em.description = msg
                 await bot.create_embed(em, message)
 
@@ -301,10 +300,8 @@ class games:
                     return False
 
                 if response.content == random.choice(selected):
-                    currUser.wand = f"{wood_choice}, {
-                        core_choice} core, {length_choice} inches"
-                    msg = f"***Congratulations! You have successfully acquired your wand: {
-                        currUser.wand}!***"
+                    currUser.wand = f"{wood_choice}, {core_choice} core, {length_choice} inches"
+                    msg = f"***Congratulations! You have successfully acquired your wand: {currUser.wand}!***"
                     em.description = msg
                     await bot.create_embed(em, message)
                     return True
@@ -364,10 +361,10 @@ class games:
                 await bot.create_embed(em, message)
                 opponent.points += 10
                 opponent.level = opponent.points//30
-                opponent.house.points += 5
+                opponent.house.points.add_points(5)
                 currUser.points -= 10
                 currUser.level = currUser.points//30
-                currUser.house.points -= 5
+                currUser.house.add_points(-5)
                 break
             if opponent.health <= 0:
                 msg = f"***{opponent.name} has been defeated! Better luck next time.***"
@@ -376,10 +373,10 @@ class games:
                 await bot.create_embed(em, message)
                 currUser.points += 10
                 currUser.level = currUser.points//30
-                currUser.house.points += 5
+                currUser.house.add_points(5)
                 opponent.points -= 10
                 opponent.level = opponent.points//30
-                opponent.house.points -= 5
+                opponent.house.add_points(-5)
                 break
             fighters = {opponent.id: {"me": opponent, "opponent": currUser}, currUser.id: {
                 "me": currUser, "opponent": opponent}}
@@ -571,8 +568,7 @@ class games:
 
                 elif response.content.lower() == "yes":
                     if currUser.wealth < 50:
-                        em.description = f"***Uh oh! You only have {
-                            currUser.wealth} Galleons in your Gringotts account. You lose.***"
+                        em.description = f"***Uh oh! You only have {currUser.wealth} Galleons in your Gringotts account. You lose.***"
                         await client.create_embed(em, message)
                         key = 0
                         break
@@ -648,7 +644,7 @@ class games:
                     return False
                 continue
         await message.channel.send(f"You've earned {len(done)//2} galleons and {len(done) // 2} points for your house!")
-        currUser.house.points += len(done) // 2
+        currUser.house.add_points(len(done) // 2)
         currUser.wealth += len(done) // 2
         return True
 
@@ -691,7 +687,7 @@ class games:
 
         await response.channel.send(f"You were right {s} times!")
         await message.channel.send(f"You've earned {s} points for your house!")
-        currUser.house.points += s
+        currUser.house.add_points(s)
         return True
 
     async def crossword(self, client, currUser, message):
@@ -801,7 +797,7 @@ class games:
                 currUser.health = currUser.max_health
                 currUser.points += 10
                 currUser.level = currUser.points // 30
-                currUser.house.points += 5
+                currUser.house.add_points(5)
                 return True
             response1 = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
             if response1.content == "exit":
@@ -852,7 +848,7 @@ class games:
                         currUser.health = currUser.max_health
                         currUser.points += 10
                         currUser.level = currUser.points // 30
-                        currUser.house.points += 5
+                        currUser.house.add_points(5)
                         return True
                 if opponent.name not in ["Basilisk", "Werewolf", "Acromantula"]:
                     oppSpell = random.choice(opponent.spells)
@@ -997,5 +993,5 @@ class games:
         await response.channel.send("Peeves is now headed to annoy Mrs Norris and you're free to roam the corridors again! Now that you think about it, hanging out with Peeves was actually fun and turned out to be the highliight of your night!")
         await message.channel.send(f"You've earned {s*2} galleons and {s} points for your house!")
         currUser.wealth += s*2
-        currUser.house.points += s
+        currUser.house.add_points(s)
         return s
