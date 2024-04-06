@@ -138,10 +138,10 @@ class bot(discord.Client):
 
         if currUser:
             if message.channel.name == "dueling-club" and message.content.find("~duel") != -1:
-                await self.games.duel(bot, currUser, message)
+                await self.games.duel(self, currUser, message)
 
             if message.content == "~enter" and message.channel.name == "forbidden-forest":
-                await self.games.botDuel(bot, currUser, message)
+                await self.games.botDuel(self, currUser, message)
 
             if message.channel.name == "general":
                 if message.content == "~myStats":
@@ -152,8 +152,14 @@ class bot(discord.Client):
 
             if message.channel.name == "mini-games":
                 if message.content == "~crossword":
-                    await self.games.crossword(bot, currUser, message)
+                    await self.games.crossword(self, currUser, message)
 
             if message.channel.name == "newts":
                 if message.content == "~trivia":
-                    await self.games.Trivia(bot, currUser, message)
+                    await self.games.Trivia(self, currUser, message)
+            currUser.update_level()
+            self.save(currUser)
+            self.notFree.remove(message.author)
+
+potter = bot(dataHandler)
+potter.run("MTIyMDQxOTY2OTM3OTM4MzM3Ng.Gz7ug4.AwIcTXV57TEwlfR2GPTKAOwJayghwiI2RCy3TE")

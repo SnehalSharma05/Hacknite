@@ -191,15 +191,15 @@ class games:
         opponent_id = message.content.split(" ")[1][2:-1]
         await message.channel.send(f'''{currUser.name} has challenged {message.content.split(" ")[1]} to a duel! Do you accept {message.content.split(" ")[1]}? (yes/no)''')
         while (True):
-            response = await bot.wait_for('message')
-            if response.author.id == int(opponent_id) and response.channel.name == "potterbot-dueling-club" and response.content == "yes":
+            response = await bot.recieve(message)
+            if response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "yes":
                 accepted = True
                 opponent = bot.getUser(response)
                 break
-            elif response.author.id == int(opponent_id) and response.channel.name == "potterbot-dueling-club" and response.content == "no":
+            elif response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "no":
                 await message.channel.send("The duel has been declined.")
                 return None
-            elif response.channel.name == "potterbot-dueling-club":
+            elif response.channel.name == "dueling-club":
                 if response.author.id == int(opponent_id):
                     await message.channel.send("Invalid response.")
                 elif response.content.find("~duel") != -1:
