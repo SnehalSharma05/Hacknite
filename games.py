@@ -206,8 +206,9 @@ class games:
                     await response.channel.send("Farewell for now, come back again soon!")
                     return False
                 continue
-        await message.channel.send(f"You've earned {len(done) // 2} points for your house!")
+        await message.channel.send(f"You've earned {len(done)//2} galleons and {len(done) // 2} points for your house!")
         currUser.house.points += len(done) // 2
+        currUser.wealth += len(done) // 2
         return True
 
     async def Trivia(self, client, currUser, message):
@@ -297,8 +298,9 @@ class games:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
             if user_answers == cross[chosen_one]:
                 await message.channel.send("Congrats! You've successfully solved the crossword.")
-                await message.channel.send(f"You've earned {user_answers} points for your house!")
+                await message.channel.send(f"You've earned {len(user_answers)} galleons and {user_answers} points for your house!")
                 currUser.house.add_points(len(user_answers))
+                currUser.wealth+=len(user_answers)*2
                 return True
             elif response.channel.name == "mini-games":
                 if response.content == "exit":
@@ -426,6 +428,7 @@ class games:
 
         await response.channel.send(f"You were right {s}/7 times!")
         await response.channel.send("Peeves is now headed to annoy Mrs Norris and you're free to roam the corridors again! Now that you think about it, hanging out with Peeves was actually fun and turned out to be the highliight of your night!")
-        await message.channel.send(f"You've earned {s} points for your house!")
+        await message.channel.send(f"You've earned {s*2} galleons and {s} points for your house!")
+        currUser.wealth+=s*2
         currUser.house.points += s
         return s
