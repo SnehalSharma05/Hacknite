@@ -269,8 +269,7 @@ class games:
                 em.description = msg
                 await bot.create_embed(em, message)
                 selected = random.sample(creatures, 3)
-                msg = f"***In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {
-                    selected[0]}, {selected[1]} or {selected[2]}.***"
+                msg = f"***In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {selected[0]}, {selected[1]} or {selected[2]}.***"
                 em.description = msg
                 await bot.create_embed(em, message)
 
@@ -282,10 +281,8 @@ class games:
                     return False
 
                 if response.content == random.choice(selected):
-                    currUser.wand = f"{wood_choice}, {
-                        core_choice} core, {length_choice} inches"
-                    msg = f"***Congratulations! You have successfully acquired your wand: {
-                        currUser.wand}!***"
+                    currUser.wand = f"{wood_choice}, {core_choice} core, {length_choice} inches"
+                    msg = f"***Congratulations! You have successfully acquired your wand: {currUser.wand}!***"
                     em.description = msg
                     await bot.create_embed(em, message)
                     return True
