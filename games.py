@@ -5,6 +5,7 @@ from assets.constants import *
 from assets.enemies import *
 import random
 from classes import *
+from EmbedMsg import *
 
 class games:
     async def introduction(self, bot, message):
