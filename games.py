@@ -78,6 +78,7 @@ class games:
         em = embedMessage(colour=discord.Colour.red(), description=msg,
                           image="https://i.pinimg.com/originals/48/c4/b0/48c4b08c488bb6b888eb72eb0230b34b.gif")
         await bot.create_embed(em, message)
+        em.set_image(url=None)
 
         response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
 
@@ -141,47 +142,63 @@ class games:
         '''
 
         msg = " *** Ah, but before you venture further into the realm of magic, let us unveil the essence of your true nature. Answer me this: When faced with a challenging dilemma, do you find solace in:***\n *(a) the warmth of companionship,*\n *(b) the pursuit of knowledge,*\n *(c) the thrill of adventure, or,*\n *(d) the allure of power?*"
-        em = embedMessage(colour=discord.Colour.blue(), title="The Sorting Ceremony", description=msg,
-                          image="https://i.pinimg.com/originals/8f/29/26/8f292677875dc83ce30c40c94a72c0e3.gif")
+        em = embedMessage(colour=discord.Colour.orange(), title = "The Sorting Ceremony", description=msg, image = "https://i.pinimg.com/originals/8f/29/26/8f292677875dc83ce30c40c94a72c0e3.gif")
         await bot.create_embed(em, message)
 
         while True:
             response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
             if response.content == "exit" and response.channel.name == "general":
-                await bot.send(response, "Farewell for now, come back again soon!")
+                msg = "***Farewell for now, come back again soon!***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await bot.create_embed(em, message)
                 return False
             elif response.channel.name == "general":
                 if response.content == "a":
                     await currUser.set_house(bot, Hufflepuff)
                     Hufflepuff.add_student(currUser)
-                    await bot.send(response, "Ah, Hufflepuff it is! The house of the loyal and the kind, where friendship and hard work are valued above all. Welcome to the house of the badger!")
+                    msg = "*** Ah, Hufflepuff it is! The house of the loyal and the kind, where friendship and hard work are valued above all. Welcome to the house of the badger!***"
+                    em = embedMessage(colour=discord.Colour.yellow(), description=msg, title = "Hufflepuff", image = "https://i.pinimg.com/564x/06/02/a8/0602a8781111f5023f0b64e6a07b2e4d.jpg")
+                    await bot.create_embed(em, message)
                     return True
 
                 elif response.content == "b":
                     await currUser.set_house(bot, Ravenclaw)
                     Ravenclaw.add_student(currUser)
-                    await bot.send(response, "Ah, Ravenclaw it is! The house of the wise and the clever, where wit and intelligence are revered. Welcome to the house of the eagle!")
+                    msg = "*** Ah, Ravenclaw it is! The house of the wise and the clever, where wit and intelligence are revered. Welcome to the house of the eagle!***"
+                    em = embedMessage(colour=discord.Colour.blue(), description=msg, title="Ravenclaw", image = "https://i.pinimg.com/736x/8e/e2/ef/8ee2ef549843570b76a07799f936a674.jpg")
+                    await bot.create_embed(em, message)
                     return True
 
                 elif response.content == "c":
                     await currUser.set_house(bot, Gryffindor)
                     Gryffindor.add_student(currUser)
-                    await bot.send(response, "Ah, Gryffindor it is! The house of the brave and the bold, where courage and loyalty reign supreme. Welcome to the house of the lion!")
+                    msg = "*** Ah, Gryffindor it is! The house of the brave and the bold, where courage and loyalty reign supreme. Welcome to the house of the lion!***"
+                    em = embedMessage(colour=discord.Colour.red(), description=msg, title="Gryffindor", image="https://i.pinimg.com/564x/fb/64/fb/fb64fb2332fe37cd45619cc98ad1232e.jpg")
+                    await bot.create_embed(em, message)
                     return True
 
                 elif response.content == "d":
                     await currUser.set_house(bot, Slytherin)
                     Slytherin.add_student(currUser)
-                    await bot.send(response, "Ah, Slytherin it is! The house of the cunning and the ambitious, where resourcefulness and determination are prized. Welcome to the house of the serpent!")
+                    msg = "*** Ah, Slytherin it is! The house of the cunning and the ambitious, where resourcefulness and determination are prized. Welcome to the house of the serpent!***"
+                    em = embedMessage(colour=discord.Colour.green(), description=msg, title="Slytherin", image = "https://i.pinimg.com/736x/2d/a3/ec/2da3ecce5858288bd939c619cfdb852f.jpg")
+                    await bot.create_embed(em, message)
                     return True
 
                 else:
-                    await bot.send(response, "I'm sorry, I didn't catch that. Please try again. Type exit to leave the game.")
+                    msg = "***I'm sorry, I didn't catch that. Please try again. Type exit to leave the game.***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await bot.create_embed(em, message)
+
             else:
-                await bot.send(response, "A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)")
+                msg = "A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await bot.create_embed(em, message)
                 response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
                 if response.content == "yes":
-                    await bot.send(response, "Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon!***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await bot.create_embed(em, message)
                     return False
 
     async def Ollivanders(self, bot, currUser, message):
