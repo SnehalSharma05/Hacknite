@@ -3,27 +3,7 @@
         {
             "name": "boom29",
             "id": 756494480047079446,
-            "house": "Gryffindor",
-            "health": 150,
-            "max_health": 150,
-            "enemiesDefeated": 0,
-            "wand": null,
-            "spells": [
-                "stupefy",
-                "expelliarmus",
-                "protego"
-            ],
-            "points": 0,
-            "level": 0,
-            "wealth": 0,
-            "potions": [],
-            "items": [],
-            "progress": 0
-        },
-        {
-            "name": "snehal",
-            "id": 795892519393165332,
-            "house": "Gryffindor",
+            "house": "Ravenclaw",
             "health": 150,
             "max_health": 150,
             "enemiesDefeated": 0,
