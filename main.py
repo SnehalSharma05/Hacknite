@@ -135,3 +135,25 @@ class bot(discord.Client):
 
             if currUser and currUser.progress == 4:
                 await message.channel.send("You've completed all the introduction quests, Congratulations!\n Head to different channels to explore further games!")
+
+        if currUser:
+            if message.channel.name == "dueling-club" and message.content.find("~duel") != -1:
+                await self.games.duel(bot, currUser, message)
+
+            if message.content == "~enter" and message.channel.name == "forbidden-forest":
+                await self.games.botDuel(bot, currUser, message)
+
+            if message.channel.name == "general":
+                if message.content == "~myStats":
+                    await bot.send(message, currUser.get_full_info())
+
+                if message.content == "~houseStats":
+                    await bot.send(message, eval(currUser.house).get_info())
+
+            if message.channel.name == "mini-games":
+                if message.content == "~crossword":
+                    await self.games.crossword(bot, currUser, message)
+
+            if message.channel.name == "newts":
+                if message.content == "~trivia":
+                    await self.games.Trivia(bot, currUser, message)
