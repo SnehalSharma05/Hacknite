@@ -137,3 +137,89 @@ class games:
         await bot.send(response, "Welcome to Hogwarts, " + response.content + "!")
 
         return u
+
+    async def plat9_3_4(self, bot, currUser, message):
+        '''
+        The first level of our game.
+        '''
+
+        await bot.send(message, "The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.")
+        await bot.send(message, "In order to cross the brick wall, please type 'Hogwarts Express' in under 5 seconds.")
+        await bot.send(message, "Type 'ready' when you are ready to begin. If you wish to exit, type anything else.")
+
+        response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
+
+        if response.content == "ready":
+            await bot.send(response, "Let the magic begin!")
+
+            while True:
+                await bot.send(message, "Your time starts...")
+                await asyncio.sleep(1)
+                await bot.send(message, "Now!")
+
+                try:
+                    response = await bot.wait_for('message', check=lambda message1: bot.check(message, message1), timeout=5.0)
+
+                    if response.content == "exit":
+                        await bot.send(message, "Looks like you are in need of a little more practice my friend. Farewell for now, come back to try again soon!")
+                        return False
+
+                    if response.content == "Hogwarts Express":
+                        await bot.send(message, "Merlin's Beard! You made it! You are ready to board the Hogwarts Express!")
+                        return True
+
+                    else:
+                        await bot.send(message, "Blimey! That's not the correct phrase. Please try again.")
+
+                except asyncio.TimeoutError:
+                    await bot.send(message, "Ahhhh, you didn't make it in time. Please try again.")
+
+                await message.channel.send("Type 'ready' to try again or 'exit' to leave.")
+                response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
+                if response.content == "exit":
+                    await bot.send(response, "Farewell for now, come back again soon!")
+                    return False
+                elif response.content == "ready":
+                    continue
+        else:
+            await bot.send(response, "Farewell for now, come back again soon!")
+            return False
+
+    async def house_sort(self, bot, currUser, message):
+        '''
+        Sorts users into different houses based on choice.
+        '''
+        await bot.send(message, "Ah, but before you venture further into the realm of magic, let us unveil the essence of your true nature. Answer me this: When faced with a challenging dilemma, do you find solace in the warmth of companionship(a), the pursuit of knowledge(b), the thrill of adventure(c), or the allure of power(d)?")
+
+        while True:
+            response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
+            if response.content == "exit":
+                await bot.send(response, "Farewell for now, come back again soon!")
+                return False
+
+            elif response.content == "a":
+                currUser.set_house(Hufflepuff)
+                Hufflepuff.add_student(currUser)
+                await bot.send(response, "Ah, Hufflepuff it is! The house of the loyal and the kind, where friendship and hard work are valued above all. Welcome to the house of the badger!")
+                return True
+
+            elif response.content == "b":
+                currUser.set_house(Ravenclaw)
+                Ravenclaw.add_student(currUser)
+                await bot.send(response, "Ah, Ravenclaw it is! The house of the wise and the clever, where wit and intelligence are revered. Welcome to the house of the eagle!")
+                return True
+
+            elif response.content == "c":
+                currUser.set_house(Gryffindor)
+                Gryffindor.add_student(currUser)
+                await bot.send(response, "Ah, Gryffindor it is! The house of the brave and the bold, where courage and loyalty reign supreme. Welcome to the house of the lion!")
+                return True
+
+            elif response.content == "d":
+                currUser.set_house(Slytherin)
+                Slytherin.add_student(currUser)
+                await bot.send(response, "Ah, Slytherin it is! The house of the cunning and the ambitious, where resourcefulness and determination are prized. Welcome to the house of the serpent!")
+                return True
+
+            else:
+                await bot.send(response, "I'm sorry, I didn't catch that. Please try again. Type exit to leave the game.")
