@@ -1,6 +1,7 @@
 import json
 import os
 import re
+from classes import user, Gryffindor, Ravenclaw, Hufflepuff, Slytherin
 
 
 def typeCheck(data):
@@ -18,11 +19,87 @@ def typeCheck(data):
             raise TypeError
 
 
+def getDumpUser(lst):
+    '''
+    Readies the dump for dumping into the json file.
+
+    Param: lst - [user1, user2, ...]
+    '''
+    typeCheck([(lst, list)])
+
+    dic = []
+
+    for x in lst:
+        l = vars(x)
+        l['house'] = str(l['house'])
+        dic.append(l)
+
+    return dic
+
+
+def getDumpHouse(lst):
+    '''
+    Readies the dump for dumping into the json file.
+
+    Param: lst - [house1, house2, ...]
+    '''
+    typeCheck([(lst, list)])
+
+    dic = []
+
+    for x in lst:
+        l = vars(x)
+        if 'students' in l:
+            del l['students']
+        dic.append(l)
+
+    return dic
+
+
 def clearTag(response, tag=1220419669379383376):
     '''
     Removes the tag of the response that occurs in the start.
     '''
     return re.sub(f"<@{tag}> ", "", response)
+
+
+def readAmajeDataUser(data):
+    '''
+    Reads the data from the json file.
+    And then makes the user objects.
+    '''
+
+    if (data == {}):
+        return
+
+    for x in data['users']:
+        u = user(x["name"], x["id"], eval(x["house"]), x["wand"], x["points"], x["wealth"],
+                 x["potions"], x["spells"], x["items"], x["progress"], x["enemiesDefeated"])
+
+        if u.house == "Gryffindor":
+            Gryffindor.students.append(u)
+        elif u.house == "Ravenclaw":
+            Ravenclaw.students.append(u)
+        elif u.house == "Hufflepuff":
+            Hufflepuff.students.append(u)
+        elif u.house == "Slytherin":
+            Slytherin.students.append(u)
+
+        if (u.house):
+            u.house.students.append(u)
+
+
+def readAmajeDataHouse(data):
+    '''
+    Reads the data from the json file.
+    And then makes the house objects.
+    '''
+
+    if (data == {}):
+        return
+
+    for x in data['house']:
+        eval(f"{x['name']}").points = x['points']
 
 
 class dataHandler:
