@@ -255,3 +255,97 @@ class games:
                 if response.content == "yes":
                     await response.channel.send("Farewell for now, come back again soon!")
                     return False
+
+    async def emojis(self, client, currUser, message):
+
+        d = {":zap: :owl: :broom: ": ["Harry", "Harry Potter"],
+             ":books: :cat2: :100: ": ["Hermione", "Hermione Granger"],
+             ":ear: :man_red_haired: :fireworks: ": ["George", "George Weasley"],
+             ":spider_web: :crown: :chess_pawn:": ["Ron", "Ron Weasley"],
+             ":skull: :man_bald: :snake: ": ["Tom Riddle", "Voldemort"],
+             ":man_mage: :european_castle: :lemon: ": ["Dumbledore", "Albus Dumbledore"],
+             ":closed_umbrella: :hut: :dog: ": ["Hagrid", "Rubeus Hagrid"],
+             ":ribbon: :cat: :writing_hand: ": ["Umbridge", "Dolores Umbridge"],
+             ":flag_fr: :blond_haired_woman: :sparkles: ": ["Fleur", "Fleur Delacour"],
+             " :moneybag: :green_apple: :snake: ": ["Draco", "Draco Malfoy"], ":socks: :dagger: :chains: ": ["Dobby"],
+             ":wolf: :full_moon: :chocolate_bar: ": ["Lupin", "Remus Lupin", "Remus", "Moony"],
+             ":rat: :knife: :rightwards_hand: ": ["Peter", "Peter Pettigrew", "Pettigrew", "Wormtail"],
+             ":eagle: :blond_haired_woman: :crescent_moon: ": [
+                 'Luna', 'Luna Lovegood'], ":ghost: :knife: :head_bandage: ": ['Sir Nicholas', 'Nearly Headless Nick'],
+             ":crystal_ball: :coffee: :eyes: ": ["Trelawney", "Sybill Trelawney"],
+             ":ghost: :toilet: :weary: ": ["Myrtle", "Moaning Myrtle"],
+             ":badger: :trophy: :skull: ": ["Cedric", "Cedric Diggory"],
+             ":woman_wearing_turban: :garlic: :skull: ": ["Quirrell", "Quirinus Quirrell"],
+             ":woman_red_haired: :yarn: :fork_knife_plate: ": ["Molly", "Molly Weaasley"],
+             ":frog: :potted_plant: :lion_face: ": ["Neville", "Neville Longbottom"],
+             ":woman_red_haired: :broom: :lion_face: ": ["Ginny", "Ginny Weasley"],
+             ":black_circle: :dog: :chains: ": ["Sirius", "Sirius Black"],
+             ":woman_mage: :cat: :sparkles: ": ["Mcgonagall", "Minerva Mcgonagall"],
+             ":deer: :eyeglasses: :lion_face: ": ["James", "James Potter"],
+             ":duck: :oncoming_automobile: :telephone: ": ["Arthur", "Arthur Weasley"],
+             ":flag_bg:  :stadium: :broom: ": ["Krum", "Victor Krum"]}
+
+        await message.channel.send(
+            "You and your friends snuck out of bed for a midnight stroll around the castle, but came face to face with Peeves!")
+        await message.channel.send(
+            "He's now threatening to sell you out to Filch unless you agree to play a game of charades with him. Cuz poltergeists get bored too, you know!")
+        await message.channel.send(
+            "You have no choice but to agree. Anything to escape the wrath of Filch, am I right? ")
+        await message.channel.send(
+            "Here are the rules: Peeves acts out a character and you've to guess who he's mimicking. (Basically, the good old game of guessing the character from the emojis). You'll have 7 questions in total. Type 'play' to start playing.")
+        while True:
+            response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+            if response.content == "exit" and response.channel.name == "potterbot-mini-games":
+                await response.channel.send("Farewell for now, come back again soon!")
+                return False
+            elif response.channel.name == "potterbot-mini-games":
+                if response.content == 'play':
+                    break
+                else:
+                    await response.channel.send("I'm sorry, I didn't catch that. Please try again.")
+            else:
+                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/no)")
+                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                if response.content == "yes":
+                    await response.channel.send("Farewell for now, come back again soon!")
+                    return False
+
+        s = 0
+        L = []
+        for i in range(7):
+            emoji, ans = random.choice(list(d.items()))
+            while True:
+                if emoji not in L:
+                    L.append(emoji)
+                    break
+                else:
+                    emoji, ans = random.choice(list(d.items()))
+
+            await message.channel.send(emoji)
+            response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+            if response.content == "exit":
+                await response.channel.send("Farewell for now, come back again soon!")
+                return False
+            elif response.channel.name == "potterbot-mini-games":
+                if response.content.title() in ans:
+                    await response.channel.send("You're correct!")
+                    s += 1
+
+                else:
+                    if len(ans) == 1:
+                        await response.channel.send(f"That's not right. The correct answer is {ans[0]}")
+                    else:
+                        await response.channel.send(f"That's not right. The correct answer is {ans[1]}")
+            else:
+                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/no)")
+                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                if response.content == "yes":
+                    await response.channel.send("Farewell for now, come back again soon!")
+                    return False
+
+        await response.channel.send(f"You were right {s}/7 times!")
+        await response.channel.send(
+            "Peeves is now headed to annoy Mrs Norris and you're free to roam the corridors again! Now that you think about it, hanging out with Peeves was actually fun and turned out to be the highliight of your night!")
+        await message.channel.send(f"You've earned {s} points for your house!")
+        currUser.house.points += s
+        return s
