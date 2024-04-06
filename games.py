@@ -378,7 +378,7 @@ class games:
                     continue
             await message.channel.send(ques)
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
-            if response.content == "exit" and response.channel.name == "potterbot-newts":
+            if response.content == "exit" and response.channel.name == "newts":
                 await response.channel.send("Farewell for now, come back again soon!")
                 return False
             elif response.channel.name == "potterbot-newts":
@@ -450,7 +450,7 @@ class games:
                 await message.channel.send(f"You've earned {user_answers} points for your house!")
                 currUser.house.add_points(len(user_answers))
                 return True
-            elif response.channel.name == "potterbot-mini-games":
+            elif response.channel.name == "mini-games":
                 if response.content == "exit":
                     await response.channel.send("Farewell for now, come back again soon!")
                     return False
