@@ -170,6 +170,11 @@ class bot(discord.Client):
                 if message.content == "~houseStats":
                     await bot.send(message, eval(currUser.house).get_info())
 
+                if message.content == "~leaderboard":
+                    houses = [Slytherin, Gryffindor, Ravenclaw, Hufflepuff]
+                    houses.sort(key=lambda x: x.points, reverse=True)
+                    await bot.send(self,message,f"1){houses[0].get_points_info()}\n2){houses[1].get_points_info()}\n3){houses[2].get_points_info()}\n4){houses[3].get_points_info()}")
+
             if message.channel.name == "mini-games":
                 if message.content == "~crossword":
                     await self.games.crossword(bot, currUser, message)
