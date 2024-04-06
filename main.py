@@ -118,3 +118,22 @@ class games:
         currUser = await self.new_user(bot, message)
 
         return currUser
+
+    async def new_user(self, bot, message):
+        '''
+        Function to initiate a new user.
+        '''
+        await bot.send(message, "Welcome, new user! Please choose your username.")
+        response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
+        if response.content == "exit":
+            await bot.send(response, "Goodbye.")
+            return None
+
+        if response.content in user.names:
+            await bot.send(response, "I'm sorry, that username is already taken. Please try again.")
+            return await bot.new_user(message)
+
+        u = user(response.content, response.author.id)
+        await bot.send(response, "Welcome to Hogwarts, " + response.content + "!")
+
+        return u
