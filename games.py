@@ -449,8 +449,9 @@ class games:
                     await response.channel.send("Farewell for now, come back again soon!")
                     return False
                 continue
-        await message.channel.send(f"You've earned {len(done) // 2} points for your house!")
+        await message.channel.send(f"You've earned {len(done)//2} galleons and {len(done) // 2} points for your house!")
         currUser.house.points += len(done) // 2
+        currUser.wealth += len(done) // 2
         return True
 
     async def Trivia(self, client, currUser, message):
@@ -509,8 +510,9 @@ class games:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
             if user_answers == cross[chosen_one]:
                 await message.channel.send("Congrats! You've successfully solved the crossword.")
-                await message.channel.send(f"You've earned {user_answers} points for your house!")
+                await message.channel.send(f"You've earned {len(user_answers)} galleons and {user_answers} points for your house!")
                 currUser.house.add_points(len(user_answers))
+                currUser.wealth+=len(user_answers)*2
                 return True
 
             elif response.channel.name == "mini-games":
@@ -576,7 +578,7 @@ class games:
                 currUser.health = currUser.max_health
                 currUser.points += 10
                 currUser.level = currUser.points // 30
-                exec(f"{currUser.house}.points+=5")
+                currUser.house.points+=5
                 return True
             response1 = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
             if response1.content == "exit":
@@ -606,8 +608,12 @@ class games:
                         await message.channel.send(f"Oh no, you have been defeated! Better luck next time.")
                         return False
                     elif opponent.health <= 0:
-                        await message.channel.send(
-                            f"Merlin's beard! {opponent.name} has been defeated! You have won the duel!")
+                        await message.channel.send(f"Merlin's beard! {opponent.name} has been defeated! You have won the duel!")
+                        currUser.enemiesDefeated += 1
+                        currUser.health = currUser.max_health
+                        currUser.points += 10
+                        currUser.level = currUser.points // 30
+                        currUser.house.points+=5
                         return True
                 if opponent.name not in ["Basilisk", "Werewolf", "Acromantula"]:
                     oppSpell = random.choice(opponent.spells)
@@ -768,6 +774,7 @@ class games:
 
         await response.channel.send(f"You were right {s}/7 times!")
         await response.channel.send("Peeves is now headed to annoy Mrs Norris and you're free to roam the corridors again! Now that you think about it, hanging out with Peeves was actually fun and turned out to be the highliight of your night!")
-        await message.channel.send(f"You've earned {s} points for your house!")
+        await message.channel.send(f"You've earned {s*2} galleons and {s} points for your house!")
+        currUser.wealth+=s*2
         currUser.house.points += s
         return s
