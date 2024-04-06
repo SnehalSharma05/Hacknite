@@ -153,18 +153,25 @@ class bot(discord.Client):
 
             if message.channel.name == "general":
                 if message.content == "~myStats":
-                    await bot.send(message, currUser.get_full_info())
+                    await self.send(message, currUser.get_full_info())
 
                 if message.content == "~houseStats":
-                    await bot.send(message, eval(currUser.house).get_info())
+                    await self.send(message, eval(currUser.house).get_info())
 
             if message.channel.name == "mini-games":
+                if message.content == "~emoGuess":
+                    await self.games.emojis(self, currUser, message)
+
+                if message.content == "~wordChain":
+                    await self.games.WordChain(self, currUser, message)
+
                 if message.content == "~crossword":
                     await self.games.crossword(self, currUser, message)
 
             if message.channel.name == "newts":
                 if message.content == "~trivia":
                     await self.games.Trivia(self, currUser, message)
+
             currUser.update_level()
             self.save(currUser)
             self.notFree.remove(message.author.id)
