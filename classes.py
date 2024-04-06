@@ -66,7 +66,6 @@ class user():
         user.users.append(self)
         user.names.append(self.name)
         user.ids[self.id] = self
-        self.revealed = False
 
     def add_points(self, points):
         self.points += points

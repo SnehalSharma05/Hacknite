@@ -32,7 +32,6 @@ def getDumpUser(lst):
     for x in lst:
         l = vars(x)
         l['house'] = str(l['house'])
-        del l['revealed']
         dic.append(l)
 
     return dic

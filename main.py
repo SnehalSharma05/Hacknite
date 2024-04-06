@@ -111,13 +111,13 @@ class bot(discord.Client):
         """
         if isinstance(message.channel, discord.DMChannel):
             pass
-        elif (message.author == self.user) or (message.channel.category.name.casefold() != "potterbot") or (message.author in self.notFree):
+        elif (message.author == self.user) or (message.channel.category.name.casefold() != "potterbot") or (message.author.id in self.notFree):
             return
 
         print(message.content)
 
         currUser = self.getUser(message)
-        self.notFree.append(message.author)
+        self.notFree.append(message.author.id)
         if message.content.casefold() == "~revelio" and message.channel.name == "general":
             currUser = await self.games.introduction(self, message)
             # if the user is playing for the first time
@@ -168,7 +168,7 @@ class bot(discord.Client):
 
             currUser.update_level()
             self.save(currUser)
-            self.notFree.remove(message.author)
+            self.notFree.remove(message.author.id)
 
 
 potter = bot(dataHandler)
