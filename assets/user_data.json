@@ -3,7 +3,7 @@
         {
             "name": "boom29",
             "id": 756494480047079446,
-            "house": "Gryffindor",
+            "house": "Ravenclaw",
             "health": 150,
             "max_health": 150,
             "enemiesDefeated": 0,
@@ -18,7 +18,7 @@
             "wealth": 0,
             "potions": [],
             "items": [],
-            "progress": 0
+            "progress": 1
         }
     ]
 }
