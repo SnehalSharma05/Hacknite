@@ -1,139 +1,84 @@
-import asyncio
 import discord
+from utilities import *
 
 
+class bot(discord.Client):
+    def __init__(self, dataHandle: dataHandler, intents=discord.Intents.all(), **options):
+        super().__init__(intents=intents, ** options)
+        self.userDataHandler = dataHandle('user_data.json')
+        self.houseDataHandler = dataHandle('house_data.json')
+        self.games = games()
+        self.categ = None
+        self.userDataHandler.read(readAmajeDataUser)
+        self.houseDataHandler.read(readAmajeDataHouse)
+        self.notFree = []
 
-class house():
-    def __init__(self, name):
-        self.name = name
-        self.points = 0
-        self.students = []
-
-    def __str__(self):
-        return self.name
-
-    def add_points(self, points):
-        self.points += points
-
-    def add_student(self, student):
-        self.students.append(student)
-
-    def get_points(self):
-        return self.points
-
-    def get_students(self):
-        return self.students
-
-    def get_name(self):
-        return self.name
-
-    def get_info(self):
-        return self.name + f" has {self.points} points. The following students are in {self.name}:\n" + "\n".join([x.name for x in self.students])
-
-    def get_student_info(self):
-        return self.name + " has the following students:\n" + "\n".join(self.students)
-
-    def get_points_info(self):
-        return self.name + f" has {self.points} points."
-
-
-Hufflepuff = house("Hufflepuff")
-Ravenclaw = house("Ravenclaw")
-Gryffindor = house("Gryffindor")
-Slytherin = house("Slytherin")
-
-class user():
-    users = []
-    names = []
-    ids = {}
-
-    def __init__(self, name, id, house=None, wand=None, points=0, wealth=0, potions=[], spells=['stupefy', 'expelliarmus', 'protego'], items=[], progress=0, enemiesDefeated=0, health=150):
-        self.name = name
-        self.id = id
-        self.house = house
-        self.health = health
-        self.max_health = health
-        self.enemiesDefeated = enemiesDefeated
-        self.wand = wand
-        self.spells = spells
-        self.points = points
-        self.level = self.points//30
-        self.wealth = wealth
-        self.potions = potions
-        self.items = items
-        self.progress = progress
-        user.users.append(self)
-        user.names.append(self.name)
-        user.ids[self.id] = self
-        self.revealed = False
-
-    def add_points(self, points):
-        self.points += points
-
-    def add_spell(self, spell):
-        self.spells.append(spell)
-
-    def add_potion(self, potion):
-        self.potions.append(potion)
-
-    def add_item(self, item):
-        self.items.append(item)
-
-    def set_house(self, house):
-        self.house = house
-
-    def get_info(self):
-        return self.name + " is in " + self.house + f" and has {self.points} points."
-
-    def get_full_info(self):
-        return self.name + " is in " + self.house + f" and has {self.points} points. You have the following spells: " + ",".join(self.spells) + "\nYou have the following wand: " + self.wand + "\nYour level is: " + str(self.level) + "\nYour max health is: " + str(self.max_health) + "\nNumber of enemies defeated: " + str(self.enemiesDefeated)
-
-    def get_spell_info(self):
-        return self.name + " has the following spells:\n" + "\n".join(self.spells)
-
-    def get_potion_info(self):
-        return self.name + " has the following potions:\n" + "\n".join(self.potions)
-
-    def get_item_info(self):
-        return self.name + " has the following items:\n" + "\n".join(self.items)
-
-    def get_house_info(self):
-        return self.name + " is in " + self.house + "."
-
-    def get_points_info(self):
-        return self.name + " has " + self.points + " points."
-
-class games:
-    async def introduction(self, bot, message):
+    def check(self, m1, m2):
         '''
-        This function is used whenever the user wants to login and use the bot.
+        Checks if author of message 1 is the same as message 2.
         '''
-        await bot.send(message, "Greetings! Welcome to the whimsical world of PotterBot, where the whispers of ancient spells and the flicker of wands weave tales of wonder reminiscent of Dumbledore's office. Here, amid the hallowed halls of Hogwarts, where portraits come to life and enchanted creatures roam, embark on a journey beyond the pages of the Marauder's Map, where mischief and magic await your command!")
-        await bot.send(message, "If you wish to leave at any point in the game, just type 'exit'.")
+        return m1.author == m2.author
 
-        if message.author.id in user.ids:
-            await bot.send(message, "Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!")
+    def save(self, currUser: user):
+        '''
+        This saves the user.
+        '''
+        user.users[user.names.index(currUser.name)] = currUser
+        self.userDataHandler.dump(
+            data=user.users, func=getDumpUser, key='users')
+        self.houseDataHandler.dump(
+            data=[Slytherin, Gryffindor, Ravenclaw, Hufflepuff], func=getDumpHouse, key='house')
+
+    def getUser(self, message: discord.Message):
+        '''
+        Gets the user object of the message author.
+        '''
+        try:
             return user.ids[message.author.id]
-
-        currUser = await self.new_user(bot, message)
-
-        return currUser
-
-    async def new_user(self, bot, message):
-        '''
-        Function to initiate a new user.
-        '''
-        await bot.send(message, "Welcome, new user! Please choose your username.")
-        response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
-        if response.content == "exit":
-            await bot.send(response, "Goodbye.")
+        except:
+            print(f"{user.users}")
             return None
 
-        if response.content in user.names:
-            await bot.send(response, "I'm sorry, that username is already taken. Please try again.")
-            return await bot.new_user(message)
+    async def send(self, message: discord.Message, content: str):
+        '''
+        Sends a message to the channel of the message.
+        '''
+        await message.channel.send(content)
 
-        u = user(response.content, response.author.id)
-        await bot.send(response, "Welcome to Hogwarts, " + response.content + "!")
+    async def send_embed(self, message: discord.Message):
+        pass
 
-        return u
+    async def recieve(self, message: discord.Message, check=None, timeout=None):
+        '''
+        Recieves a message from the channel of the message.
+        '''
+        try:
+            return await self.wait_for('message', check=check, timeout=timeout)
+        except:
+            return None
+
+    async def on_ready(self):
+        """
+        Does the following whenever bot starts up.
+        """
+        print(f'Logged in as {self.user}')
+        print(self.user.id)
+
+        self.guild = self.get_guild(1217366468908290118)
+
+        y = False
+        for x in self.guild.categories:
+            if x.name == 'PotterBot':
+                y = True
+
+        if not y:
+            await self.on_guild_join(self.guild)
+
+    async def on_guild_join(self, guild: discord.Guild):
+        categ = await guild.create_category('PotterBot')
+        await guild.create_voice_channel("chill", category=categ)
+        await guild.create_text_channel('potterbot-general', category=categ)
+        await guild.create_text_channel('potterbot-newts', category=categ)
+        await guild.create_text_channel('potterbot-dueling-club', category=categ)
+        await guild.create_text_channel('potterbot-forbidden-forest', category=categ)
+        await guild.create_text_channel('potterbot-mini-games', category=categ)
