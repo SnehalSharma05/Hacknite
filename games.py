@@ -404,10 +404,10 @@ class games:
         await message.channel.send("You get to start! Please type your word.")
         while True:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
-            if response.content == "exit" and response.channel.name == "potterbot-mini-games":
+            if response.content == "exit" and response.channel.name == "mini-games":
                 await response.channel.send("Farewell for now, come back again soon!")
                 return False
-            elif response.channel.name == "potterbot-mini-games":
+            elif response.channel.name == "mini-games":
                 if response.content.title() not in words:
                     await response.channel.send("That word is not related to Harry Potter. You lose.")
                     key = await self.key(client, currUser, message)
@@ -461,7 +461,7 @@ class games:
             if response.content == "exit" and response.channel.name == "newts":
                 await response.channel.send("Farewell for now, come back again soon!")
                 return False
-            elif response.channel.name == "potterbot-newts":
+            elif response.channel.name == "newts":
                 if response.content.title() in ans:
                     await response.channel.send("You're correct!")
                     s += 1
@@ -715,10 +715,10 @@ class games:
         await message.channel.send("Here are the rules: Peeves acts out a character and you've to guess who he's mimicking. (Basically, the good old game of guessing the character from the emojis). You'll have 7 questions in total. Type 'play' to start playing.")
         while True:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
-            if response.content == "exit" and response.channel.name == "potterbot-mini-games":
+            if response.content == "exit" and response.channel.name == "mini-games":
                 await response.channel.send("Farewell for now, come back again soon!")
                 return False
-            elif response.channel.name == "potterbot-mini-games":
+            elif response.channel.name == "mini-games":
                 if response.content == 'play':
                     break
                 else:
@@ -746,7 +746,7 @@ class games:
             if response.content == "exit":
                 await response.channel.send("Farewell for now, come back again soon!")
                 return False
-            elif response.channel.name == "potterbot-mini-games":
+            elif response.channel.name == "mini-games":
                 if response.content.title() in ans:
                     await response.channel.send("You're correct!")
                     s += 1
