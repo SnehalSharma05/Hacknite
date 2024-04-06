@@ -172,8 +172,11 @@ class games:
         Please type 'wand' to proceed to Ollivanders.***
         """
 
+        author="Garrick Ollivanders"
+        author_icon="https://i.pinimg.com/564x/4c/00/80/4c00800646234a222219ebaa17c41c17.jpg"
+
         em = embedMessage(colour=discord.Colour.blue(), description=msgs,
-                          image="https://i.pinimg.com/564x/96/cb/72/96cb72d67bef839ccba6d5af4a9c328d.jpg")
+                          image="https://i.pinimg.com/564x/96/cb/72/96cb72d67bef839ccba6d5af4a9c328d.jpg", author=author, author_icon=author_icon)
         await bot.create_embed(em, message)
 
         await bot.send(message, "Now that you have been sorted into your house, it is time to equip yourself with the tools of the trade. You will need a wand, a spellbook, and a potion to begin your journey.")
