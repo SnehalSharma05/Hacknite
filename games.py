@@ -12,10 +12,10 @@ class games:
         '''
         This function is used whenever the user wants to login and use the bot.
         '''
-        msg = "# Welcome to Hogwarts \n ### Greetings! Welcome to the whimsical world of PotterBot, where the whispers of ancient spells and the flicker of wands weave tales of wonder reminiscent of Dumbledore's office. Here, amid the hallowed halls of Hogwarts, where portraits come to life and enchanted creatures roam, embark on a journey beyond the pages of the Marauder's Map, where mischief and magic await your command!"
+        msg = "***Greetings! Welcome to the whimsical world of PotterBot, where the whispers of ancient spells and the flicker of wands weave tales of wonder reminiscent of Dumbledore's office. Here, amid the hallowed halls of Hogwarts, where portraits come to life and enchanted creatures roam, embark on a journey beyond the pages of the Marauder's Map, where mischief and magic await your command!***"
         em = embedMessage(colour=discord.Colour.blue(),
                           image="https://i.pinimg.com/originals/25/ce/3f/25ce3f11dda654caab19841c389b2878.gif",
-                          description=msg)
+                          description=msg, title = "Welcome to Hogwarts")
         await bot.create_embed(em, message)
 
         msg = "*** If you wish to leave at any point in the game, just type 'exit'.***"
@@ -36,7 +36,7 @@ class games:
         '''
         Function to initiate a new user.
         '''
-        msg = "Welcome, new user! Please choose your username."
+        msg = "***Welcome, new user! Please choose your username.***"
         em = embedMessage(colour=discord.Colour.blue(),image="https://i.pinimg.com/564x/84/55/7c/84557c07e99c33dc9c65a0d105aeb195.jpg",description=msg)
         await bot.create_embed(em,message)
         while True:
