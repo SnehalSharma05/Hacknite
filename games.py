@@ -6,7 +6,6 @@ from assets.enemies import *
 import random
 from classes import *
 
-
 class games:
     async def introduction(self, bot, message):
         '''
@@ -30,20 +29,26 @@ class games:
         Function to initiate a new user.
         '''
         await bot.send(message, "Welcome, new user! Please choose your username.")
-        response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
-        if response.content == "exit":
-            await bot.send(response, "Goodbye.")
-            return None
+        while True:
+            response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
+            if response.content == "exit" and response.channel.name == "general":
+                await bot.send(response, "Farewell for now, come back again soon!")
+                return None
+            elif response.channel.name == "general":
+                if response.content in user.names:
+                    await bot.send(response, "I'm sorry, that username is already taken. Please try again.")
+                    return await bot.new_user(message)
 
-        if response.content in user.names:
-            await bot.send(response, "I'm sorry, that username is already taken. Please try again.")
-            return await bot.new_user(message)
+                u = user(response.content, response.author.id)
+                await bot.send(response, "Welcome to Hogwarts, " + response.content + "!")
 
-        u = user(response.content, response.author.id)
-        await bot.send(response, "Welcome to Hogwarts, " + response.content + "!")
-
-        return u
-
+                return u
+            else:
+                await bot.send(response, "A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)")
+                response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
+                if response.content == "yes":
+                    await bot.send(response, "Farewell for now, come back again soon!")
+                    return None
     async def plat9_3_4(self, bot, currUser, message):
         '''
         The first level of our game.
@@ -99,37 +104,42 @@ class games:
 
         while True:
             response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
-            if response.content == "exit":
+            if response.content == "exit" and response.channel.name == "general":
                 await bot.send(response, "Farewell for now, come back again soon!")
                 return False
+            elif response.channel.name == "general":
+                if response.content == "a":
+                    currUser.set_house(Hufflepuff)
+                    Hufflepuff.add_student(currUser)
+                    await bot.send(response, "Ah, Hufflepuff it is! The house of the loyal and the kind, where friendship and hard work are valued above all. Welcome to the house of the badger!")
+                    return True
 
-            elif response.content == "a":
-                await currUser.set_house(bot, Hufflepuff)
-                Hufflepuff.add_student(currUser)
-                await bot.send(response, "Ah, Hufflepuff it is! The house of the loyal and the kind, where friendship and hard work are valued above all. Welcome to the house of the badger!")
-                return True
+                elif response.content == "b":
+                    currUser.set_house(Ravenclaw)
+                    Ravenclaw.add_student(currUser)
+                    await bot.send(response, "Ah, Ravenclaw it is! The house of the wise and the clever, where wit and intelligence are revered. Welcome to the house of the eagle!")
+                    return True
 
-            elif response.content == "b":
-                await currUser.set_house(bot, Ravenclaw)
-                Ravenclaw.add_student(currUser)
-                await bot.send(response, "Ah, Ravenclaw it is! The house of the wise and the clever, where wit and intelligence are revered. Welcome to the house of the eagle!")
-                return True
+                elif response.content == "c":
+                    currUser.set_house(Gryffindor)
+                    Gryffindor.add_student(currUser)
+                    await bot.send(response, "Ah, Gryffindor it is! The house of the brave and the bold, where courage and loyalty reign supreme. Welcome to the house of the lion!")
+                    return True
 
-            elif response.content == "c":
-                await currUser.set_house(bot, Gryffindor)
-                Gryffindor.add_student(currUser)
-                await bot.send(response, "Ah, Gryffindor it is! The house of the brave and the bold, where courage and loyalty reign supreme. Welcome to the house of the lion!")
-                return True
+                elif response.content == "d":
+                    currUser.set_house(Slytherin)
+                    Slytherin.add_student(currUser)
+                    await bot.send(response, "Ah, Slytherin it is! The house of the cunning and the ambitious, where resourcefulness and determination are prized. Welcome to the house of the serpent!")
+                    return True
 
-            elif response.content == "d":
-                await currUser.set_house(bot, Slytherin)
-                Slytherin.add_student(currUser)
-                await bot.send(response, "Ah, Slytherin it is! The house of the cunning and the ambitious, where resourcefulness and determination are prized. Welcome to the house of the serpent!")
-                return True
-
+                else:
+                    await bot.send(response, "I'm sorry, I didn't catch that. Please try again. Type exit to leave the game.")
             else:
-                await bot.send(response, "I'm sorry, I didn't catch that. Please try again. Type exit to leave the game.")
-
+                await bot.send(response, "A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)")
+                response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
+                if response.content == "yes":
+                    await bot.send(response, "Farewell for now, come back again soon!")
+                    return False
     async def Ollivanders(self, bot, currUser, message):
         '''
         Assigns a wand to the player.
@@ -142,13 +152,20 @@ class games:
 
         while True:
             response = await bot.recieve(message, check=lambda message1: bot.check(message, message1))
-            if response.content == "exit":
+            if response.content == "exit" and response.channel.name == "general":
                 await bot.send(response, "Farewell for now, come back again soon!")
                 return False
-            elif response.content == "wand":
-                break
+            elif response.channel.name == "general":
+                if response.content == "wand":
+                    break
+                else:
+                    await bot.send(response, "I'm sorry, I didn't catch that. Please try again.")
             else:
-                await bot.send(response, "I'm sorry, I didn't catch that. Please try again.")
+                await bot.send(response, "A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)")
+                response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
+                if response.content == "yes":
+                    await bot.send(response, "Farewell for now, come back again soon!")
+                    return False
 
         await bot.send(message, "Welcome to Ollivanders, the finest wand shop in all of Diagon Alley! Let's see which wand chooses you.")
         await bot.send(message, "Please type 'ready' when you are ready to begin or type 'exit' to leave.")
@@ -182,8 +199,7 @@ class games:
 
                 if response.content == random.choice(selected):
                     await bot.send(message, "Congratulations your choice matched! The wand has chosen you!")
-                    currUser.wand = f"{wood_choice}, {
-                        core_choice} core, {length_choice} inches"
+                    currUser.wand = f"{wood_choice}, {core_choice} core, {length_choice} inches"
                     await bot.send(message, "You have successfully acquired your wand!")
                     return True
 
@@ -191,7 +207,6 @@ class games:
                     await bot.send(message, "Please choose a creature from the list.")
                 else:
                     await bot.send(message, "Not quite, let's try another one")
-
     async def duel(self, bot, currUser, message):
         accepted = False
         opponent_id = message.content.split(" ")[1][2:-1]
@@ -240,48 +255,55 @@ class games:
                 opponent.level = opponent.points//30
                 opponent.house.points -= 5
                 break
-            fighters = {opponent.id: {"me": opponent, "opponent": currUser}, currUser.id: {
-                "me": currUser, "opponent": opponent}}
+            fighters = {opponent.id: {"me": opponent,"opponent": currUser}, currUser.id: {"me": currUser,"opponent": opponent}}
             while True:
                 response1 = await bot.wait_for('message')
                 if response1.author.id == currUser.id or response1.author.id == opponent.id:
                     break
             print(response1.author.id)
-            if response1.content == "exit":
+            if response1.content == "exit" and response1.channel.name == "dueling-club":
                 await response1.channel.send("Farewell for now, come back again soon!")
                 break
-            if response1.content in fighters[response1.author.id]["me"].spells:
-                block = False
-                spell = eval(f"{response1.content}")
-                if spell.heal == 0:
-                    try:
-                        response2 = await bot.wait_for('message', timeout=3.0)
-                    except asyncio.TimeoutError:
-                        response2 = False
-                    if response2:
-                        if response2.author.id == fighters[response1.author.id]["opponent"].id:
-                            if response2.content in fighters[response1.author.id]["opponent"].spells and response2.content == "protego":
-                                await response1.channel.send(fighters[response1.author.id]["opponent"].name + " has cast Protego and blocked the spell!")
-                                block = True
-                if not block:
-                    await response1.channel.send(fighters[response1.author.id]["me"].name + " has cast " + response1.content + " successfully!")
-                    damage_amount = spell.damage
-                    heal_amount = spell.heal
-                    if damage_amount > 0:
-                        fighters[response1.author.id]["opponent"].health -= damage_amount
-                        await response1.channel.send(fighters[response1.author.id]["opponent"].name + " has taken " + str(damage_amount) + " damage!")
-                    if heal_amount > 0:
-                        await response1.channel.send(fighters[response1.author.id]["me"].name + " has healed for " + str(heal_amount) + " health points!")
-                        if fighters[response1.author.id]["me"].health + heal_amount > fighters[response1.author.id]["me"].max_health:
-                            fighters[response1.author.id]["me"].health = fighters[response1.author.id]["me"].max_health
-                        else:
-                            fighters[response1.author.id]["me"].health += heal_amount
+            elif response1.channel.name == "dueling-club":
+                if response1.content in fighters[response1.author.id]["me"].spells:
+                    block = False
+                    spell = eval(f"{response1.content}")
+                    if spell.heal == 0:
+                        try:
+                            response2 = await bot.wait_for('message', timeout=3.0)
+                        except asyncio.TimeoutError:
+                            response2 = False
+                        if response2:
+                            if response2.author.id == fighters[response1.author.id]["opponent"].id:
+                                if response2.content in fighters[response1.author.id]["opponent"].spells and response2.content == "protego":
+                                    await response1.channel.send(fighters[response1.author.id]["opponent"].name + " has cast Protego and blocked the spell!")
+                                    block = True
+                    if not block:
+                        await response1.channel.send(fighters[response1.author.id]["me"].name + " has cast " + response1.content + " successfully!")
+                        damage_amount = spell.damage
+                        heal_amount = spell.heal
+                        if damage_amount > 0:
+                            fighters[response1.author.id]["opponent"].health -= damage_amount
+                            await response1.channel.send(fighters[response1.author.id]["opponent"].name + " has taken " + str(damage_amount) + " damage!")
+                        if heal_amount > 0:
+                            await response1.channel.send(fighters[response1.author.id]["me"].name + " has healed for " + str(heal_amount) + " health points!")
+                            if fighters[response1.author.id]["me"].health + heal_amount > fighters[response1.author.id]["me"].max_health:
+                                fighters[response1.author.id]["me"].health = fighters[response1.author.id]["me"].max_health
+                            else:
+                                fighters[response1.author.id]["me"].health += heal_amount
+                else:
+                    await response1.channel.send("You do not have that spell.")
+            else:
+                await response1.channel.send("A game is already in progress in the channel 'dueling-club'. Do you want to exit the duel? (yes/anything else)")
+                response1 = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
+                if response1.content == "yes":
+                    await response1.channel.send("Farewell for now, come back again soon!")
+                    break
         currUser.health = currUser.max_health
         opponent.health = opponent.max_health
         opponent.update_level()
         bot.notFreeUser.remove(int(opponent.id))
         bot.save(opponent)
-
     async def staircase(self, client, currUser, message):
         total_stairs = 20
         moves_left = total_stairs//2
@@ -294,20 +316,27 @@ class games:
 
         while True:
             response = await client.wait_for('message', check=lambda message1: client.check(message, message1))
-            if response.content == "exit":
-                await response.channel.send("Farewell for now, come back again soon!")
-                return False
+            if response.channel.name == "general":
+                if response.content == "exit":
+                    await response.channel.send("Farewell for now, come back again soon!")
+                    return False
 
-            elif response.content == "play":
-                break
+                elif response.content == "play":
+                    break
 
-            elif response.content == "7":
-                await message.channel.send("The random number generator generates a number between 1 to 12. You have to guess if the number is >=7 or <7 (Enter a number >=7 or <7 to guess respectively). If your guess is correct, you move up your chosen number of steps; but if your guess is wrong, you fall down the chosen number of steps.")
-                await message.channel.send("Now that the rules are , type 'play' to proceed to the game.")
-                break
+                elif response.content == "7":
+                    await message.channel.send("The random number generator generates a number between 1 to 12. You have to guess if the number is >=7 or <7 (Enter a number >=7 or <7 to guess respectively). If your guess is correct, you move up your chosen number of steps; but if your guess is wrong, you fall down the chosen number of steps.")
+                    await message.channel.send("Now that the rules are , type 'play' to proceed to the game.")
+                    break
 
+                else:
+                    await response.channel.send("I'm sorry, I didn't catch that. Please try again.")
             else:
-                await response.channel.send("I'm sorry, I didn't catch that. Please try again.")
+                await response.channel.send("A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)")
+                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                if response.content == "yes":
+                    await response.channel.send("Farewell for now, come back again soon!")
+                    return False
 
         trick = False
 
@@ -377,30 +406,35 @@ class games:
         await message.channel.send("Would you like to buy a key for 50 Galleons to continue the game?")
         while True:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
-            if response.content == "exit":
-                await response.channel.send("Farewell for now, come back again soon!")
-                return False
+            if response.channel.name == message.channel.name:
+                if response.content == "exit":
+                    await response.channel.send("Farewell for now, come back again soon!")
+                    return False
 
-            elif response.content.lower() == "yes":
-                if currUser.wealth < 50:
-                    await response.channel.send(
-                        f"Uh oh! You only have {currUser.wealth} Galleons in your Gringotts account. You lose.")
+                elif response.content.lower() == "yes":
+                    if currUser.wealth < 50:
+                        await response.channel.send(
+                            f"Uh oh! You only have {currUser.wealth} Galleons in your Gringotts account. You lose.")
+                        key = 0
+                        break
+                    else:
+                        currUser.wealth -= 50
+                        key = 1
+                        await response.channel.send(
+                            "Congrats! You have successfully purchased the key and are now free to continue the game.")
+                        break
+                elif response.content.lower() == "no":
                     key = 0
+                    await response.channel.send("Good game, see you soon!")
                     break
+
                 else:
-                    currUser.wealth -= 50
-                    key = 1
-                    await response.channel.send(
-                        "Congrats! You have successfully purchased the key and are now free to continue the game.")
-                    break
-
-            elif response.content.lower() == "no":
-                key = 0
-                await response.channel.send("Good game, see you soon!")
-                break
-
+                    await response.channel.send("Please answer with only yes or no.")
             else:
-                await response.channel.send("Please answer with only yes or no.")
+                await response.channel.send("A game is already in progress in another channel. Do you want to exit the game? (yes/anything else)")
+                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                if response.content == "yes":
+                    await response.channel.send("Farewell for now, come back again soon!")
 
         return key
 
@@ -443,7 +477,7 @@ class games:
                     done.append(myword)
                     await response.channel.send(myword)
             else:
-                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/no)")
+                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/anything else)")
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
                     await response.channel.send("Farewell for now, come back again soon!")
@@ -476,10 +510,12 @@ class games:
                     s += 1
 
                 else:
-                    await response.channel.send(f"That's not right. The correct answer is {ans[0]}")
-                    break
+                    await response.channel.send(f"That's not right. The correct answer is {ans[0]}.")
+                    key = await self.key(client, currUser, message)
+                    if key == 0:
+                        break
             else:
-                await response.channel.send("A game is already in progress. Do you want to exit trivia? (yes/no)")
+                await response.channel.send("A game is already in progress. Do you want to exit trivia? (yes/anything else)")
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
                     await response.channel.send("Farewell for now, come back again soon!")
@@ -514,7 +550,6 @@ class games:
                 currUser.house.add_points(len(user_answers))
                 currUser.wealth+=len(user_answers)*2
                 return True
-
             elif response.channel.name == "mini-games":
                 if response.content == "exit":
                     await response.channel.send("Farewell for now, come back again soon!")
@@ -533,11 +568,11 @@ class games:
                     if response.content[n + 1:].title() == cross[chosen_one][response.content[0:n]]:
                         await response.channel.send("You're right, of course!")
                         user_answers[response.content[0:n]
-                                     ] = response.content[n + 1:].title()
+                        ] = response.content[n + 1:].title()
                     else:
                         await response.channel.send(f"That's not right. Try again.")
                         user_answers[response.content[0:n]
-                                     ] = response.content[n + 1:].title()
+                        ] = response.content[n + 1:].title()
 
                 except KeyError:
                     if (n == -1):
@@ -550,12 +585,11 @@ class games:
                     else:
                         await response.channel.send(f"There is no {response.content[0:n]}")
             else:
-                await response.channel.send("A game is already in progress. Do you want to exit crossword? (yes/no)")
+                await response.channel.send("A game is already in progress. Do you want to exit crossword? (yes/anything else)")
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
                     await response.channel.send("Farewell for now, come back again soon!")
                     return False
-
     async def botDuel(self, bot, currUser, message):
         opponent = enemies[currUser.enemiesDefeated]
         await message.channel.send(f'''Your opponent is {opponent.name}''')
@@ -668,55 +702,6 @@ class games:
                     else:
                         await response1.channel.send(opponent.name + "'s attack missed.")
 
-    async def WordChain(self, client, currUser, message):
-        words = terms + spells + characters + creatures
-        done = []
-        await message.channel.send("Welcome to WordChain, a game where you put your vocabulary of the Wizarding World to the test!")
-        await message.channel.send("Basically, you've to type a Harry Potter related word that starts with the ending letter of the last word. You and the Potterbot take turns. Be careful to not repeat any word.")
-        await message.channel.send("You get to start! Please type your word.")
-        while True:
-            response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
-            if response.content == "exit" and response.channel.name == "potterbot-mini-games":
-                await response.channel.send("Farewell for now, come back again soon!")
-                return False
-            elif response.channel.name == "potterbot-mini-games":
-                if response.content.title() not in words:
-                    await response.channel.send("That word is not related to Harry Potter. You lose.")
-                    key = await self.key(client, currUser, message)
-                    if key == 0:
-                        break
-
-                elif response.content.title() in done:
-                    await response.channel.send("Oops! That word is already done. You lose.")
-                    key = await self.key(client, currUser, message)
-                    if key == 0:
-                        break
-
-                elif len(done) > 0:
-                    if response.content[0].lower() != myword[-1]:
-                        await response.channel.send(
-                            f"Your word does not start with '{myword[-1].upper()}'. You've lost.")
-                        key = await self.key(client, currUser, message)
-                        if key == 0:
-                            break
-                else:
-                    done.append(response.content.title())
-                    valid = [x for x in words if x[0] ==
-                             response.content[-1].upper() and x not in done]
-                    myword = random.choices(valid)[0]
-                    done.append(myword)
-                    await response.channel.send(myword)
-            else:
-                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/no)")
-                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
-                if response.content == "yes":
-                    await response.channel.send("Farewell for now, come back again soon!")
-                    return False
-                continue
-        await message.channel.send(f"You've earned {len(done) // 2} points for your house!")
-        currUser.house.points += len(done) // 2
-        return True
-
     async def emojis(self, client, currUser, message):
         await message.channel.send("You and your friends snuck out of bed for a midnight stroll around the castle, but came face to face with Peeves!")
         await message.channel.send("He's now threatening to sell you out to Filch unless you agree to play a game of charades with him. Cuz poltergeists get bored too, you know!")
@@ -724,16 +709,16 @@ class games:
         await message.channel.send("Here are the rules: Peeves acts out a character and you've to guess who he's mimicking. (Basically, the good old game of guessing the character from the emojis). You'll have 7 questions in total. Type 'play' to start playing.")
         while True:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
-            if response.content == "exit" and response.channel.name == "potterbot-mini-games":
+            if response.content == "exit" and response.channel.name == "mini-games":
                 await response.channel.send("Farewell for now, come back again soon!")
                 return False
-            elif response.channel.name == "potterbot-mini-games":
+            elif response.channel.name == "mini-games":
                 if response.content == 'play':
                     break
                 else:
                     await response.channel.send("I'm sorry, I didn't catch that. Please try again.")
             else:
-                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/no)")
+                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/anything else)")
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
                     await response.channel.send("Farewell for now, come back again soon!")
@@ -755,7 +740,7 @@ class games:
             if response.content == "exit":
                 await response.channel.send("Farewell for now, come back again soon!")
                 return False
-            elif response.channel.name == "potterbot-mini-games":
+            elif response.channel.name == "mini-games":
                 if response.content.title() in ans:
                     await response.channel.send("You're correct!")
                     s += 1
@@ -766,7 +751,7 @@ class games:
                     else:
                         await response.channel.send(f"That's not right. The correct answer is {ans[1]}")
             else:
-                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/no)")
+                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/anything else)")
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
                     await response.channel.send("Farewell for now, come back again soon!")
