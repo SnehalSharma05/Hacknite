@@ -156,6 +156,12 @@ class bot(discord.Client):
                     await bot.send(self,message,f"1){houses[0].get_points_info()}\n2){houses[1].get_points_info()}\n3){houses[2].get_points_info()}\n4){houses[3].get_points_info()}")
 
             if message.channel.name == "mini-games":
+                if message.content == "~emoGuess":
+                    await self.games.emojis(bot, currUser, message)
+
+                if message.content == "~wordChain":
+                    await self.games.WordChain(bot, currUser, message)
+
                 if message.content == "~crossword":
                     await self.games.crossword(self, currUser, message)
 
