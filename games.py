@@ -194,7 +194,7 @@ class games:
         opponent_id = message.content.split(" ")[1][2:-1]
         await message.channel.send(f'''{currUser.name} has challenged {message.content.split(" ")[1]} to a duel! Do you accept {message.content.split(" ")[1]}? (yes/no)''')
         while (True):
-            response = await bot.wait_for('message')
+            response = await bot.recieve(message)
             if response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "yes":
                 accepted = True
                 opponent = bot.getUser(response)
