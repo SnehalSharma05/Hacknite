@@ -213,7 +213,7 @@ class games:
             response = await bot.recieve(message)
             if response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "yes":
                 accepted = True
-                bot.notFree.append(int(opponent_id))
+                bot.notFreeUser.append(int(opponent_id))
                 opponent = bot.getUser(response)
                 break
             elif response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "no":
@@ -300,7 +300,7 @@ class games:
         currUser.health = currUser.max_health
         opponent.health = opponent.max_health
         opponent.update_level()
-        bot.notFree.remove(int(opponent.id))
+        bot.notFreeUser.remove(int(opponent.id))
         bot.save(opponent)
     async def staircase(self, client, currUser, message):
         total_stairs = 20
@@ -527,32 +527,6 @@ class games:
 
     async def crossword(self, client, currUser, message):
 
-        cross = {
-            'cross1.png': {'1': 'Caldron', '2': 'Glasses', '3': 'Wand', '4': 'Owl', '5': 'Potion', '6': 'Sortinghat',
-                           '7': 'Cloak', '8': 'Goldensnitch', '9': 'Broomstick', '10': 'Scar', '11': 'Cupboard'},
-            'cross2.png': {'1': 'Voldemort', '2': 'Dumbledore', '3': 'Ron', '4': 'Broom', '5': 'Draco',
-                           '6': 'Slytherin', '7': 'Hagrid', '8': 'Hedwig', '9': 'Scabbers', '10': 'Fluffy',
-                           '11': 'Dudley'},
-            'cross3.png': {'1': 'Muggle', '2a': 'Hogwarts', '2d': 'Hogsmeade', '3': 'Sirius', '4': 'Scabbers',
-                           '5': 'Hedwig', '6': 'Honeydukes', '7': 'Alohomora', '8': 'Azkaban', '9': 'Always',
-                           '10a': 'Dumbledore', '10d': 'Dobby', '11': 'Quidditch', '12': 'Fluffy', '13': 'Voldemort'},
-            'cross4.png': {'1': 'Hedwig', '2': 'Weasley', '3': 'Hermione', '4': 'Neville', '5': 'Scabbers',
-                           '6': 'Hagrid', '7': 'Dudley', '8': 'Draco', '9': 'Dumbledore'},
-            'cross5.png': {'1': 'Hogwartsexpress', '2': 'Hufflepuff', '3': 'Ravenclaw', '4': 'Owls', '5': 'Boats',
-                           '6': 'Diagonalley', '7': 'Toads', '8': 'Slytherin', '9': 'Sortinghat', '10': 'Hogwarts'},
-            'cross6.png': {'1': 'Expelliarmus', '2': 'Lumos', '3': 'Dumbledoresarmy', '4': 'Darkmark',
-                           '5': 'Goldensnitch', '6': 'Hufflepuff', '7': 'Hagrid', '8': 'Tomriddle', '9': 'Hogwarts',
-                           '10': 'Basilisk', '11': 'Hermionegranger', '12': 'Hedwig'},
-            'cross7.png': {'1': 'Voldemort', '2': 'Theburrow', '3': 'Crookshanks', '4': 'Dobby', '5': 'Snape',
-                           '6': 'Privetdrive', '7': 'Diagon', '8': 'Scared', '9a': 'Every', '9d': 'Errol'},
-            'cross8.png': {'1': 'Riddikulus', '2': 'Hedwig', '3': 'Hufflepuff', '4': 'Slytherin', '5': 'Ravenclaw',
-                           '6': 'Fluffy', '7': 'Trolls', '8': 'Muggle', '9': 'Opens', '10': 'Tea', '11': 'Die',
-                           '12': 'Hogwarts'},
-            'cross9.png': {'1': 'Deluminator', '2': 'Howler', '3': 'Wand', '4': 'Invisibilitycloak', '5': 'Voldemort',
-                           '6': 'Rubeushagrid', '7': 'AvadaKedavra', '8': 'Gryffindor', '9': 'Hufflepuff',
-                           '10': 'Quidditch'}
-            }
-
         chosen_one = random.choice(list(cross.keys()))
         await message.channel.send("Here's your crossword!\n Please don't put a space between 2 words in your answer.",
                                    file=discord.File(chosen_one))
@@ -727,34 +701,6 @@ class games:
                         await response1.channel.send(opponent.name + "'s attack missed.")
 
     async def emojis(self, client, currUser, message):
-
-        d = {":zap: :owl: :broom: ": ["Harry", "Harry Potter"],
-             ":books: :cat2: :100: ": ["Hermione", "Hermione Granger"],
-             ":ear: :man_red_haired: :fireworks: ": ["George", "George Weasley"],
-             ":spider_web: :crown: :chess_pawn:": ["Ron", "Ron Weasley"],
-             ":skull: :man_bald: :snake: ": ["Tom Riddle", "Voldemort"],
-             ":man_mage: :european_castle: :lemon: ": ["Dumbledore", "Albus Dumbledore"],
-             ":closed_umbrella: :hut: :dog: ": ["Hagrid", "Rubeus Hagrid"],
-             ":ribbon: :cat: :writing_hand: ": ["Umbridge", "Dolores Umbridge"],
-             ":flag_fr: :blond_haired_woman: :sparkles: ": ["Fleur", "Fleur Delacour"],
-             " :moneybag: :green_apple: :snake: ": ["Draco", "Draco Malfoy"], ":socks: :dagger: :chains: ": ["Dobby"],
-             ":wolf: :full_moon: :chocolate_bar: ": ["Lupin", "Remus Lupin", "Remus", "Moony"],
-             ":rat: :knife: :rightwards_hand: ": ["Peter", "Peter Pettigrew", "Pettigrew", "Wormtail"],
-             ":eagle: :blond_haired_woman: :crescent_moon: ": [
-                 'Luna', 'Luna Lovegood'], ":ghost: :knife: :head_bandage: ": ['Sir Nicholas', 'Nearly Headless Nick'],
-             ":crystal_ball: :coffee: :eyes: ": ["Trelawney", "Sybill Trelawney"],
-             ":ghost: :toilet: :weary: ": ["Myrtle", "Moaning Myrtle"],
-             ":badger: :trophy: :skull: ": ["Cedric", "Cedric Diggory"],
-             ":woman_wearing_turban: :garlic: :skull: ": ["Quirrell", "Quirinus Quirrell"],
-             ":woman_red_haired: :yarn: :fork_knife_plate: ": ["Molly", "Molly Weaasley"],
-             ":frog: :potted_plant: :lion_face: ": ["Neville", "Neville Longbottom"],
-             ":woman_red_haired: :broom: :lion_face: ": ["Ginny", "Ginny Weasley"],
-             ":black_circle: :dog: :chains: ": ["Sirius", "Sirius Black"],
-             ":woman_mage: :cat: :sparkles: ": ["Mcgonagall", "Minerva Mcgonagall"],
-             ":deer: :eyeglasses: :lion_face: ": ["James", "James Potter"],
-             ":duck: :oncoming_automobile: :telephone: ": ["Arthur", "Arthur Weasley"],
-             ":flag_bg:  :stadium: :broom: ": ["Krum", "Victor Krum"]}
-
         await message.channel.send("You and your friends snuck out of bed for a midnight stroll around the castle, but came face to face with Peeves!")
         await message.channel.send("He's now threatening to sell you out to Filch unless you agree to play a game of charades with him. Cuz poltergeists get bored too, you know!")
         await message.channel.send("You have no choice but to agree. Anything to escape the wrath of Filch, am I right? ")
