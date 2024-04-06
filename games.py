@@ -7,7 +7,6 @@ import random
 from classes import *
 from EmbedMsg import *
 
-
 class games:
     async def introduction(self, bot, message):
         '''
@@ -45,22 +44,32 @@ class games:
         while True:
             response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
             if response.content == "exit" and response.channel.name == "general":
-                await bot.send(response, "Farewell for now, come back again soon!")
+                msg = "***Farewell for now, come back again soon!***"
+                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                await bot.create_embed(em, message)
                 return None
             elif response.channel.name == "general":
                 if response.content in user.names:
-                    await bot.send(response, "I'm sorry, that username is already taken. Please try again.")
+                    msg = "***I'm sorry, that username is already taken. Please try again.***"
+                    em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                    await bot.create_embed(em, message)
                     return await bot.new_user(message)
 
                 u = user(response.content, response.author.id)
-                await bot.send(response, "Welcome to Hogwarts, " + response.content + "!")
+                msg =  f"***Welcome to Hogwarts, {response.content}!***"
+                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                await bot.create_embed(em, message)
 
                 return u
             else:
-                await bot.send(response, "A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)")
+                msg = "***A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)***"
+                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                await bot.create_embed(em, message)
                 response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
                 if response.content == "yes":
-                    await bot.send(response, "Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon!***"
+                    em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                    await bot.create_embed(em, message)
                     return None
 
     async def plat9_3_4(self, bot, currUser, message):
@@ -430,38 +439,53 @@ class games:
         bot.notFreeUser.remove(int(opponent.id))
         bot.save(opponent)
 
-    async def staircase(self, client, currUser, message):
+    async def staircase(self, bot, currUser, message):
         total_stairs = 20
         moves_left = total_stairs//2
         stairs_left = total_stairs
         cap_steps = total_stairs//3
 
-        await message.channel.send(f"You're running late to class and you've just stepped onto the moving staircases. You now get {moves_left} moves to climb up {total_stairs} stairs to make it to your Transfiguration lesson on time. \nHere's what you have to do: \nType in the number of stairs you wanna climb at a time and then play a game of 7 up 7 down to see if you were successful. Mind your step! You don't wanna step onto a trick stair which will cause you to get stuck on that stair for the next move.\nConsecuently that move will be skipped (total moves reduces by 2)")
-        await message.channel.send(f"Max steps that can be crossed per move is {cap_steps}. All the best!")
-        await message.channel.send("If you don't know how 7 Up 7 Down works, enter '7' to learn now. Otherwise, type 'play' to start the game.")
+        msg = f"***You're running late to class and you've just stepped onto the moving staircases. You now get {moves_left} moves to climb up {total_stairs} stairs to make it to your Transfiguration lesson on time.*** \n ***Here's what you have to do:*** \n***Type in the number of stairs you wanna climb at a time and then play a game of 7 up 7 down to see if you were successful. Mind your step! You don't wanna step onto a trick stair which will cause you to get stuck on that stair for the next move.***\n***Consecuently that move will be skipped (total moves reduces by 2)***\n ***Max steps that can be crossed per move is {cap_steps}. All the best!***"
+        em = embedMessage(colour=discord.Colour.orange(), description=msg, title = "Moving Staircases", image="https://i.pinimg.com/originals/20/70/1d/20701db00f0e3bc9c358ed296d254b32.gif")
+        await bot.create_embed(em, message)
+        msg = "***If you don't know how 7 Up 7 Down works, enter '7' to learn now. Otherwise, type 'play' to start the game.***"
+        em = embedMessage(colour=discord.Colour.orange(), description=msg)
+        await bot.create_embed(em, message)
 
         while True:
-            response = await client.wait_for('message', check=lambda message1: client.check(message, message1))
+            response = await bot.wait_for('message', check=lambda message1: bot.check(message, message1))
             if response.channel.name == "general":
                 if response.content == "exit":
-                    await response.channel.send("Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon!***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await bot.create_embed(em, message)
                     return False
 
                 elif response.content == "play":
                     break
 
                 elif response.content == "7":
-                    await message.channel.send("The random number generator generates a number between 1 to 12. You have to guess if the number is >=7 or <7 (Enter a number >=7 or <7 to guess respectively). If your guess is correct, you move up your chosen number of steps; but if your guess is wrong, you fall down the chosen number of steps.")
-                    await message.channel.send("Now that the rules are , type 'play' to proceed to the game.")
+                    msg = "***The random number generator generates a number between 1 to 12. You have to guess if the number is >=7 or <7 (Enter a number >=7 or <7 to guess respectively). If your guess is correct, you move up your chosen number of steps; but if your guess is wrong, you fall down the chosen number of steps.***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await bot.create_embed(em, message)
+                    msg = "***Now that the rules are , let's proceed to the game.***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await bot.create_embed(em, message)
                     break
 
                 else:
-                    await response.channel.send("I'm sorry, I didn't catch that. Please try again.")
+                    msg = "***I'm sorry, I didn't catch that. Please try again.***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await bot.create_embed(em, message)
             else:
-                await response.channel.send("A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)")
-                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                msg = "***A game is already in progress in the channel 'general'. Do you want to exit the game? (yes/anything else)***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await bot.create_embed(em, message)
+                response = await bot.wait_for('message', check=lambda message1: bot.check(message1, message))
                 if response.content == "yes":
-                    await response.channel.send("Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon!***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await bot.create_embed(em, message)
                     return False
 
         trick = False
@@ -470,61 +494,93 @@ class games:
             trick = random.choice([True, False, False, False, False, False])
 
             while True:
-                await message.channel.send("How many steps do you wanna take at a time?")
-                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                msg = "***How many steps do you wanna take at a time?***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await bot.create_embed(em, message)
+                response = await bot.wait_for('message', check=lambda message1: bot.check(message1, message))
                 n = response.content
                 if n.isdigit() and int(n) > 0 and int(n) <= cap_steps:
                     break
                 else:
-                    await message.channel.send(f"Please enter a valid number from 1-{cap_steps}.")
+                    msg = f"***Please enter a valid number from 1-{cap_steps}.***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await bot.create_embed(em, message)
 
             while True:
-                await message.channel.send("Let's see if the odds are in your favour! Pick a number between 1 to 12 (both included).")
-                response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
+                msg = "***Let's see if the odds are in your favour! Pick a number between 1 to 12 (both included).***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await bot.create_embed(em, message)
+                response = await bot.wait_for('message', check=lambda message1: bot.check(message1, message))
                 guess = response.content
 
                 if response.content == "exit":
-                    await response.channel.send("Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon!***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await bot.create_embed(em, message)
                     return False
 
                 elif guess.isdigit():
                     if int(guess) >= 1 and int(guess) <= 12:
                         break
                     else:
-                        await message.channel.send("Please enter a valid guess from 1-12.")
+                        msg = "***Please enter a valid guess from 1-12.***"
+                        em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                        await bot.create_embed(em, message)
 
                 else:
-                    await message.channel.send("Please enter a valid guess.")
+                    msg = "***Please enter a valid guess.***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await bot.create_embed(em, message)
 
             random_no = random.randint(1, 12)
 
             if trick == True:
                 increment_steps = random.randint(1, int(n))
-                await message.channel.send(f"Oh no! You stepped on a trick step on the {increment_steps} step.")
+                msg = f"***Oh no! You stepped on a trick step on the {increment_steps} step.***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await bot.create_embed(em, message)
                 stairs_left = min(stairs_left + increment_steps, total_stairs)
                 moves_left -= 1
 
             if not trick and ((random_no >= 7 and int(guess) >= 7) or (random_no < 7 and int(guess) < 7)):
-                await message.channel.send(f"Congrats! You have climbed {n} steps.")
+                msg = f"***Congrats! You have climbed {n} steps.***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await bot.create_embed(em, message)
                 stairs_left = max(0, stairs_left - int(n))
 
             elif not trick:
-                await message.channel.send(f"Alas! You have fallen down {n} steps. Better luck next time.")
+                msg = f"***Alas! You have fallen down {n} steps. Better luck next time.***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await bot.create_embed(em, message)
                 stairs_left = min(stairs_left + int(n), total_stairs)
 
             moves_left -= 1
-            await message.channel.send(f"You now have to climb {stairs_left} stairs in {moves_left} moves.")
+            msg = f"***You now have to climb {stairs_left} stairs in {moves_left} moves.***"
+            em = embedMessage(colour=discord.Colour.orange(), description=msg)
+            await bot.create_embed(em, message)
 
             if (moves_left*cap_steps < stairs_left):
-                await message.channel.send(f"Oh no, you don't have enough moves!")
+                amsg = f"***Oh no, you don't have enough moves!***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await bot.create_embed(em, message)
                 break
 
         if stairs_left == 0:
-            await message.channel.send(f"Phew! You've managed to maneuver the magical staircases to reach class on time. Now Professor McGonagall won't transfigure you into a pocket watch!")
+            msg = f"***Phew! You've managed to maneuver the magical staircases to reach class on time. Now Professor McGonagall won't transfigure you into a pocket watch!***"
+            em = embedMessage(colour=discord.Colour.orange(), description=msg, image = "https://i.pinimg.com/564x/a6/07/a1/a607a1e0670ae4e4fcda1d0e8775144a.jpg")
+            await bot.create_embed(em, message)
             return True
 
         else:
-            await message.channel.send(f"L! You couldn't maneuver the staircases on time and now you're late to class. Your excuse was lame and Professor McGonagall has deducted 5 house points from {currUser.house.get_name()}.")
+            msg = f"***Oh no! You couldn't maneuver the staircases on time and now you're late to class. Your excuse was lame and Professor McGonagall has deducted 5 house points from {currUser.house.get_name()}.***"
+            em = embedMessage(colour=discord.Colour.orange(), description=msg)
+            await bot.create_embed(em, message)
+
+            author = "Professor McGonagall"
+            author_icon = "https://i.pinimg.com/564x/ba/b5/4f/bab54fac65ecc60ec383fd0d5a731b55.jpg"
+            msg = "***Perhaps, it'd be more useful if I were to transfigure you into a pocket-watch. That way, at least one of you might be on time.***"
+            em = embedMessage(colour=discord.Colour.green(), description=msg,image="https://i.pinimg.com/564x/5a/f9/b3/5af9b3ab462f2de8f55df8326a5d5d31.jpg", author=author, author_url=author_icon)
+            await bot.create_embed(em, message)
             currUser.house.add_points(-5)
             return True
 
