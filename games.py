@@ -7,6 +7,7 @@ import random
 from classes import *
 from EmbedMsg import *
 
+
 class games:
     async def introduction(self, bot, message):
         '''
@@ -15,15 +16,15 @@ class games:
         msg = "***Greetings! Welcome to the whimsical world of PotterBot, where the whispers of ancient spells and the flicker of wands weave tales of wonder reminiscent of Dumbledore's office. Here, amid the hallowed halls of Hogwarts, where portraits come to life and enchanted creatures roam, embark on a journey beyond the pages of the Marauder's Map, where mischief and magic await your command!***"
         em = embedMessage(colour=discord.Colour.blue(),
                           image="https://i.pinimg.com/originals/25/ce/3f/25ce3f11dda654caab19841c389b2878.gif",
-                          description=msg, title = "Welcome to Hogwarts")
+                          description=msg,title="Welcome to Hogwarts")
         await bot.create_embed(em, message)
 
-        msg = "*** If you wish to leave at any point in the game, just type 'exit'.***"
+        msg = "***If you wish to leave at any point in the game, just type 'exit'.***"
         em = embedMessage(colour=discord.Colour.blue(), description=msg)
         await bot.create_embed(em, message)
 
         if message.author.id in user.ids:
-            msg = "***Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!***"
+            msg = f"***Welcome back to Hogwarts, {user.ids[message.author.id].name}!***"
             em = embedMessage(colour=discord.Colour.blue(), description=msg)
             await bot.create_embed(em, message)
             return user.ids[message.author.id]
@@ -37,8 +38,10 @@ class games:
         Function to initiate a new user.
         '''
         msg = "***Welcome, new user! Please choose your username.***"
-        em = embedMessage(colour=discord.Colour.blue(),image="https://i.pinimg.com/564x/84/55/7c/84557c07e99c33dc9c65a0d105aeb195.jpg",description=msg)
-        await bot.create_embed(em,message)
+        em = embedMessage(colour=discord.Colour.blue(
+        ), image="https://i.pinimg.com/564x/84/55/7c/84557c07e99c33dc9c65a0d105aeb195.jpg", description=msg)
+        await bot.create_embed(em, message)
+
         while True:
             response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
             if response.content == "exit" and response.channel.name == "general":
@@ -59,22 +62,21 @@ class games:
                 if response.content == "yes":
                     await bot.send(response, "Farewell for now, come back again soon!")
                     return None
+
     async def plat9_3_4(self, bot, currUser, message):
         '''
         The first level of our game.
         '''
 
         msg = """
-        The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.
+        ***The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.
         In order to cross the brick wall, please type 'Hogwarts Express' in under 5 seconds.
         Type 'ready' when you are ready to begin. If you wish to exit, type anything else.
         """
 
-        em = embedMessage(colour=discord.Colour.purple(), description=msg, image="https://i.pinimg.com/originals/25/ce/3f/25ce3f11dda654caab19841c389b2878.gif")
-
-        await bot.send(message, "The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.")
-        await bot.send(message, "In order to cross the brick wall, please type 'Hogwarts Express' in under 5 seconds.")
-        await bot.send(message, "Type 'ready' when you are ready to begin. If you wish to exit, type anything else.")
+        em = embedMessage(colour=discord.Colour.red(), description=msg,
+                          image="https://i.pinimg.com/originals/48/c4/b0/48c4b08c488bb6b888eb72eb0230b34b.gif")
+        await bot.create_embed(em, message)
 
         response = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
 
@@ -161,11 +163,24 @@ class games:
                 if response.content == "yes":
                     await bot.send(response, "Farewell for now, come back again soon!")
                     return False
+
     async def Ollivanders(self, bot, currUser, message):
         '''
         Assigns a wand to the player.
         '''
-        # supplies
+
+        msgs = """
+        ***Congratulations on being sorted into your house! Now it's time to equip yourself with the tools of the trade. You will need a wand!
+        Let's head to Ollivanders where you will choose your wand, or to put it better, a wand will choose you!
+        Please type 'wand' to proceed to Ollivanders.***
+        """
+
+        author="Garrick Ollivanders"
+        author_icon="https://i.pinimg.com/564x/4c/00/80/4c00800646234a222219ebaa17c41c17.jpg"
+
+        em = embedMessage(colour=discord.Colour.blue(), description=msgs,
+                          image="https://i.pinimg.com/564x/96/cb/72/96cb72d67bef839ccba6d5af4a9c328d.jpg", author=author, author_icon=author_icon)
+        await bot.create_embed(em, message)
 
         await bot.send(message, "Now that you have been sorted into your house, it is time to equip yourself with the tools of the trade. You will need a wand, a spellbook, and a potion to begin your journey.")
         await bot.send(message, "Let's head to Ollivanders where you will choose your wand, or to put it better, a wand will choose you!")
@@ -228,10 +243,13 @@ class games:
                     await bot.send(message, "Please choose a creature from the list.")
                 else:
                     await bot.send(message, "Not quite, let's try another one")
+
     async def duel(self, bot, currUser, message):
         accepted = False
         opponent_id = message.content.split(" ")[1][2:-1]
-        await message.channel.send(f'''{currUser.name} has challenged {message.content.split(" ")[1]} to a duel! Do you accept {message.content.split(" ")[1]}? (yes/no)''')
+        msg = f'''***{currUser.name} has challenged {message.content.split(" ")[1]} to a duel! Do you accept {message.content.split(" ")[1]}? (yes/no)***'''
+        em = embedMessage(colour=discord.Colour.blue(), description=msg,image="https://giphy.com/gifs/warnerbrosde-harry-potter-phantastische-tierwesen-dumbledores-geheimnisse-zEvwh3NJBpqMoVj96q")
+        await bot.create_embed(em, message)
         while (True):
             response = await bot.recieve(message)
             if response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "yes":
@@ -276,7 +294,8 @@ class games:
                 opponent.level = opponent.points//30
                 opponent.house.points -= 5
                 break
-            fighters = {opponent.id: {"me": opponent,"opponent": currUser}, currUser.id: {"me": currUser,"opponent": opponent}}
+            fighters = {opponent.id: {"me": opponent, "opponent": currUser}, currUser.id: {
+                "me": currUser, "opponent": opponent}}
             while True:
                 response1 = await bot.wait_for('message')
                 if response1.author.id == currUser.id or response1.author.id == opponent.id:
@@ -325,6 +344,7 @@ class games:
         opponent.update_level()
         bot.notFreeUser.remove(int(opponent.id))
         bot.save(opponent)
+
     async def staircase(self, client, currUser, message):
         total_stairs = 20
         moves_left = total_stairs//2
@@ -572,7 +592,7 @@ class games:
                 await message.channel.send("Congrats! You've successfully solved the crossword.")
                 await message.channel.send(f"You've earned {len(user_answers)} galleons and {user_answers} points for your house!")
                 currUser.house.add_points(len(user_answers))
-                currUser.wealth+=len(user_answers)*2
+                currUser.wealth += len(user_answers)*2
                 return True
             elif response.channel.name == "mini-games":
                 if response.content == "exit":
@@ -592,11 +612,11 @@ class games:
                     if response.content[n + 1:].title() == cross[chosen_one][response.content[0:n]]:
                         await response.channel.send("You're right, of course!")
                         user_answers[response.content[0:n]
-                        ] = response.content[n + 1:].title()
+                                     ] = response.content[n + 1:].title()
                     else:
                         await response.channel.send(f"That's not right. Try again.")
                         user_answers[response.content[0:n]
-                        ] = response.content[n + 1:].title()
+                                     ] = response.content[n + 1:].title()
 
                 except KeyError:
                     if (n == -1):
@@ -614,6 +634,7 @@ class games:
                 if response.content == "yes":
                     await response.channel.send("Farewell for now, come back again soon!")
                     return False
+
     async def botDuel(self, bot, currUser, message):
         opponent = enemies[currUser.enemiesDefeated]
         await message.channel.send(f'''Your opponent is {opponent.name}''')
@@ -636,7 +657,7 @@ class games:
                 currUser.health = currUser.max_health
                 currUser.points += 10
                 currUser.level = currUser.points // 30
-                currUser.house.points+=5
+                currUser.house.points += 5
                 return True
             response1 = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
             if response1.content == "exit":
@@ -671,7 +692,7 @@ class games:
                         currUser.health = currUser.max_health
                         currUser.points += 10
                         currUser.level = currUser.points // 30
-                        currUser.house.points+=5
+                        currUser.house.points += 5
                         return True
                 if opponent.name not in ["Basilisk", "Werewolf", "Acromantula"]:
                     oppSpell = random.choice(opponent.spells)
@@ -784,6 +805,6 @@ class games:
         await response.channel.send(f"You were right {s}/7 times!")
         await response.channel.send("Peeves is now headed to annoy Mrs Norris and you're free to roam the corridors again! Now that you think about it, hanging out with Peeves was actually fun and turned out to be the highliight of your night!")
         await message.channel.send(f"You've earned {s*2} galleons and {s} points for your house!")
-        currUser.wealth+=s*2
+        currUser.wealth += s*2
         currUser.house.points += s
         return s
