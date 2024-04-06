@@ -69,11 +69,7 @@ class games:
         The first level of our game.
         '''
 
-        msg = """
-        The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.
-        In order to cross the brick wall, please type 'Hogwarts Express' in under 5 seconds.
-        Type 'ready' when you are ready to begin. If you wish to exit, type anything else.
-        """
+        msg = "***The Hogwarts Express awaits to transport you to the enchanted realm of Hogwarts.\nIn order to cross the brick wall, please type 'Hogwarts Express' in under 5 seconds.\nType 'ready' when you are ready to begin. If you wish to exit, type anything else.***"
 
         em = embedMessage(colour=discord.Colour.purple(), description=msg,
                           image="https://i.pinimg.com/originals/48/c4/b0/48c4b08c488bb6b888eb72eb0230b34b.gif")
