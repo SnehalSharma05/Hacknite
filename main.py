@@ -56,7 +56,7 @@ class bot(discord.Client):
         '''
         Takes in an embedded message object and sends it to the channel of the message.
         '''
-        embed.send(message)
+        await embed.send(message)
 
     async def recieve(self, message: discord.Message, check=None, timeout=None):
         '''
@@ -195,7 +195,7 @@ class bot(discord.Client):
                 self.notFreeChannel.append(message.channel.id)
 
             else:
-                await bot.send(message, "You need to complete the introduction quests first!")
+                await self.send(message, "You need to complete the introduction quests first!")
 
             currUser.update_level()
             self.save(currUser)

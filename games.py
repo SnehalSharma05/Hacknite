@@ -13,10 +13,13 @@ class games:
         This function is used whenever the user wants to login and use the bot.
         '''
         await bot.send(message, "Greetings! Welcome to the whimsical world of PotterBot, where the whispers of ancient spells and the flicker of wands weave tales of wonder reminiscent of Dumbledore's office. Here, amid the hallowed halls of Hogwarts, where portraits come to life and enchanted creatures roam, embark on a journey beyond the pages of the Marauder's Map, where mischief and magic await your command!")
+        msg = "If you wish to leave at any point in the game, just type 'exit'."
+        em = embedMessage(colour=discord.Colour.blue(), description=msg)
         await bot.send(message, "If you wish to leave at any point in the game, just type 'exit'.")
+        await bot.create_embed(em, message)
 
         if message.author.id in user.ids:
-            em = embedMessage(colour = 'blue')
+            em = embedMessage(colour = discord.Colour.blue())
             msg = "Welcome back to Hogwarts, " + user.ids[message.author.id].name + "!"
             await bot.create_embed(em, msg)
             return user.ids[message.author.id]
