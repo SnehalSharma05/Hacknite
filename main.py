@@ -182,7 +182,6 @@ class bot(discord.Client):
 
                 if message.channel.name == "general":
                     if message.content == "~myStats":
-                        await self.send(message, currUser.get_full_info())
 
                         use = self.get_user(currUser.id)
 
@@ -206,9 +205,8 @@ class bot(discord.Client):
                         await self.create_embed(em, message)
 
                     if message.content == "~houseStats":
-                        await self.send(message, eval(currUser.house).get_info(self))
 
-                        house = currUser.house
+                        house = eval(currUser.house)
                         em = embedMessage(title="House Stats",
                                           thumbnail=house.url, inline=True)
 
