@@ -1047,25 +1047,37 @@ class games:
                         await bot.create_embed(em, message)
 
     async def emojis(self, client, currUser, message):
-        await message.channel.send("You and your friends snuck out of bed for a midnight stroll around the castle, but came face to face with Peeves!")
-        await message.channel.send("He's now threatening to sell you out to Filch unless you agree to play a game of charades with him. Cuz poltergeists get bored too, you know!")
-        await message.channel.send("You have no choice but to agree. Anything to escape the wrath of Filch, am I right? ")
-        await message.channel.send("Here are the rules: Peeves acts out a character and you've to guess who he's mimicking. (Basically, the good old game of guessing the character from the emojis). You'll have 7 questions in total. Type 'play' to start playing.")
+        msg = "***You and your friends snuck out of bed for a midnight stroll around the castle, but came face to face with Peeves!He's now threatening to sell you out to Filch unless you agree to play a game of charades with him. Cuz poltergeists get bored too, you know!***\n***You have no choice but to agree. Anything to escape the wrath of Filch, am I right?***"
+        em = embedMessage(colour=discord.Colour.blue(), description=msg, title = ":european_castle: :sparkles: ", image = "https://i.pinimg.com/564x/6a/93/a0/6a93a031e258b391a02bd5e923bb4d64.jpg")
+        await client.create_embed(em, message)
+
+        msg = "***Here are the rules:***\n*** Peeves acts out a character and you've to guess who he's mimicking. (Basically, the good old game of guessing the character from the emojis).***\n*** You'll have 7 questions in total. Type 'play' to start playing.***"
+        em = embedMessage(colour=discord.Colour.blue(), description=msg, image = "https://i.pinimg.com/564x/f8/f1/47/f8f14754704bd7f89edf32458a376314.jpg")
+        await client.create_embed(em, message)
+
         while True:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
             if response.content == "exit" and response.channel.name == "mini-games":
-                await response.channel.send("Farewell for now, come back again soon!")
+                msg = "***Farewell for now, come back again soon!***"
+                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                await client.create_embed(em, message)
                 return False
             elif response.channel.name == "mini-games":
                 if response.content == 'play':
                     break
                 else:
-                    await response.channel.send("I'm sorry, I didn't catch that. Please try again.")
+                    msg = "***I'm sorry, I didn't catch that. Please try again.***"
+                    em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                    await client.create_embed(em, message)
             else:
-                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/anything else)")
+                msg = "***A game is already in progress. Do you want to exit Word Chain? (yes/anything else)***"
+                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                await client.create_embed(em, message)
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
-                    await response.channel.send("Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon!***"
+                    em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                    await client.create_embed(em, message)
                     return False
 
         s = 0
@@ -1082,28 +1094,43 @@ class games:
             await message.channel.send(emoji)
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
             if response.content == "exit":
-                await response.channel.send("Farewell for now, come back again soon!")
+                msg = "***Farewell for now, come back again soon!***"
+                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                await client.create_embed(em, message)
                 return False
             elif response.channel.name == "mini-games":
                 if response.content.title() in ans:
-                    await response.channel.send("You're correct!")
+                    msg = "***You're correct!***"
+                    em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                    await client.create_embed(em, message)
                     s += 1
 
                 else:
                     if len(ans) == 1:
-                        await response.channel.send(f"That's not right. The correct answer is {ans[0]}")
+                        msg = f"***That's not right. The correct answer is {ans[0]}***"
+                        em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                        await client.create_embed(em, message)
                     else:
-                        await response.channel.send(f"That's not right. The correct answer is {ans[1]}")
+                        msg = f"***That's not right. The correct answer is {ans[1]}***"
+                        em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                        await client.create_embed(em, message)
             else:
-                await response.channel.send("A game is already in progress. Do you want to exit Word Chain? (yes/anything else)")
+                msg = "***A game is already in progress. Do you want to exit Word Chain? (yes/anything else)***"
+                em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                await client.create_embed(em, message)
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
-                    await response.channel.send("Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon!***"
+                    em = embedMessage(colour=discord.Colour.blue(), description=msg)
+                    await client.create_embed(em, message)
                     return False
 
-        await response.channel.send(f"You were right {s}/7 times!")
-        await response.channel.send("Peeves is now headed to annoy Mrs Norris and you're free to roam the corridors again! Now that you think about it, hanging out with Peeves was actually fun and turned out to be the highliight of your night!")
-        await message.channel.send(f"You've earned {s*2} galleons and {s} points for your house!")
+        msg = f"***You were right {s}/7 times!***\n***Peeves is now headed to annoy Mrs Norris and you're free to roam the corridors again! Now that you think about it, hanging out with Peeves was actually fun and turned out to be the highlight of your night!***"
+        em = embedMessage(colour=discord.Colour.blue(), description=msg)
+        await client.create_embed(em, message)
+        msg = f"***You've earned {s*2} galleons and {s} points for your house!***"
+        em = embedMessage(colour=discord.Colour.blue(), description=msg)
+        await client.create_embed(em, message)
         currUser.wealth += s*2
         currUser.house.add_points(s)
         return s
