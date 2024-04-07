@@ -169,38 +169,38 @@ class games:
                 return False
             elif response.channel.name == "general":
                 if response.content == "a":
-                    await currUser.set_house(bot, Hufflepuff)
+                    await currUser.set_house(bot, "Hufflepuff")
                     Hufflepuff.add_student(currUser)
                     msg = "*** Ah, Hufflepuff it is! The house of the loyal and the kind, where friendship and hard work are valued above all. Welcome to the house of the badger!***"
                     em = embedMessage(colour=discord.Colour.yellow(), description=msg, title="Hufflepuff",
-                                      image=currUser.house.url)
+                                      image=eval(currUser.house).url)
                     await bot.create_embed(em, message)
                     return True
 
                 elif response.content == "b":
-                    await currUser.set_house(bot, Ravenclaw)
+                    await currUser.set_house(bot, "Ravenclaw")
                     Ravenclaw.add_student(currUser)
                     msg = "*** Ah, Ravenclaw it is! The house of the wise and the clever, where wit and intelligence are revered. Welcome to the house of the eagle!***"
                     em = embedMessage(colour=discord.Colour.blue(), description=msg, title="Ravenclaw",
-                                      image=currUser.house.url)
+                                      image=eval(currUser.house).url)
                     await bot.create_embed(em, message)
                     return True
 
                 elif response.content == "c":
-                    await currUser.set_house(bot, Gryffindor)
+                    await currUser.set_house(bot, "Gryffindor")
                     Gryffindor.add_student(currUser)
                     msg = "*** Ah, Gryffindor it is! The house of the brave and the bold, where courage and loyalty reign supreme. Welcome to the house of the lion!***"
                     em = embedMessage(colour=discord.Colour.red(), description=msg, title="Gryffindor",
-                                      image=currUser.house.url)
+                                      image=eval(currUser.house).url)
                     await bot.create_embed(em, message)
                     return True
 
                 elif response.content == "d":
-                    await currUser.set_house(bot, Slytherin)
+                    await currUser.set_house(bot, "Slytherin")
                     Slytherin.add_student(currUser)
                     msg = "*** Ah, Slytherin it is! The house of the cunning and the ambitious, where resourcefulness and determination are prized. Welcome to the house of the serpent!***"
                     em = embedMessage(colour=discord.Colour.green(), description=msg, title="Slytherin",
-                                      image=currUser.house.url)
+                                      image=eval(currUser.house).url)
                     await bot.create_embed(em, message)
                     return True
 
@@ -342,6 +342,11 @@ class games:
                 accepted = True
                 bot.notFreeUser.append(int(opponent_id))
                 opponent = bot.getUser(response)
+                if (opponent == None or opponent.progress < 4):
+                    em = embedMessage(color=discord.Colour.blue(), description="***You have not completed the introductory quests, please finish them first.***")
+                    await bot.create_embed(em, message)
+                    return None
+
                 break
             elif response.author.id == int(opponent_id) and response.channel.name == "dueling-club" and response.content == "no":
                 msg = "***The duel has been declined.***"
@@ -375,10 +380,10 @@ class games:
                 await bot.create_embed(em, message)
                 opponent.points += 10
                 opponent.level = opponent.points//30
-                opponent.house.points.add_points(5)
+                eval(opponent.house).add_points(5)
                 currUser.points -= 10
                 currUser.level = currUser.points//30
-                currUser.house.add_points(-5)
+                eval(currUser.house).add_points(-5)
                 break
             if opponent.health <= 0:
                 msg = f"***{opponent.name} has been defeated! Better luck next time.***"
@@ -387,10 +392,10 @@ class games:
                 await bot.create_embed(em, message)
                 currUser.points += 10
                 currUser.level = currUser.points//30
-                currUser.house.add_points(5)
+                eval(currUser.house).add_points(5)
                 opponent.points -= 10
                 opponent.level = opponent.points//30
-                opponent.house.add_points(-5)
+                eval(opponent.house).add_points(-5)
                 break
             fighters = {opponent.id: {"me": opponent, "opponent": currUser}, currUser.id: {
                 "me": currUser, "opponent": opponent}}
@@ -475,7 +480,7 @@ class games:
         stairs_left = total_stairs
         cap_steps = total_stairs//3
 
-        msg = f"***You're running late to class and you've just stepped onto the moving staircases. You now get {moves_left} moves to climb up {total_stairs} stairs to make it to your Transfiguration lesson on time.*** \n ***Here's what you have to do:*** \n***Type in the number of stairs you wanna climb at a time and then play a game of 7 up 7 down to see if you were successful. Mind your step! You don't wanna step onto a trick stair which will cause you to get stuck on that stair for the next move.***\n***Consecuently that move will be skipped (total moves reduces by 2)***\n ***Max steps that can be crossed per move is {cap_steps}. All the best!***"
+        msg = f"***You and your friend are running late to class and you've just stepped onto the moving staircases. You now get {moves_left} moves to climb up {total_stairs} stairs to make it to your Transfiguration lesson on time.*** \n ***Here's what you have to do:*** \n***Type in the number of stairs you wanna climb at a time and then play a game of 7 up 7 down to see if you were successful. Mind your step! You don't wanna step onto a trick stair which will cause you to get stuck on that stair for the next move.***\n***Consecuently that move will be skipped (total moves reduces by 2)***\n ***Max steps that can be crossed per move is {cap_steps}. All the best!***"
         em = embedMessage(colour=discord.Colour.orange(), description=msg, title = "Moving Staircases", image="https://i.pinimg.com/originals/20/70/1d/20701db00f0e3bc9c358ed296d254b32.gif")
         await bot.create_embed(em, message)
         msg = "***If you don't know how 7 Up 7 Down works, enter '7' to learn now. Otherwise, type 'play' to start the game.***"
@@ -602,7 +607,7 @@ class games:
             return True
 
         else:
-            msg = f"***Oh no! You couldn't maneuver the staircases on time and now you're late to class. Your excuse was lame and Professor McGonagall has deducted 5 house points from {currUser.house.get_name()}.***"
+            msg = f"***Oh no! You couldn't maneuver the staircases on time and now you're late to class. Your excuse was lame and Professor McGonagall has deducted 5 house points from {eval(currUser.house).get_name()}.***"
             em = embedMessage(colour=discord.Colour.orange(), description=msg)
             await bot.create_embed(em, message)
 
@@ -611,7 +616,7 @@ class games:
             msg = "***Perhaps, it'd be more useful if I were to transfigure you into a pocket-watch. That way, at least one of you might be on time.***"
             em = embedMessage(colour=discord.Colour.green(), description=msg,image="https://i.pinimg.com/564x/5a/f9/b3/5af9b3ab462f2de8f55df8326a5d5d31.jpg", author=author, author_url=author_icon)
             await bot.create_embed(em, message)
-            currUser.house.add_points(-5)
+            eval(currUser.house).add_points(-5)
             return True
 
     async def key(self, client, currUser, message):
@@ -685,14 +690,6 @@ class games:
                     if key == 0:
                         break
 
-                elif response.content.title() in done:
-                    msg = "***Oops! That word is already done. You lose.***"
-                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
-                    await client.create_embed(em, message)
-                    key = await self.key(client, currUser, message)
-                    if key == 0:
-                        break
-
                 elif len(done) > 0:
                     if response.content[0].lower() != myword[-1]:
                         msg = f"***Your word does not start with '{myword[-1].upper()}'. You've lost.***"
@@ -701,6 +698,15 @@ class games:
                         key = await self.key(client, currUser, message)
                         if key == 0:
                             break
+
+                if response.content.title() in done:
+                    msg = "***Oops! That word is already done. You lose.***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await client.create_embed(em, message)
+                    key = await self.key(client, currUser, message)
+                    if key == 0:
+                        break
+
                 else:
                     done.append(response.content.title())
                     valid = [x for x in words if x[0] ==
@@ -722,7 +728,7 @@ class games:
         msg = f"***You've earned {len(done)//2} galleons and {len(done) // 2} points for your house!***"
         em = embedMessage(colour=discord.Colour.orange(), description=msg)
         await client.create_embed(em, message)
-        currUser.house.points += len(done) // 2
+        eval(currUser.house).add_points(len(done) // 2)
         currUser.wealth += len(done) // 2
         return True
 
@@ -776,12 +782,13 @@ class games:
         msg = f"***You were right {s} times!***\n***You've earned {s} points for your house!***"
         em = embedMessage(colour=discord.Colour.orange(), description=msg)
         await client.create_embed(em, message)
-        currUser.house.add_points(s)
+        eval(currUser.house).add_points(s)
         return True
 
     async def crossword(self, client, currUser, message):
 
         chosen_one = random.choice(list(cross.keys()))
+        s = 0
 
         msg = "***🎲 Solve a crossword right from the pages of the Daily Prophet! 🧩***\n ***Get ready to exercise your brain cells and embark on an exciting journey through words and clues. Challenge yourself with our collection of mind-bending crossword puzzles designed to test your vocabulary, wit, and problem-solving skills.***\n***Whether you're a seasoned wordsmith or a casual puzzler, there's something here for everyone. So, grab a cup of coffee, sharpen your pencils, and let's dive into the world of crosswords!***\n***Are you up for the challenge? Let's play! 🚀***"
         em = embedMessage(colour=discord.Colour.dark_gray(), description=msg, title = "Crossword", image = "https://i.pinimg.com/564x/94/3e/b9/943eb9647decd2b38d3a4fb3ac81589f.jpg")
@@ -806,10 +813,10 @@ class games:
                 em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
                 await client.create_embed(em, message)
 
-                msg = f"***You've earned {len(user_answers)} galleons and {user_answers} points for your house!***"
+                msg = f"***You've earned {len(user_answers)} galleons and {len(user_answers)} points for your house!***"
                 em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
                 await client.create_embed(em, message)
-                currUser.house.add_points(len(user_answers))
+                eval(currUser.house).add_points(len(user_answers))
                 currUser.wealth += len(user_answers)*2
                 return True
             elif response.channel.name == "mini-games":
@@ -820,18 +827,22 @@ class games:
                     return False
 
                 elif response.content.lower() == "i'm done":
+                    answers = ''
                     for i in cross[chosen_one]:
-                        await response.channel.send(f"{i} : {cross[chosen_one][i]}")
-                    msg = f"***You've earned {user_answers} points for your house!***"
+                        answers += f"{i} : {cross[chosen_one][i]}\n"
+                    em = embedMessage(colour=discord.Colour.dark_gray(), description=answers)
+                    await client.create_embed(em, message)
+                    msg = f"***You've earned {s} points for your house!***"
                     em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
                     await client.create_embed(em, message)
-                    currUser.house.add_points(len(user_answers))
+                    eval(currUser.house).add_points(len(user_answers))
                     return True
 
                 n = response.content.find(' ')
 
                 try:
                     if response.content[n + 1:].title() == cross[chosen_one][response.content[0:n]]:
+                        s+=1
                         msg = "***You're right, of course!***"
                         em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
                         await client.create_embed(em, message)
@@ -916,7 +927,7 @@ class games:
                 currUser.health = currUser.max_health
                 currUser.points += 10
                 currUser.level = currUser.points // 30
-                currUser.house.add_points(5)
+                eval(currUser.house).add_points(5)
                 return True
             response1 = await bot.recieve(message, check=lambda message1: bot.check(message1, message))
             if response1.content == "exit":
@@ -967,7 +978,7 @@ class games:
                         currUser.health = currUser.max_health
                         currUser.points += 10
                         currUser.level = currUser.points // 30
-                        currUser.house.add_points(5)
+                        eval(currUser.house).add_points(5)
                         return True
                 if opponent.name not in ["Basilisk", "Werewolf", "Acromantula"]:
                     oppSpell = random.choice(opponent.spells)
@@ -1139,5 +1150,5 @@ class games:
         em = embedMessage(colour=discord.Colour.blue(), description=msg)
         await client.create_embed(em, message)
         currUser.wealth += s*2
-        currUser.house.add_points(s)
+        eval(currUser.house).add_points(s)
         return s

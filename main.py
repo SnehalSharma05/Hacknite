@@ -3,7 +3,11 @@ from utilities import *
 from classes import *
 from games import *
 from EmbedMsg import *
+import os
 
+token = os.getenv('TOKEN')
+guild_id = int(os.getenv('GUILD_ID'))
+print(token, guild_id)
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 
@@ -75,7 +79,7 @@ class bot(discord.Client):
         print(self.user.id)
 
         # Need to save this guild id when created in the on_guild_join function.
-        self.guild = self.get_guild(1217366468908290118)
+        self.guild = self.get_guild(guild_id)
 
         y = False
         for x in self.guild.categories:
@@ -94,15 +98,16 @@ class bot(discord.Client):
     async def on_guild_join(self, guild: discord.Guild):
         categ = await guild.create_category('PotterBot')
         await guild.create_voice_channel("chill", category=categ)
+        await guild.create_text_channel('guide', category=categ)
         await guild.create_text_channel('general', category=categ)
         await guild.create_text_channel('newts', category=categ)
         await guild.create_text_channel('dueling-club', category=categ)
         await guild.create_text_channel('forbidden-forest', category=categ)
         await guild.create_text_channel('mini-games', category=categ)
-        await guild.create_role(name="Gryffindor")
-        await guild.create_role(name="Ravenclaw")
-        await guild.create_role(name="Hufflepuff")
-        await guild.create_role(name="Slytherin")
+        await guild.create_role(name="Gryffindor", color=discord.Color.red())
+        await guild.create_role(name="Ravenclaw", color=discord.Color.blue())
+        await guild.create_role(name="Hufflepuff", color=discord.Color.gold())
+        await guild.create_role(name="Slytherin", color=discord.Color.green())
 
         print("Created the channels and roles.")
 
@@ -201,7 +206,7 @@ class bot(discord.Client):
                         await self.create_embed(em, message)
 
                     if message.content == "~houseStats":
-                        await self.send(message, eval(currUser.house).get_info())
+                        await self.send(message, eval(currUser.house).get_info(self))
 
                         house = currUser.house
                         em = embedMessage(title="House Stats",
@@ -218,7 +223,21 @@ class bot(discord.Client):
                         houses = [Slytherin, Gryffindor,
                                   Ravenclaw, Hufflepuff]
                         houses.sort(key=lambda x: x.points, reverse=True)
-                        await bot.send(self, message, f"1){houses[0].get_points_info()}\n2){houses[1].get_points_info()}\n3){houses[2].get_points_info()}\n4){houses[3].get_points_info()}")
+                        # await bot.send(self, message, f"1){houses[0].get_points_info()}\n2){houses[1].get_points_info()}\n3){houses[2].get_points_info()}\n4){houses[3].get_points_info()}")
+
+                        em = embedMessage(
+                            title="Leaderboard", color=discord.Color.dark_blue(), inline=True, thumbnail="https://i.pinimg.com/564x/f5/12/06/f5120687c3f9c1f1f8b8d1878bd84150.jpg")
+
+                        em.add_field(
+                            name="1st", value=houses[0].get_points_info(self), inline=True)
+                        em.add_field(
+                            name="2nd", value=houses[1].get_points_info(self), inline=True)
+                        em.add_field(
+                            name="3rd", value=houses[2].get_points_info(self), inline=True)
+                        em.add_field(
+                            name="4th", value=houses[3].get_points_info(self), inline=True)
+
+                        await self.create_embed(em, message)
 
                 if message.channel.name == "mini-games":
                     if message.content == "~emoGuess":
@@ -305,5 +324,4 @@ class bot(discord.Client):
 
 
 potter = bot(dataHandler)
-potter.run(
-    "MTIyMDQxOTY2OTM3OTM4MzM3Ng.Gz7ug4.AwIcTXV57TEwlfR2GPTKAOwJayghwiI2RCy3TE")
+potter.run(token)

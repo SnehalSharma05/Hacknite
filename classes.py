@@ -29,17 +29,19 @@ class house():
     def get_name(self):
         return self.name
 
-    def get_info(self):
+    def get_info(self, bot):
         '''
         Retures the name of the house, the number of points it has and the students.
         '''
-        return self.name + f" has {self.points} points. The following students are in {self.name}:\n" + "\n".join([x.name for x in self.students])
+        self.get_role(bot)
+        return f"{self.role.mention}" + f" has {self.points} points. The following students are in {self.name}:\n" + "\n".join([x.name for x in self.students])
 
     def get_student_info(self):
         return self.name + " has the following students:\n" + "\n".join(self.students)
 
-    def get_points_info(self):
-        return self.name + f" has {self.points} points."
+    def get_points_info(self, bot):
+        self.get_role(bot)
+        return f"{self.role.mention}" + f" has {self.points} points."
 
     def get_role(self, bot):
         '''
@@ -112,13 +114,13 @@ class user():
 
     async def set_house(self, bot, house):
         self.house = house
-        await bot.guild.get_member(self.id).add_roles(house.role)
+        await bot.guild.get_member(self.id).add_roles(eval(house).role)
 
     def get_info(self):
-        return self.name + " is in " + self.house.name + f" and has {self.points} points."
+        return self.name + " is in " + eval(self.house).name + f" and has {self.points} points."
 
     def get_full_info(self):
-        return self.name + " is in " + self.house.name + f" and has {self.points} points. You have the following spells: " + ",".join(self.spells) + "\nYou have the following wand: " + self.wand + "\nYour level is: " + str(self.level) + "\nYour max health is: " + str(self.max_health) + "\nNumber of enemies defeated: " + str(self.enemiesDefeated)
+        return self.name + " is in " + eval(self.house).name + f" and has {self.points} points. You have the following spells: " + ",".join(self.spells) + "\nYou have the following wand: " + self.wand + "\nYour level is: " + str(self.level) + "\nYour max health is: " + str(self.max_health) + "\nNumber of enemies defeated: " + str(self.enemiesDefeated)
 
     def get_spell_info(self):
         return self.name + " has the following spells:\n" + "\n".join(self.spells)
@@ -130,7 +132,7 @@ class user():
         return self.name + " has the following items:\n" + "\n".join(self.items)
 
     def get_house_info(self):
-        return self.name + " is in " + self.house.name + "."
+        return self.name + " is in " + eval(self.house).name + "."
 
     def get_points_info(self):
         return self.name + " has " + self.points + " points."
