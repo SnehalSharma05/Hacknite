@@ -75,19 +75,21 @@ def readAmajeDataUser(data):
         return
 
     for x in data['users']:
-        u = user(x["name"], x["id"], eval(x["house"]), x["wand"], x["points"], x["wealth"],
+        u = user(x["name"], x["id"], x["house"], x["wand"], x["points"], x["wealth"],
                  x["potions"], x["spells"], x["items"], x["progress"], x["enemiesDefeated"])
 
-        if (u.house):
-            u.house.students.append(u)
+        house = eval(x["house"])
 
-            if u.house.name == "Gryffindor":
+        if (house):
+            house.students.append(u)
+
+            if house.name == "Gryffindor":
                 Gryffindor.students.append(u)
-            elif u.house.name == "Ravenclaw":
+            elif house.name == "Ravenclaw":
                 Ravenclaw.students.append(u)
-            elif u.house.name == "Hufflepuff":
+            elif house.name == "Hufflepuff":
                 Hufflepuff.students.append(u)
-            elif u.house.name == "Slytherin":
+            elif house.name == "Slytherin":
                 Slytherin.students.append(u)
 
 
