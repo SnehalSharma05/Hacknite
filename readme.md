@@ -79,3 +79,5 @@ Things that we could have added given more time:
 - Implementing and integrating items like potions, brooms, etc.
 
 ## Demo video (youtube link)
+
+https://youtu.be/vaFalEyPdoE
