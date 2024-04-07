@@ -177,7 +177,7 @@ class bot(discord.Client):
                 if message.channel.name == "dueling-club" and message.content.find("~duel") != -1:
                     await self.games.duel(self, currUser, message)
 
-                if message.content == "~enter" and message.channel.name == "forbidden-forest":
+                if message.content == "~explore" and message.channel.name == "forbidden-forest":
                     await self.games.botDuel(self, currUser, message)
 
                 if message.channel.name == "general":
