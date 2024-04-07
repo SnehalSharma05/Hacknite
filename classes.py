@@ -29,17 +29,19 @@ class house():
     def get_name(self):
         return self.name
 
-    def get_info(self):
+    def get_info(self, bot):
         '''
         Retures the name of the house, the number of points it has and the students.
         '''
-        return self.name + f" has {self.points} points. The following students are in {self.name}:\n" + "\n".join([x.name for x in self.students])
+        self.get_role(bot)
+        return f"{self.role.mention}" + f" has {self.points} points. The following students are in {self.name}:\n" + "\n".join([x.name for x in self.students])
 
     def get_student_info(self):
         return self.name + " has the following students:\n" + "\n".join(self.students)
 
-    def get_points_info(self):
-        return self.name + f" has {self.points} points."
+    def get_points_info(self, bot):
+        self.get_role(bot)
+        return f"{self.role.mention}" + f" has {self.points} points."
 
     def get_role(self, bot):
         '''
