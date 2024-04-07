@@ -182,7 +182,7 @@ class bot(discord.Client):
                         use = self.get_user(currUser.id)
 
                         em = embedMessage(
-                            title="My Stats", author=user.name, thumbnail=use.display_avatar.url)
+                            title="My Stats", author=currUser.name, thumbnail=use.display_avatar.url)
                         em.add_field(
                             name="House", value=currUser.house, inline=True)
                         em.add_field(
@@ -198,7 +198,7 @@ class bot(discord.Client):
                         em.add_field(name="Enemies Defeated",
                                      value=currUser.enemiesDefeated, inline=True)
 
-                        self.create_embed(em, message)
+                        await self.create_embed(em, message)
 
                     if message.content == "~houseStats":
                         await self.send(message, eval(currUser.house).get_info())
@@ -212,7 +212,7 @@ class bot(discord.Client):
                         em.add_field(name="number of students",
                                      value=len(house.students), inline=True)
 
-                        self.create_embed(em, message)
+                        await self.create_embed(em, message)
 
                         if message.content == "~leaderboard":
                             houses = [Slytherin, Gryffindor,

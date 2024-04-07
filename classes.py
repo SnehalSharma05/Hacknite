@@ -8,6 +8,9 @@ class house():
         self.students = [" "]
         self.url = url
 
+    def __str__(self):
+        return self.name
+
     def add_points(self, points):
         self.points += points
 
@@ -112,10 +115,10 @@ class user():
         await bot.guild.get_member(self.id).add_roles(house.role)
 
     def get_info(self):
-        return self.name + " is in " + self.house + f" and has {self.points} points."
+        return self.name + " is in " + self.house.name + f" and has {self.points} points."
 
     def get_full_info(self):
-        return self.name + " is in " + self.house + f" and has {self.points} points. You have the following spells: " + ",".join(self.spells) + "\nYou have the following wand: " + self.wand + "\nYour level is: " + str(self.level) + "\nYour max health is: " + str(self.max_health) + "\nNumber of enemies defeated: " + str(self.enemiesDefeated)
+        return self.name + " is in " + self.house.name + f" and has {self.points} points. You have the following spells: " + ",".join(self.spells) + "\nYou have the following wand: " + self.wand + "\nYour level is: " + str(self.level) + "\nYour max health is: " + str(self.max_health) + "\nNumber of enemies defeated: " + str(self.enemiesDefeated)
 
     def get_spell_info(self):
         return self.name + " has the following spells:\n" + "\n".join(self.spells)
@@ -127,7 +130,7 @@ class user():
         return self.name + " has the following items:\n" + "\n".join(self.items)
 
     def get_house_info(self):
-        return self.name + " is in " + self.house + "."
+        return self.name + " is in " + self.house.name + "."
 
     def get_points_info(self):
         return self.name + " has " + self.points + " points."

@@ -1,13 +1,13 @@
 {
     "users": [
         {
-            "name": "boom29",
-            "id": 756494480047079446,
-            "house": "Ravenclaw",
+            "name": "snehal",
+            "id": 795892519393165332,
+            "house": "Gryffindor",
             "health": 150,
             "max_health": 150,
             "enemiesDefeated": 0,
-            "wand": null,
+            "wand": "test",
             "spells": [
                 "stupefy",
                 "expelliarmus",
@@ -15,46 +15,6 @@
             ],
             "points": 0,
             "level": 0,
-            "wealth": 0,
-            "potions": [],
-            "items": [],
-            "progress": 4
-        },
-        {
-            "name": "snehal",
-            "id": 795892519393165332,
-            "house": "Gryffindor",
-            "health": 150,
-            "max_health": 150,
-            "enemiesDefeated": 0,
-            "wand": null,
-            "spells": [
-                "stupefy",
-                "expelliarmus",
-                "protego"
-            ],
-            "points": 10,
-            "level": 0,
-            "wealth": 0,
-            "potions": [],
-            "items": [],
-            "progress": 4
-        },
-        {
-            "name": "aris",
-            "id": 1135240477956907058,
-            "house": "Gryffindor",
-            "health": 150,
-            "max_health": 150,
-            "enemiesDefeated": 0,
-            "wand": null,
-            "spells": [
-                "stupefy",
-                "expelliarmus",
-                "protego"
-            ],
-            "points": -10,
-            "level": -1,
             "wealth": 0,
             "potions": [],
             "items": [],
