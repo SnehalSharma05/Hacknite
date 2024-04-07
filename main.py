@@ -241,6 +241,7 @@ class bot(discord.Client):
                                   description="***Complete the introduction quests to unlock further games!***")
                 await self.create_embed(em, message)
 
+        if currUser:
             currUser.update_level()
             self.save(currUser)
             self.notFreeUser.remove(message.author.id)
