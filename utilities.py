@@ -51,7 +51,8 @@ def getDumpHouse(lst):
         l = vars(x)
         if 'students' in l:
             del l['students']
-        del l['role']
+        if 'role' in l:
+            del l['role']
         dic.append(l)
 
     return dic

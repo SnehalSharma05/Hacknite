@@ -1,8 +1,8 @@
 {
     "users": [
         {
-            "name": "mione",
-            "id": 1135240477956907058,
+            "name": "boom29",
+            "id": 756494480047079446,
             "house": "Gryffindor",
             "health": 150,
             "max_health": 150,
@@ -15,7 +15,7 @@
             ],
             "points": 0,
             "level": 0,
-            "wealth": 3,
+            "wealth": 0,
             "potions": [],
             "items": [],
             "progress": 4
