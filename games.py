@@ -644,23 +644,23 @@ class games:
         words = terms + spells + characters + creatures
         done = []
         msg = "***Welcome to WordChain, a game where you put your vocabulary of the Wizarding World to the test!***\n ***Basically, you've to type a Harry Potter related word that starts with the ending letter of the last word. You and the Potterbot take turns. Be careful to not repeat any word.***"
-        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg, image = "https://i.pinimg.com/564x/9e/1f/2e/9e1f2e58b67459aa5205f39684d5f372.jpg", title = "Word Chain")
+        em = embedMessage(colour=discord.Colour.orange(), description=msg, image = "https://i.pinimg.com/564x/9a/fa/b1/9afab1f6432397855e25f7dfc05a4470.jpg", title = "Word Chain")
         await client.create_embed(em, message)
 
         msg = "***You get to start! Please type your word.***"
-        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+        em = embedMessage(colour=discord.Colour.orange(), description=msg)
         await client.create_embed(em, message)
         while True:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
             if response.content == "exit" and response.channel.name == "mini-games":
                 msg = "***Farewell for now, come back again soon!***"
-                em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
                 await client.create_embed(em, message)
                 return False
             elif response.channel.name == "mini-games":
                 if response.content.title() not in words:
                     msg = "***That word is not related to Harry Potter. You lose.***"
-                    em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
                     await client.create_embed(em, message)
                     key = await self.key(client, currUser, message)
                     if key == 0:
@@ -668,7 +668,7 @@ class games:
 
                 elif response.content.title() in done:
                     msg = "***Oops! That word is already done. You lose.***"
-                    em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
                     await client.create_embed(em, message)
                     key = await self.key(client, currUser, message)
                     if key == 0:
@@ -677,7 +677,7 @@ class games:
                 elif len(done) > 0:
                     if response.content[0].lower() != myword[-1]:
                         msg = f"***Your word does not start with '{myword[-1].upper()}'. You've lost.***"
-                        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                        em = embedMessage(colour=discord.Colour.orange(), description=msg)
                         await client.create_embed(em, message)
                         key = await self.key(client, currUser, message)
                         if key == 0:
@@ -691,17 +691,17 @@ class games:
                     await response.channel.send(myword)
             else:
                 msg = "***A game is already in progress. Do you want to exit Word Chain? (yes/anything else)***"
-                em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
                 await client.create_embed(em, message)
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
                     msg = "***Farewell for now, come back again soon!***"
-                    em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
                     await client.create_embed(em, message)
                     return False
                 continue
         msg = f"***You've earned {len(done)//2} galleons and {len(done) // 2} points for your house!***"
-        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+        em = embedMessage(colour=discord.Colour.orange(), description=msg)
         await client.create_embed(em, message)
         currUser.house.points += len(done) // 2
         currUser.wealth += len(done) // 2
@@ -752,14 +752,16 @@ class games:
     async def crossword(self, client, currUser, message):
 
         chosen_one = random.choice(list(cross.keys()))
-        await message.channel.send("Here's your crossword!\n Please don't put a space between 2 words in your answer.",
-                                   file=discord.File(chosen_one))
-        await message.channel.send(
-            "You can type your answers in any order, but the format must be 'question_number answer'. For example, if the answer to the first question is Harry Potter, type '1 HarryPotter'. The answers are not case sensitive.")
-        await message.channel.send(
-            "For the crosswords that have both across and down on the same number, follow the following format: For example, if the answer for 1 across is HarryPotter, type '1a HarryPotter'. And '1d Hermione' if the answer for 1 down is Hermione.")
-        await message.channel.send("Type 'I'm done' when you wish to end the game and reveal the answers.")
 
+        msg = "***You can type your answers in any order, but the format must be 'question_number answer'. For example, if the answer to the first question is Harry Potter, type '1 HarryPotter'. ***\n ***For the crosswords that have both across and down on the same number, follow the following format: For example, if the answer for 1 across is HarryPotter, type '1a HarryPotter'. And '1d Hermione' if the answer for 1 down is Hermione.***"
+        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg, title = "Crossword", image = "https://i.pinimg.com/564x/94/3e/b9/943eb9647decd2b38d3a4fb3ac81589f.jpg")
+        await client.create_embed(em, message)
+
+        msg = "***Please don't put a space between 2 words in your answer.The answers are not case sensitive.***\n ***Type 'I'm done' when you wish to end the game and reveal the answers.***"
+        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+        await client.create_embed(em, message)
+
+        await message.channel.send("Here's your crossword!\n ", file=discord.File(chosen_one))
         user_answers = {}
         for i in cross[chosen_one]:
             user_answers[i] = ''
@@ -767,20 +769,29 @@ class games:
         while True:
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
             if user_answers == cross[chosen_one]:
-                await message.channel.send("Congrats! You've successfully solved the crossword.")
-                await message.channel.send(f"You've earned {len(user_answers)} galleons and {user_answers} points for your house!")
+                msg = "***Congrats! You've successfully solved the crossword.***"
+                em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                await client.create_embed(em, message)
+
+                msg = f"***You've earned {len(user_answers)} galleons and {user_answers} points for your house!***"
+                em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                await client.create_embed(em, message)
                 currUser.house.add_points(len(user_answers))
                 currUser.wealth += len(user_answers)*2
                 return True
             elif response.channel.name == "mini-games":
                 if response.content == "exit":
-                    await response.channel.send("Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon!***"
+                    em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                    await client.create_embed(em, message)
                     return False
 
                 elif response.content.lower() == "i'm done":
                     for i in cross[chosen_one]:
                         await response.channel.send(f"{i} : {cross[chosen_one][i]}")
-                    await message.channel.send(f"You've earned {user_answers} points for your house!")
+                    msg = f"***You've earned {user_answers} points for your house!***"
+                    em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                    await client.create_embed(em, message)
                     currUser.house.add_points(len(user_answers))
                     return True
 
@@ -788,29 +799,42 @@ class games:
 
                 try:
                     if response.content[n + 1:].title() == cross[chosen_one][response.content[0:n]]:
-                        await response.channel.send("You're right, of course!")
+                        msg = "***You're right, of course!***"
+                        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                        await client.create_embed(em, message)
                         user_answers[response.content[0:n]
                                      ] = response.content[n + 1:].title()
                     else:
-                        await response.channel.send(f"That's not right. Try again.")
+                        msg = "***That's not right. Try again.***"
+                        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                        await client.create_embed(em, message)
                         user_answers[response.content[0:n]
                                      ] = response.content[n + 1:].title()
 
                 except KeyError:
                     if (n == -1):
-                        await response.channel.send(f"There is no {response.content}")
+                        msg = f"***There is no {response.content}***"
+                        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                        await client.create_embed(em, message)
 
                     elif (response.content[n - 1].isdigit()):
-                        await response.channel.send(
-                            f"{response.content[0:n]} has both across and down. Please specify which one you're answering.")
+                        msg = f"***{response.content[0:n]} has both across and down. Please specify which one you're answering.***"
+                        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                        await client.create_embed(em, message)
 
                     else:
-                        await response.channel.send(f"There is no {response.content[0:n]}")
+                        msg = f"***There is no {response.content[0:n]}***"
+                        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                        await client.create_embed(em, message)
             else:
-                await response.channel.send("A game is already in progress. Do you want to exit crossword? (yes/anything else)")
+                msg = "***A game is already in progress. Do you want to exit crossword? (yes/anything else)***"
+                em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                await client.create_embed(em, message)
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
-                    await response.channel.send("Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon!***"
+                    em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+                    await client.create_embed(em, message)
                     return False
 
     async def botDuel(self, bot, currUser, message):
