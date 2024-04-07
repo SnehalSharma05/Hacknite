@@ -1126,7 +1126,7 @@ class games:
                     return False
 
         msg = f"***You were right {s}/7 times!***\n***Peeves is now headed to annoy Mrs Norris and you're free to roam the corridors again! Now that you think about it, hanging out with Peeves was actually fun and turned out to be the highlight of your night!***"
-        em = embedMessage(colour=discord.Colour.blue(), description=msg)
+        em = embedMessage(colour=discord.Colour.blue(), description=msg, image = "https://i.pinimg.com/564x/14/fb/69/14fb692c99f2c068eafd625a39eb081a.jpg")
         await client.create_embed(em, message)
         msg = f"***You've earned {s*2} galleons and {s} points for your house!***"
         em = embedMessage(colour=discord.Colour.blue(), description=msg)
