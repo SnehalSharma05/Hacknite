@@ -7,13 +7,13 @@ Introducing a magical Discord bot inspired by the enchanting world of Harry Pott
 - [Track and Contributors](#Track-and-Contributors)
 - [Problem Statement](#Problem-Statement)
 - [Goal](#Goal)
-- [Features](#Features)
+- [Features and How to run](#Features-and-How-to-run)
 - [Tech Stack](#Tech-Stack)
-- [How to run](#How-to-run)
 - [Deployment](#Deployment)
 - [Applications of your idea](#Applications-of-your-idea)
 - [Further improvements](#Further-improvements)
 - [Demo video](#Demo-video)
+
 
 ## Track and Contributors
 ***Track***: Discord-Arcade
@@ -56,7 +56,17 @@ To create a Discord bot that brings the magic of the Harry Potter universe to yo
 - Natural interactions: We have tried our best to take into account most situations that could occur during an interaction so that the user experience is smooth.(The hardest part considering that the user could message anything anywhere)
 
 ## Tech Stack
+
+- Discord.py
+- Python
+- JSON
+- GitHub
+
 ## Deployment(if done)
+
+Up and running on a Discord server. The bot is currently deployed on a server and can be invited to any server using the following link:
+[Invite PotterBot](https://discord.com/oauth2/authorize?client_id=1220419669379383376&permissions=8&scope=bot)
+
 ## Applications of your idea
 
 Endless entertainment for Harry Potter fans on Discord servers. The bot can be used in Harry Potter themed servers to provide an interactive experience to the users. It can also be used in general servers to provide a fun and engaging experience to the users.
@@ -66,6 +76,6 @@ Endless entertainment for Harry Potter fans on Discord servers. The bot can be u
 Things that we could have added given more time:
 - Open, choice based story mode.
 - Shops: Although we have currency which can be used to buy keys in games, we have not implemented a shop where users can buy items.
-- 
+- Implementing and integrating items like potions, brooms, etc.
 
 ## Demo video (youtube link)
