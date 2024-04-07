@@ -214,11 +214,11 @@ class bot(discord.Client):
 
                         await self.create_embed(em, message)
 
-                        if message.content == "~leaderboard":
-                            houses = [Slytherin, Gryffindor,
-                                      Ravenclaw, Hufflepuff]
-                            houses.sort(key=lambda x: x.points, reverse=True)
-                            await bot.send(self, message, f"1){houses[0].get_points_info()}\n2){houses[1].get_points_info()}\n3){houses[2].get_points_info()}\n4){houses[3].get_points_info()}")
+                    if message.content == "~leaderboard":
+                        houses = [Slytherin, Gryffindor,
+                                  Ravenclaw, Hufflepuff]
+                        houses.sort(key=lambda x: x.points, reverse=True)
+                        await bot.send(self, message, f"1){houses[0].get_points_info()}\n2){houses[1].get_points_info()}\n3){houses[2].get_points_info()}\n4){houses[3].get_points_info()}")
 
                 if message.channel.name == "mini-games":
                     if message.content == "~emoGuess":
