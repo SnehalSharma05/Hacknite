@@ -31,7 +31,7 @@ def getDumpUser(lst):
 
     for x in lst:
         l = vars(x)
-        l['house'] = l['house'].name
+        l['house'] = str(l['house'])
         dic.append(l)
 
     return dic
@@ -51,7 +51,8 @@ def getDumpHouse(lst):
         l = vars(x)
         if 'students' in l:
             del l['students']
-        del l['role']
+        if 'role' in l:
+            del l['role']
         dic.append(l)
 
     return dic
