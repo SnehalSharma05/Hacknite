@@ -249,7 +249,7 @@ class bot(discord.Client):
 
         ######### moderator commands #########
 
-        command_prefix = ">"
+        # command_prefix = ">"
 
         # if (message.content.startswith(command_prefix)):
         #     if (message.author.guild_permissions.administrator):
