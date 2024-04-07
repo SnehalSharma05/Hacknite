@@ -888,9 +888,6 @@ class games:
         em = embedMessage(colour=discord.Colour.blue(), description=msg,image="https://i.pinimg.com/564x/89/a3/14/89a314433a85e74bbce03ab3b31a7b8b.jpg")
         await bot.create_embed(em, message)
         while True:
-            await message.channel.send(f"{currUser.name}'s health points: {currUser.health}")
-            await message.channel.send(f'''{"|||||" + "|" * (0 if currUser.health < 0 else currUser.health) * 3} \n {currUser.name}'s spells: {",".join(currUser.spells)}\n ''')
-            await message.channel.send(f"{opponent.name}'s health points: {opponent.health}")
             if opponent.name not in ["Basilisk", "Werewolf", "Acromantula"]:
                 msg = f'''***{currUser.name}'s health points: {0 if currUser.health < 0 else currUser.health}***\n''' + (
                             "🟩" + "🟩" * (
