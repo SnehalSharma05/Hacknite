@@ -114,6 +114,7 @@ class user():
 
     async def set_house(self, bot, house):
         self.house = house
+        eval(house).get_role(bot)
         await bot.guild.get_member(self.id).add_roles(eval(house).role)
 
     def get_info(self):

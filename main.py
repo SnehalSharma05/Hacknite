@@ -87,10 +87,10 @@ class bot(discord.Client):
         await guild.create_text_channel('dueling-club', category=categ)
         await guild.create_text_channel('forbidden-forest', category=categ)
         await guild.create_text_channel('mini-games', category=categ)
-        await guild.create_role(name="Gryffindor", color=discord.Color.red())
-        await guild.create_role(name="Ravenclaw", color=discord.Color.blue())
-        await guild.create_role(name="Hufflepuff", color=discord.Color.gold())
-        await guild.create_role(name="Slytherin", color=discord.Color.green())
+        Gryffindor.role = await guild.create_role(name="Gryffindor", color=discord.Color.red())
+        Ravenclaw.role = await guild.create_role(name="Ravenclaw", color=discord.Color.blue())
+        Slytherin.role = await guild.create_role(name="Hufflepuff", color=discord.Color.gold())
+        Hufflepuff.role = await guild.create_role(name="Slytherin", color=discord.Color.green())
 
         print("Created the channels and roles.")
 
@@ -101,12 +101,6 @@ class bot(discord.Client):
 
         if not y:
             await self.on_guild_join(self.guild)
-
-        # Getting the roles for the houses.
-        Ravenclaw.get_role(self)
-        Gryffindor.get_role(self)
-        Slytherin.get_role(self)
-        Hufflepuff.get_role(self)
 
     async def on_message(self, message: discord.Message):
         """
