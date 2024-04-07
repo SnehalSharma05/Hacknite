@@ -139,6 +139,10 @@ class games:
                     return False
                 elif response.content == "ready":
                     continue
+                else:
+                    msg = "***I'm sorry, I didn't catch that.***"
+                    em.description = msg
+                    await bot.create_embed(em, message)
         else:
             msg = "***Farewell for now, come back again soon!***"
             em.description = msg
