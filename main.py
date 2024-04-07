@@ -167,6 +167,7 @@ class bot(discord.Client):
         elif currUser:
             self.notFreeUser.append(message.author.id)
             if currUser.progress >= 4:
+                self.notFreeChannel.append(message.channel.id)
                 # adding channel to not free channel
                 if message.channel.name == "dueling-club" and message.content.find("~duel") != -1:
                     await self.games.duel(self, currUser, message)
