@@ -345,7 +345,7 @@ class games:
                 if (opponent == None or opponent.progress < 4):
                     em = embedMessage(color=discord.Colour.blue(), description="***You have not completed the introductory quests, please finish them first.***")
                     await bot.create_embed(em, message)
-                    bot.notFreeUser.remove(int(opponent.id))
+                    bot.notFreeUser.remove(int(opponent_id))
                     return None
 
                 break
