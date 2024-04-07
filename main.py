@@ -98,6 +98,7 @@ class bot(discord.Client):
     async def on_guild_join(self, guild: discord.Guild):
         categ = await guild.create_category('PotterBot')
         await guild.create_voice_channel("chill", category=categ)
+        await guild.create_text_channel('guide', category=categ)
         await guild.create_text_channel('general', category=categ)
         await guild.create_text_channel('newts', category=categ)
         await guild.create_text_channel('dueling-club', category=categ)
