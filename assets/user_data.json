@@ -3,7 +3,7 @@
         {
             "name": "boom29",
             "id": 756494480047079446,
-            "house": "Ravenclaw",
+            "house": "<classes.house object at 0x0000029116D19100>",
             "health": 150,
             "max_health": 150,
             "enemiesDefeated": 0,
@@ -23,7 +23,7 @@
         {
             "name": "snehal",
             "id": 795892519393165332,
-            "house": "Gryffindor",
+            "house": "<classes.house object at 0x0000029116D19130>",
             "health": 150,
             "max_health": 150,
             "enemiesDefeated": 0,
@@ -43,7 +43,7 @@
         {
             "name": "aris",
             "id": 1135240477956907058,
-            "house": "Gryffindor",
+            "house": "<classes.house object at 0x0000029116D19130>",
             "health": 150,
             "max_health": 150,
             "enemiesDefeated": 0,

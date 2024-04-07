@@ -779,15 +779,18 @@ class games:
 
         chosen_one = random.choice(list(cross.keys()))
 
-        msg = "***You can type your answers in any order, but the format must be 'question_number answer'. For example, if the answer to the first question is Harry Potter, type '1 HarryPotter'. ***\n ***For the crosswords that have both across and down on the same number, follow the following format: For example, if the answer for 1 across is HarryPotter, type '1a HarryPotter'. And '1d Hermione' if the answer for 1 down is Hermione.***"
+        msg = "***🎲 Solve a crossword right from the pages of the Daily Prophet! 🧩***\n ***Get ready to exercise your brain cells and embark on an exciting journey through words and clues. Challenge yourself with our collection of mind-bending crossword puzzles designed to test your vocabulary, wit, and problem-solving skills.***\n***Whether you're a seasoned wordsmith or a casual puzzler, there's something here for everyone. So, grab a cup of coffee, sharpen your pencils, and let's dive into the world of crosswords!***\n***Are you up for the challenge? Let's play! 🚀***"
         em = embedMessage(colour=discord.Colour.dark_gray(), description=msg, title = "Crossword", image = "https://i.pinimg.com/564x/94/3e/b9/943eb9647decd2b38d3a4fb3ac81589f.jpg")
         await client.create_embed(em, message)
 
-        msg = "***Please don't put a space between 2 words in your answer.The answers are not case sensitive.***\n ***Type 'I'm done' when you wish to end the game and reveal the answers.***"
+        msg = "***You can type your answers in any order, but the format must be 'question_number answer'. For example, if the answer to the first question is Harry Potter, type '1 HarryPotter'. ***\n ***For the crosswords that have both across and down on the same number, follow the following format: For example, if the answer for 1 across is HarryPotter, type '1a HarryPotter'. And '1d Hermione' if the answer for 1 down is Hermione.***\n***Please don't put a space between 2 words in your answer.The answers are not case sensitive.***\n ***Type 'I'm done' when you wish to end the game and reveal the answers.***"
         em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
         await client.create_embed(em, message)
 
-        await message.channel.send("Here's your crossword!\n ", file=discord.File(chosen_one))
+        msg = "***Here's your crossword!***"
+        em = embedMessage(colour=discord.Colour.dark_gray(), description=msg)
+        await client.create_embed(em, message)
+        await message.channel.send("", file=discord.File(chosen_one))
         user_answers = {}
         for i in cross[chosen_one]:
             user_answers[i] = ''
