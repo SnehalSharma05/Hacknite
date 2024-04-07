@@ -723,9 +723,9 @@ class games:
         return True
 
     async def Trivia(self, client, currUser, message):
-        await message.channel.send("7 years of calling Hogwarts home and here you are...\n Finally putting all your years of top level magical eductaion to the test!")
-        await message.channel.send("And not just any test - the most important one of 'em of all, the test that'll decide your future in the Wizarding World - the NEWTs!")
-        await message.channel.send("I hope you've done your revision! Good luck!")
+        msg = "***7 years of calling Hogwarts home and here you are...***\n ***Finally putting all your years of top level magical eductaion to the test!***\n***And not just any test - the most important one of 'em of all, the test that'll decide your future in the Wizarding World - the NEWTs!***\n***I hope you've done your revision! Good luck!***"
+        em = embedMessage(colour=discord.Colour.orange(), description=msg, title = "Nastily Exhausting Wizarding Tests", image = "https://i.pinimg.com/564x/65/5f/eb/655feb6696b676e263fb8a6c5992e58e.jpg")
+        await client.create_embed(em, message)
         ques_done = []
         s = 0
         while True:
@@ -739,28 +739,39 @@ class games:
             await message.channel.send(ques)
             response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
             if response.content == "exit" and response.channel.name == "newts":
-                await response.channel.send("Farewell for now, come back again soon!")
+                msg = "***Farewell for now, come back again soon!***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await client.create_embed(em, message)
                 return False
             elif response.channel.name == "newts":
                 if response.content.title() in ans:
-                    await response.channel.send("You're correct!")
+                    msg = "***You're correct!***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await client.create_embed(em, message)
                     s += 1
 
                 else:
-                    await response.channel.send(f"That's not right. The correct answer is {ans[0]}.")
+                    msg = f"***That's not right. The correct answer is {ans[0]}.***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await client.create_embed(em, message)
                     key = await self.key(client, currUser, message)
                     if key == 0:
                         break
             else:
-                await response.channel.send("A game is already in progress. Do you want to exit trivia? (yes/anything else)")
+                msg = "***A game is already in progress. Do you want to exit trivia? (yes/anything else)***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                await client.create_embed(em, message)
                 response = await client.wait_for('message', check=lambda message1: client.check(message1, message))
                 if response.content == "yes":
-                    await response.channel.send("Farewell for now, come back again soon!")
+                    msg = "***Farewell for now, come back again soon***!"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await client.create_embed(em, message)
                     return False
                 continue
 
-        await response.channel.send(f"You were right {s} times!")
-        await message.channel.send(f"You've earned {s} points for your house!")
+        msg = f"***You were right {s} times!***\n***You've earned {s} points for your house!***"
+        em = embedMessage(colour=discord.Colour.orange(), description=msg)
+        await client.create_embed(em, message)
         currUser.house.add_points(s)
         return True
 
