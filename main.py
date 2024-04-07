@@ -122,8 +122,8 @@ class bot(discord.Client):
         print(message.content)
 
         currUser = self.getUser(message)
-        self.notFreeUser.append(message.author.id)
         if message.content.casefold() == "~revelio" and message.channel.name == "general":
+            self.notFreeUser.append(message.author.id)
             # adding channel to not free channel
             self.notFreeChannel.append(message.channel.id)
             currUser = await self.games.introduction(self, message)
@@ -162,12 +162,12 @@ class bot(discord.Client):
                 await self.create_embed(em, message)
 
             # freeing the channel
-            self.notFreeChannel.append(message.channel.id)
+            self.notFreeChannel.remove(message.channel.id)
 
         elif currUser:
+            self.notFreeUser.append(message.author.id)
             if currUser.progress >= 4:
                 # adding channel to not free channel
-                self.notFreeChannel.append(message.channel.id)
                 if message.channel.name == "dueling-club" and message.content.find("~duel") != -1:
                     await self.games.duel(self, currUser, message)
 
@@ -197,8 +197,21 @@ class bot(discord.Client):
                         em.add_field(name="Enemies Defeated",
                                      value=currUser.enemiesDefeated, inline=True)
 
+                        self.create_embed(em, message)
+
                     if message.content == "~houseStats":
                         await self.send(message, eval(currUser.house).get_info())
+
+                        house = currUser.house
+                        em = embedMessage(title="House Stats",
+                                          thumbnail=house.url, inline=True)
+
+                        em.add_field(
+                            name="points", value=house.points, inline=True)
+                        em.add_field(name="number of students",
+                                     value=len(house.students), inline=True)
+
+                        self.create_embed(em, message)
 
                         if message.content == "~leaderboard":
                             houses = [Slytherin, Gryffindor,
@@ -221,7 +234,7 @@ class bot(discord.Client):
                         await self.games.Trivia(self, currUser, message)
 
                 # removing channel
-                self.notFreeChannel.append(message.channel.id)
+                self.notFreeChannel.remove(message.channel.id)
 
             else:
                 em = embedMessage(title="Introduction Quests",
@@ -236,57 +249,57 @@ class bot(discord.Client):
 
         command_prefix = ">"
 
-        if (message.content.startswith(command_prefix)):
-            if (message.author.guild_permissions.administrator):
-                command = message.content[len(command_prefix):]
+        # if (message.content.startswith(command_prefix)):
+        #     if (message.author.guild_permissions.administrator):
+        #         command = message.content[len(command_prefix):]
 
-                if (command.startswith("kick")):
-                    user = command.split(" ")[1][2:-1]
-                    user = self.get_user(int(user))
-                    reason = " ".join(command.split(" ")[2:])
-                    await self.guild.kick(user, reason=reason)
-                    await self.send(message, f"{user} has been kicked.")
+        #         if (command.startswith("kick")):
+        #             user = command.split(" ")[1][2:-1]
+        #             user = self.get_user(int(user))
+        #             reason = " ".join(command.split(" ")[2:])
+        #             await self.guild.kick(user, reason=reason)
+        #             await self.send(message, f"{user} has been kicked.")
 
-                elif (command.startswith("ban")):
-                    user = command.split(" ")[1][2:-1]
-                    user = self.get_user(int(user))
-                    reason = " ".join(command.split(" ")[2:])
-                    await self.guild.ban(user, reason=reason)
-                    await self.send(message, f"{user} has been banned.")
+        #         elif (command.startswith("ban")):
+        #             user = command.split(" ")[1][2:-1]
+        #             user = self.get_user(int(user))
+        #             reason = " ".join(command.split(" ")[2:])
+        #             await self.guild.ban(user, reason=reason)
+        #             await self.send(message, f"{user} has been banned.")
 
-                elif (command.startswith("softban")):
-                    user = command.split(" ")[1][2:-1]
-                    user = self.get_user(int(user))
-                    await self.guild.ban(user)
-                    await self.guild.unban(user)
-                    await self.send(message, f"{user} has been softbanned.")
+        #         elif (command.startswith("softban")):
+        #             user = command.split(" ")[1][2:-1]
+        #             user = self.get_user(int(user))
+        #             await self.guild.ban(user)
+        #             await self.guild.unban(user)
+        #             await self.send(message, f"{user} has been softbanned.")
 
-                elif (command.startswith("unban")):
-                    user = command.split(" ")[1][2:-1]
-                    user = self.get_user(int(user))
-                    await self.guild.unban(user)
-                    await self.send(message, f"{user} has been unbanned.")
+        #         elif (command.startswith("unban")):
+        #             user = command.split(" ")[1][2:-1]
+        #             user = self.get_user(int(user))
+        #             await self.guild.unban(user)
+        #             await self.send(message, f"{user} has been unbanned.")
 
-                elif (command.startswith("mute")):
-                    user = command.split(" ")[1][2:-1]
-                    user = self.get_user(int(user))
-                    await self.guild.mute(user)
-                    await self.send(message, f"{user} has been muted.")
+        #         elif (command.startswith("mute")):
+        #             user = command.split(" ")[1][2:-1]
+        #             user = self.get_user(int(user))
+        #             await self.guild.mute(user)
+        #             await self.send(message, f"{user} has been muted.")
 
-                elif (command.startswith("unmute")):
-                    user = command.split(" ")[1][2:-1]
-                    user = self.get_user(int(user))
-                    await self.guild.unmute(user)
-                    await self.send(message, f"{user} has been unmuted.")
+        #         elif (command.startswith("unmute")):
+        #             user = command.split(" ")[1][2:-1]
+        #             user = self.get_user(int(user))
+        #             await self.guild.unmute(user)
+        #             await self.send(message, f"{user} has been unmuted.")
 
-                elif (command.startswith("clear")):
-                    await message.channel.purge()
+        #         elif (command.startswith("clear")):
+        #             await message.channel.purge()
 
-                elif (command.startswith("slowmode")):
-                    time = command.split(" ")[1]
-                    await message.channel.edit(slowmode_delay=time)
-                    await message.channel.send(f"Slowmode set to {time} seconds.")
-                    await self.send(message, f"Slowmode set to {time} seconds.")
+        #         elif (command.startswith("slowmode")):
+        #             time = command.split(" ")[1]
+        #             await message.channel.edit(slowmode_delay=time)
+        #             await message.channel.send(f"Slowmode set to {time} seconds.")
+        #             await self.send(message, f"Slowmode set to {time} seconds.")
 
 
 potter = bot(dataHandler)

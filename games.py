@@ -160,7 +160,7 @@ class games:
                     Hufflepuff.add_student(currUser)
                     msg = "*** Ah, Hufflepuff it is! The house of the loyal and the kind, where friendship and hard work are valued above all. Welcome to the house of the badger!***"
                     em = embedMessage(colour=discord.Colour.yellow(), description=msg, title="Hufflepuff",
-                                      image="https://i.pinimg.com/564x/06/02/a8/0602a8781111f5023f0b64e6a07b2e4d.jpg")
+                                      image=currUser.house.url)
                     await bot.create_embed(em, message)
                     return True
 
@@ -169,7 +169,7 @@ class games:
                     Ravenclaw.add_student(currUser)
                     msg = "*** Ah, Ravenclaw it is! The house of the wise and the clever, where wit and intelligence are revered. Welcome to the house of the eagle!***"
                     em = embedMessage(colour=discord.Colour.blue(), description=msg, title="Ravenclaw",
-                                      image="https://i.pinimg.com/736x/8e/e2/ef/8ee2ef549843570b76a07799f936a674.jpg")
+                                      image=currUser.house.url)
                     await bot.create_embed(em, message)
                     return True
 
@@ -178,7 +178,7 @@ class games:
                     Gryffindor.add_student(currUser)
                     msg = "*** Ah, Gryffindor it is! The house of the brave and the bold, where courage and loyalty reign supreme. Welcome to the house of the lion!***"
                     em = embedMessage(colour=discord.Colour.red(), description=msg, title="Gryffindor",
-                                      image="https://i.pinimg.com/564x/fb/64/fb/fb64fb2332fe37cd45619cc98ad1232e.jpg")
+                                      image=currUser.house.url)
                     await bot.create_embed(em, message)
                     return True
 
@@ -187,7 +187,7 @@ class games:
                     Slytherin.add_student(currUser)
                     msg = "*** Ah, Slytherin it is! The house of the cunning and the ambitious, where resourcefulness and determination are prized. Welcome to the house of the serpent!***"
                     em = embedMessage(colour=discord.Colour.green(), description=msg, title="Slytherin",
-                                      image="https://i.pinimg.com/736x/2d/a3/ec/2da3ecce5858288bd939c619cfdb852f.jpg")
+                                      image=currUser.house.url)
                     await bot.create_embed(em, message)
                     return True
 
