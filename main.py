@@ -5,9 +5,8 @@ from games import *
 from EmbedMsg import *
 import os
 
-token = os.getenv('TOKEN')
-guild_id = int(os.getenv('GUILD_ID'))
-print(token, guild_id)
+token = ""
+print(token)
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 
@@ -78,24 +77,8 @@ class bot(discord.Client):
         print(f'Logged in as {self.user}')
         print(self.user.id)
 
-        # Need to save this guild id when created in the on_guild_join function.
-        self.guild = self.get_guild(guild_id)
-
-        y = False
-        for x in self.guild.categories:
-            if x.name == 'PotterBot':
-                y = True
-
-        if not y:
-            await self.on_guild_join(self.guild)
-
-        # Getting the roles for the houses.
-        Ravenclaw.get_role(self)
-        Gryffindor.get_role(self)
-        Slytherin.get_role(self)
-        Hufflepuff.get_role(self)
-
     async def on_guild_join(self, guild: discord.Guild):
+        self.guild = guild
         categ = await guild.create_category('PotterBot')
         await guild.create_voice_channel("chill", category=categ)
         await guild.create_text_channel('guide', category=categ)
@@ -110,6 +93,20 @@ class bot(discord.Client):
         await guild.create_role(name="Slytherin", color=discord.Color.green())
 
         print("Created the channels and roles.")
+
+        y = False
+        for x in self.guild.categories:
+            if x.name == 'PotterBot':
+                y = True
+
+        if not y:
+            await self.on_guild_join(self.guild)
+
+        # Getting the roles for the houses.
+        Ravenclaw.get_role(self)
+        Gryffindor.get_role(self)
+        Slytherin.get_role(self)
+        Hufflepuff.get_role(self)
 
     async def on_message(self, message: discord.Message):
         """

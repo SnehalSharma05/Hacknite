@@ -24,8 +24,7 @@ class games:
         await bot.create_embed(em, message)
 
         if message.author.id in user.ids:
-            msg = f"***Welcome back to Hogwarts, {
-                user.ids[message.author.id].name}!***"
+            msg = f"***Welcome back to Hogwarts, {user.ids[message.author.id].name}!***"
             em = embedMessage(colour=discord.Colour.blue(), description=msg)
             await bot.create_embed(em, message)
             return user.ids[message.author.id]
@@ -308,8 +307,7 @@ class games:
                 em.description = msg
                 await bot.create_embed(em, message)
                 selected = random.sample(creatures, 3)
-                msg = f"***In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {
-                    selected[0]}, {selected[1]} or {selected[2]}.***"
+                msg = f"***In order to test your subconscious connection with the wand, chose one out of these 3 magical creatures: {selected[0]}, {selected[1]} or {selected[2]}.***"
                 em.description = msg
                 await bot.create_embed(em, message)
 
@@ -321,10 +319,8 @@ class games:
                     return False
 
                 if response.content == random.choice(selected):
-                    currUser.wand = f"{wood_choice}, {
-                        core_choice} core, {length_choice} inches"
-                    msg = f"***Congratulations! You have successfully acquired your wand: {
-                        currUser.wand}!***"
+                    currUser.wand = f"{wood_choice}, {core_choice} core, {length_choice} inches"
+                    msg = f"***Congratulations! You have successfully acquired your wand: {currUser.wand}!***"
                     em.description = msg
                     await bot.create_embed(em, message)
                     return True
@@ -380,8 +376,7 @@ class games:
                     break
 
         while True and accepted:
-            msg = f'''***{currUser.name}'s health points: {currUser.health}***\n'''+("🟩" + "🟩" * (currUser.health // 6))+f'''\n***{currUser.name}'s spells: {",".join(currUser.spells)}***\n''' + "\n" + f"***{
-                opponent.name}'s health points: {opponent.health}***\n" + ("🟩" + "🟩" * (opponent.health // 6)) + f'''***\n{opponent.name}'s spells: {",".join(opponent.spells)}\n***'''
+            msg = f'''***{currUser.name}'s health points: {currUser.health}***\n'''+("🟩" + "🟩" * (currUser.health // 6))+f'''\n***{currUser.name}'s spells: {",".join(currUser.spells)}***\n''' + "\n" + f"***{opponent.name}'s health points: {opponent.health}***\n" + ("🟩" + "🟩" * (opponent.health // 6)) + f'''***\n{opponent.name}'s spells: {",".join(opponent.spells)}\n***'''
             em = embedMessage(colour=discord.Colour.blue(), description=msg)
             await bot.create_embed(em, message)
             print(currUser.id)
@@ -493,8 +488,7 @@ class games:
         stairs_left = total_stairs
         cap_steps = total_stairs//3
 
-        msg = f"***You and your friend are running late to class and you've just stepped onto the moving staircases. You now get {moves_left} moves to climb up {
-            total_stairs} stairs to make it to your Transfiguration lesson on time.*** \n ***Here's what you have to do:*** \n***Type in the number of stairs you wanna climb at a time and then play a game of 7 up 7 down to see if you were successful. Mind your step! You don't wanna step onto a trick stair which will cause you to get stuck on that stair for the next move.***\n***Consecuently that move will be skipped (total moves reduces by 2)***\n ***Max steps that can be crossed per move is {cap_steps}. All the best!***"
+        msg = f"***You and your friend are running late to class and you've just stepped onto the moving staircases. You now get {moves_left} moves to climb up {total_stairs} stairs to make it to your Transfiguration lesson on time.*** \n ***Here's what you have to do:*** \n***Type in the number of stairs you wanna climb at a time and then play a game of 7 up 7 down to see if you were successful. Mind your step! You don't wanna step onto a trick stair which will cause you to get stuck on that stair for the next move.***\n***Consecuently that move will be skipped (total moves reduces by 2)***\n ***Max steps that can be crossed per move is {cap_steps}. All the best!***"
         em = embedMessage(colour=discord.Colour.orange(), description=msg, title="Moving Staircases",
                           image="https://i.pinimg.com/originals/20/70/1d/20701db00f0e3bc9c358ed296d254b32.gif")
         await bot.create_embed(em, message)
@@ -559,10 +553,8 @@ class games:
                 if n.isdigit() and int(n) > 0 and int(n) <= cap_steps:
                     break
                 else:
-                    msg = f"***Please enter a valid number from 1-{
-                        cap_steps}.***"
-                    em = embedMessage(
-                        colour=discord.Colour.orange(), description=msg)
+                    msg = f"***Please enter a valid number from 1-{cap_steps}.***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
                     await bot.create_embed(em, message)
 
             while True:
@@ -599,10 +591,8 @@ class games:
 
             if trick == True:
                 increment_steps = random.randint(1, int(n))
-                msg = f"***Oh no! You stepped on a trick step on the {
-                    increment_steps} step.***"
-                em = embedMessage(
-                    colour=discord.Colour.orange(), description=msg)
+                msg = f"***Oh no! You stepped on a trick step on the {increment_steps} step.***"
+                em = embedMessage(colour=discord.Colour.orange(), description=msg)
                 await bot.create_embed(em, message)
                 stairs_left = min(stairs_left + increment_steps, total_stairs)
                 moves_left -= 1
@@ -615,16 +605,14 @@ class games:
                 stairs_left = max(0, stairs_left - int(n))
 
             elif not trick:
-                msg = f"***Alas! You have fallen down {
-                    n} steps. Better luck next time.***"
+                msg = f"***Alas! You have fallen down {n} steps. Better luck next time.***"
                 em = embedMessage(
                     colour=discord.Colour.orange(), description=msg)
                 await bot.create_embed(em, message)
                 stairs_left = min(stairs_left + int(n), total_stairs)
 
             moves_left -= 1
-            msg = f"***You now have to climb {
-                stairs_left} stairs in {moves_left} moves.***"
+            msg = f"***You now have to climb {stairs_left} stairs in {moves_left} moves.***"
             em = embedMessage(colour=discord.Colour.orange(), description=msg)
             await bot.create_embed(em, message)
 
@@ -643,8 +631,7 @@ class games:
             return True
 
         else:
-            msg = f"***Oh no! You couldn't maneuver the staircases on time and now you're late to class. Your excuse was lame and Professor McGonagall has deducted 5 house points from {
-                eval(currUser.house).get_name()}.***"
+            msg = f"***Oh no! You couldn't maneuver the staircases on time and now you're late to class. Your excuse was lame and Professor McGonagall has deducted 5 house points from {eval(currUser.house).get_name()}.***"
             em = embedMessage(colour=discord.Colour.orange(), description=msg)
             await bot.create_embed(em, message)
 
@@ -672,8 +659,7 @@ class games:
 
                 elif response.content.lower() == "yes":
                     if currUser.wealth < 50:
-                        em.description = f"***Uh oh! You only have {
-                            currUser.wealth} Galleons in your Gringotts account. You lose.***"
+                        em.description = f"***Uh oh! You only have {currUser.wealth} Galleons in your Gringotts account. You lose.***"
                         await client.create_embed(em, message)
                         key = 0
                         break
@@ -734,8 +720,7 @@ class games:
 
                 elif len(done) > 0:
                     if response.content[0].lower() != myword[-1]:
-                        msg = f"***Your word does not start with '{
-                            myword[-1].upper()}'. You've lost.***"
+                        msg = f"***Your word does not start with '{myword[-1].upper()}'. You've lost.***"
                         em = embedMessage(
                             colour=discord.Colour.orange(), description=msg)
                         await client.create_embed(em, message)
@@ -772,8 +757,7 @@ class games:
                     await client.create_embed(em, message)
                     return False
                 continue
-        msg = f"***You've earned {len(done)//2} galleons and {
-            len(done) // 2} points for your house!***"
+        msg = f"***You've earned {len(done)//2} galleons and {len(done) // 2} points for your house!***"
         em = embedMessage(colour=discord.Colour.orange(), description=msg)
         await client.create_embed(em, message)
         eval(currUser.house).add_points(len(done) // 2)
@@ -812,8 +796,7 @@ class games:
                     s += 1
 
                 else:
-                    msg = f"***That's not right. The correct answer is {
-                        ans[0]}.***"
+                    msg = f"***That's not right. The correct answer is {ans[0]}.***"
                     em = embedMessage(
                         colour=discord.Colour.orange(), description=msg)
                     await client.create_embed(em, message)
@@ -834,8 +817,7 @@ class games:
                     return False
                 continue
 
-        msg = f"***You were right {s} times!***\n***You've earned {
-            s} points for your house!***"
+        msg = f"***You were right {s} times!***\n***You've earned {s} points for your house!***"
         em = embedMessage(colour=discord.Colour.orange(), description=msg)
         await client.create_embed(em, message)
         eval(currUser.house).add_points(s)
@@ -871,8 +853,7 @@ class games:
                     colour=discord.Colour.dark_gray(), description=msg)
                 await client.create_embed(em, message)
 
-                msg = f"***You've earned {len(user_answers)} galleons and {
-                    len(user_answers)} points for your house!***"
+                msg = f"***You've earned {len(user_answers)} galleons and {len(user_answers)} points for your house!***"
                 em = embedMessage(
                     colour=discord.Colour.dark_gray(), description=msg)
                 await client.create_embed(em, message)
@@ -928,8 +909,7 @@ class games:
                         await client.create_embed(em, message)
 
                     elif (response.content[n - 1].isdigit()):
-                        msg = f"***{
-                            response.content[0:n]} has both across and down. Please specify which one you're answering.***"
+                        msg = f"***{response.content[0:n]} has both across and down. Please specify which one you're answering.***"
                         em = embedMessage(
                             colour=discord.Colour.dark_gray(), description=msg)
                         await client.create_embed(em, message)
@@ -954,8 +934,7 @@ class games:
 
     async def botDuel(self, bot, currUser, message):
         opponent = enemies[currUser.enemiesDefeated]
-        msg = f"***You have entered the forbidden forest and your opponent is {
-            opponent.name}***"
+        msg = f"***You have entered the forbidden forest and your opponent is {opponent.name}***"
         em = embedMessage(colour=discord.Colour.blue(), description=msg,
                           image="https://i.pinimg.com/564x/89/a3/14/89a314433a85e74bbce03ab3b31a7b8b.jpg")
         await bot.create_embed(em, message)
@@ -993,8 +972,7 @@ class games:
                 await bot.create_embed(em, message)
                 return False
             elif opponent.health <= 0:
-                msg = f"***Merlin's beard! {
-                    opponent.name} has been defeated! You have won the duel!***"
+                msg = f"***Merlin's beard! {opponent.name} has been defeated! You have won the duel!***"
                 em = embedMessage(
                     colour=discord.Colour.green(), description=msg)
                 await bot.create_embed(em, message)
@@ -1055,8 +1033,7 @@ class games:
                         await bot.create_embed(em, message)
                         return False
                     elif opponent.health <= 0:
-                        msg = f"***Merlin's beard! {
-                            opponent.name} has been defeated! You have won the duel!***"
+                        msg = f"***Merlin's beard! {opponent.name} has been defeated! You have won the duel!***"
                         em = embedMessage(
                             colour=discord.Colour.green(), description=msg)
                         await bot.create_embed(em, message)
@@ -1088,38 +1065,33 @@ class games:
                                     ), description=msg, image="https://i.pinimg.com/originals/b7/b6/78/b7b678bdc295fb6dcaac5a5a630b9fa4.gif")
                                     await bot.create_embed(em, message)
                                 else:
-                                    msg = f"***{opponent.name} has cast {
-                                        oppSpell.name} successfully!***"
+                                    msg = f"***{opponent.name} has cast {oppSpell.name} successfully!***"
                                     em = embedMessage(
                                         colour=discord.Colour.red(), description=msg)
                                     await bot.create_embed(em, message)
                                     damage_amount = oppSpell.damage
                                     if damage_amount > 0:
                                         currUser.health -= damage_amount
-                                        msg = f"***You have taken {
-                                            damage_amount} damage!***"
+                                        msg = f"***You have taken {damage_amount} damage!***"
                                         em = embedMessage(
                                             colour=discord.Colour.red(), description=msg)
                                         await bot.create_embed(em, message)
 
                             else:
-                                msg = f"***{opponent.name} has cast {
-                                    oppSpell.name} successfully!***"
+                                msg = f"***{opponent.name} has cast {oppSpell.name} successfully!***"
                                 em = embedMessage(
                                     colour=discord.Colour.red(), description=msg)
                                 await bot.create_embed(em, message)
                                 damage_amount = oppSpell.damage
                                 if damage_amount > 0:
                                     currUser.health -= damage_amount
-                                    msg = f"***You have taken {
-                                        damage_amount} damage!***"
+                                    msg = f"***You have taken {damage_amount} damage!***"
                                     em = embedMessage(
                                         colour=discord.Colour.red(), description=msg)
                                     await bot.create_embed(em, message)
                         else:
                             heal_amount = oppSpell.heal
-                            msg = f"***{opponent.name} has cast {
-                                oppSpell.name} and healed for {heal_amount} health points!***"
+                            msg = f"***{opponent.name} has cast {oppSpell.name} and healed for {heal_amount} health points!***"
                             em = embedMessage(
                                 colour=discord.Colour.green(), description=msg)
                             await bot.create_embed(em, message)
@@ -1134,8 +1106,7 @@ class games:
                         await bot.create_embed(em, message)
                 else:
                     if random.random() < opponent.prob:
-                        msg = f"***{
-                            opponent.name} has launched an attack! Type 'dodge' to dodge the attack.***"
+                        msg = f"***{opponent.name} has launched an attack! Type 'dodge' to dodge the attack.***"
                         em = embedMessage(
                             colour=discord.Colour.blue(), description=msg)
                         await bot.create_embed(em, message)
@@ -1154,15 +1125,13 @@ class games:
                                     colour=discord.Colour.green(), description=msg)
                                 await bot.create_embed(em, message)
                             else:
-                                msg = f"***{opponent.name}'s attack hit successfully.\nDamage taken = {
-                                    opponent.damage}***"
+                                msg = f"***{opponent.name}'s attack hit successfully.\nDamage taken = {opponent.damage}***"
                                 em = embedMessage(
                                     colour=discord.Colour.red(), description=msg)
                                 await bot.create_embed(em, message)
                                 currUser.health -= opponent.damage
                         else:
-                            msg = f"***{opponent.name}'s attack hit successfully.\nDamage taken = {
-                                opponent.damage}***"
+                            msg = f"***{opponent.name}'s attack hit successfully.\nDamage taken = {opponent.damage}***"
                             em = embedMessage(
                                 colour=discord.Colour.red(), description=msg)
                             await bot.create_embed(em, message)
@@ -1242,14 +1211,12 @@ class games:
 
                 else:
                     if len(ans) == 1:
-                        msg = f"***That's not right. The correct answer is {
-                            ans[0]}***"
+                        msg = f"***That's not right. The correct answer is {ans[0]}***"
                         em = embedMessage(
                             colour=discord.Colour.blue(), description=msg)
                         await client.create_embed(em, message)
                     else:
-                        msg = f"***That's not right. The correct answer is {
-                            ans[1]}***"
+                        msg = f"***That's not right. The correct answer is {ans[1]}***"
                         em = embedMessage(
                             colour=discord.Colour.blue(), description=msg)
                         await client.create_embed(em, message)
@@ -1270,8 +1237,7 @@ class games:
         em = embedMessage(colour=discord.Colour.blue(), description=msg,
                           image="https://i.pinimg.com/564x/14/fb/69/14fb692c99f2c068eafd625a39eb081a.jpg")
         await client.create_embed(em, message)
-        msg = f"***You've earned {s *
-                                  2} galleons and {s} points for your house!***"
+        msg = f"***You've earned {s *2} galleons and {s} points for your house!***"
         em = embedMessage(colour=discord.Colour.blue(), description=msg)
         await client.create_embed(em, message)
         currUser.wealth += s*2
