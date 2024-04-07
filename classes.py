@@ -2,13 +2,11 @@ import discord
 
 
 class house():
-    def __init__(self, name):
+    def __init__(self, name, url):
         self.name = name
         self.points = 0
         self.students = [" "]
-
-    def __str__(self):
-        return self.name
+        self.url = url
 
     def add_points(self, points):
         self.points += points
@@ -49,10 +47,14 @@ class house():
         print(f"{self.name} has been alloted its role.")
 
 
-Hufflepuff = house("Hufflepuff")
-Ravenclaw = house("Ravenclaw")
-Gryffindor = house("Gryffindor")
-Slytherin = house("Slytherin")
+Hufflepuff = house(
+    "Hufflepuff", "https://i.pinimg.com/564x/06/02/a8/0602a8781111f5023f0b64e6a07b2e4d.jpg")
+Ravenclaw = house(
+    "Ravenclaw", "https://i.pinimg.com/736x/8e/e2/ef/8ee2ef549843570b76a07799f936a674.jpg")
+Gryffindor = house(
+    "Gryffindor", "https://i.pinimg.com/564x/fb/64/fb/fb64fb2332fe37cd45619cc98ad1232e.jpg")
+Slytherin = house(
+    "Slytherin", "https://i.pinimg.com/736x/2d/a3/ec/2da3ecce5858288bd939c619cfdb852f.jpg")
 
 
 class item():
