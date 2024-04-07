@@ -1,0 +1,24 @@
+{
+    "users": [
+        {
+            "name": "mione",
+            "id": 1135240477956907058,
+            "house": "Gryffindor",
+            "health": 150,
+            "max_health": 150,
+            "enemiesDefeated": 0,
+            "wand": null,
+            "spells": [
+                "stupefy",
+                "expelliarmus",
+                "protego"
+            ],
+            "points": 0,
+            "level": 0,
+            "wealth": 3,
+            "potions": [],
+            "items": [],
+            "progress": 4
+        }
+    ]
+}
