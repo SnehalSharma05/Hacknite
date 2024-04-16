@@ -78,6 +78,6 @@ Things that we could have added given more time:
 - Shops: Although we have currency which can be used to buy keys in games, we have not implemented a shop where users can buy items.
 - Implementing and integrating items like potions, brooms, etc.
 
-## Demo video (youtube link)
+## Demo video
 
 https://youtu.be/vaFalEyPdoE
