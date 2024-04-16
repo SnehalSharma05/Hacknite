@@ -64,8 +64,8 @@ To create a Discord bot that brings the magic of the Harry Potter universe to yo
 
 ## Deployment(if done)
 
-Up and running on a Discord server. The bot is currently deployed on a server and can be invited to any server using the following link:
-[Invite PotterBot](https://discord.com/oauth2/authorize?client_id=1223251110777716738&permissions=8&scope=bothttps://discord.com/oauth2/authorize?client_id=1223251110777716738&permissions=8&scope=bot)
+Up and running on a Discord server. The bot is currently deployed on a server, join POGGERS to interact:
+[Join POGGERS Discord server](https://discord.gg/rkyS7V2d)
 
 ## Applications of your idea
 
