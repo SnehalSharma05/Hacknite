@@ -1,5 +1,4 @@
-# bot related constants
-TOKEN = "MTIyMDQxOTY2OTM3OTM4MzM3Ng.Gz7ug4.AwIcTXV57TEwlfR2GPTKAOwJayghwiI2RCy3TE"
+
 
 # Ollivanders shop related constants
 creatures = ["Acromantula", "Basilisk", "Boggart", "Centaur", "Chimaera", "Cornish Pixie", "Demiguise", "Dementor", "Diricawl", "Doxy", "Dragon", "Dugbog", "Erumpent", "Fawkes", "Flobberworm", "Fwooper", "Ghoul", "Giant", "Goblin", "Graphorn", "Grindylow", "Hippogriff", "House-Elf", "Hungarian Horntail", "Imp", "Jarvey", "Jobberknoll",
