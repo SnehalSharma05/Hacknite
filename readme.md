@@ -10,7 +10,7 @@ Introducing a magical Discord bot inspired by the enchanting world of Harry Pott
 - [Features and How to run](#Features-and-How-to-run)
 - [Tech Stack](#Tech-Stack)
 - [Deployment](#Deployment)
-- [Applications of your idea](#Applications-of-your-idea)
+- [Applications of our idea](#Applications-of-your-idea)
 - [Further improvements](#Further-improvements)
 - [Demo video](#Demo-video)
 
@@ -62,12 +62,12 @@ To create a Discord bot that brings the magic of the Harry Potter universe to yo
 - JSON
 - GitHub
 
-## Deployment(if done)
+## Deployment
 
 Up and running on a Discord server. The bot is currently deployed on a server, join POGGERS to interact:
 [Join POGGERS Discord server](https://discord.gg/rkyS7V2d)
 
-## Applications of your idea
+## Applications of our idea
 
 Endless entertainment for Harry Potter fans on Discord servers. The bot can be used in Harry Potter themed servers to provide an interactive experience to the users. It can also be used in general servers to provide a fun and engaging experience to the users.
 
