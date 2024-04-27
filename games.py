@@ -336,6 +336,7 @@ class games:
 
     async def duel(self, bot, currUser, message):
         accepted = False
+        opponent = None
         opponent_id = message.content.split(" ")[1][2:-1]
         msg = f'''***{currUser.name} has challenged {message.content.split(
             " ")[1]} to a duel! Do you accept {message.content.split(" ")[1]}? (yes/no)***'''
@@ -348,6 +349,8 @@ class games:
                 accepted = True
                 bot.notFreeUser.append(int(opponent_id))
                 opponent = bot.getUser(response)
+                opponent.update_level()
+                currUser.update_level()
                 if (opponent == None or opponent.progress < 4):
                     em = embedMessage(color=discord.Colour.blue(
                     ), description="***You have not completed the introductory quests, please finish them first.***")
@@ -368,6 +371,12 @@ class games:
                     em = embedMessage(
                         colour=discord.Colour.blue(), description=msg)
                     await bot.create_embed(em, message)
+                elif response.author.id == int(currUser.id) and response.content == '~cancel':
+                    msg = "***Duel cancelled***"
+                    em = embedMessage(
+                        colour=discord.Colour.red(), description=msg)
+                    await bot.create_embed(em, message)
+                    break
                 elif response.content.find("~duel") != -1:
                     msg = "***Pending duel request has been cancelled.***"
                     em = embedMessage(
@@ -477,10 +486,11 @@ class games:
                     await bot.create_embed(em, message)
                     break
         currUser.health = currUser.max_health
-        opponent.health = opponent.max_health
-        opponent.update_level()
-        bot.notFreeUser.remove(int(opponent.id))
-        bot.save(opponent)
+        if opponent:
+            opponent.health = opponent.max_health
+            opponent.update_level()
+            bot.save(opponent)
+            bot.notFreeUser.remove(int(opponent.id))
 
     async def staircase(self, bot, currUser, message):
         total_stairs = 20
@@ -773,6 +783,15 @@ class games:
         s = 0
         while True:
             while True:
+                if len(ques_done) == len(trivia):
+                    msg = "***Blimey! You've answered all the questions correctly!***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await client.create_embed(em, message)
+                    msg = f"***You were right {s} times!\nYou've earned {s} points for your house!***"
+                    em = embedMessage(colour=discord.Colour.orange(), description=msg)
+                    await client.create_embed(em, message)
+                    eval(currUser.house).add_points(s)
+                    return True
                 ques, ans = random.choice(list(trivia.items()))
                 if ques not in ques_done:
                     ques_done.append(ques)
@@ -933,6 +952,11 @@ class games:
                     return False
 
     async def botDuel(self, bot, currUser, message):
+        if currUser.enemiesDefeated>=len(enemies):
+            msg = "***All enemies in forbidden forest have been defeated.***"
+            em = embedMessage(colour=discord.Colour.blue(), description=msg)
+            await bot.create_embed(em, message)
+            return None
         opponent = enemies[currUser.enemiesDefeated]
         msg = f"***You have entered the forbidden forest and your opponent is {opponent.name}***"
         em = embedMessage(colour=discord.Colour.blue(), description=msg,
@@ -978,6 +1002,7 @@ class games:
                 await bot.create_embed(em, message)
                 currUser.enemiesDefeated += 1
                 currUser.health = currUser.max_health
+                opponent.health = opponent.max_health
                 currUser.points += 10
                 currUser.level = currUser.points // 30
                 eval(currUser.house).add_points(5)
