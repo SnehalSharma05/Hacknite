@@ -10,7 +10,7 @@ Introducing a magical Discord bot inspired by the enchanting world of Harry Pott
 - [Features and How to run](#Features-and-How-to-run)
 - [Tech Stack](#Tech-Stack)
 - [Deployment](#Deployment)
-- [Applications of our idea](#Applications-of-your-idea)
+- [Applications of our idea](#Applications-of-our-idea)
 - [Further improvements](#Further-improvements)
 - [Demo video](#Demo-video)
 
