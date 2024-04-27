@@ -106,6 +106,9 @@ class bot(discord.Client):
         """
         Does the following everytime there is a message on the server.
         """
+
+        self.guild = message.guild
+
         if isinstance(message.channel, discord.DMChannel):
             pass
         elif (message.author == self.user) or (message.channel.category.name.casefold() != "potterbot") or (message.author.id in self.notFreeUser):
@@ -203,6 +206,11 @@ class bot(discord.Client):
 
                         em.add_field(
                             name="points", value=house.points, inline=True)
+
+                        try:
+                            l = house.students[:]
+                        except:
+                            house.students = []
                         em.add_field(name="number of students",
                                      value=len(house.students), inline=True)
 
