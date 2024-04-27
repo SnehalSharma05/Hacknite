@@ -146,42 +146,34 @@ class user():
                 self.health = 150
                 self.max_health = 150
             case 1:
-                self.spells = [
-                    "stupefy", "expelliarmus", "protego", "reducto"]
+                self.spells = ["stupefy", "expelliarmus", "protego", "reducto"]
                 self.health = 175
                 self.max_health = 175
             case 2:
-                self.spells = [
-                    "stupefy", "expelliarmus", "protego", "reducto", "expulso"]
+                self.spells = ["stupefy", "expelliarmus", "protego", "reducto", "expulso"]
                 self.health = 200
                 self.max_health = 200
             case 3:
-                self.spells = [
-                    "stupefy", "expelliarmus", "protego", "reducto", "expulso", "bombarda"]
+                self.spells = ["stupefy", "expelliarmus", "protego", "reducto", "expulso", "bombarda"]
                 self.health = 225
                 self.max_health = 225
             case 4:
-                self.spells = [
-                    "stupefy", "expelliarmus", "protego", "reducto", "expulso", "bombarda", "confringo"]
+                self.spells = ["stupefy", "expelliarmus", "protego", "reducto", "expulso", "bombarda", "confringo"]
                 self.health = 275
                 self.max_health = 275
             case 5:
-                self.spells = ["stupefy", "expelliarmus", "protego",
-                               "reducto", "expulso", "bombarda", "sectumsempra", "confringo"]
+                self.spells = ["stupefy", "expelliarmus", "protego","reducto", "expulso", "bombarda", "sectumsempra", "confringo"]
                 self.health = 300
                 self.max_health = 300
             case 6:
-                self.spells = ["stupefy", "expelliarmus", "protego", "reducto",
-                               "expulso", "bombarda", "sectumsempra", "confringo", "episkey"]
+                self.spells = ["stupefy", "expelliarmus", "protego", "reducto","expulso", "bombarda", "sectumsempra", "confringo", "episkey"]
                 self.health = 325
                 self.max_health = 325
             case 7:
-                self.spells = ["stupefy", "expelliarmus", "protego", "reducto",
-                               "expulso", "bombarda", "sectumsempra", "confringo", "fiendfyre", "episkey"]
+                self.spells = ["stupefy", "expelliarmus", "protego", "reducto","expulso", "bombarda", "sectumsempra", "confringo", "fiendfyre", "episkey"]
                 self.health = 350
                 self.max_health = 350
             case 8:
-                self.spells = ["stupefy", "expelliarmus", "protego", "reducto", "expulso",
-                               "bombarda", "sectumsempra", "confringo", "fiendfyre", "episkey", "vulnera_sanentur"]
+                self.spells = ["stupefy", "expelliarmus", "protego", "reducto", "expulso","bombarda", "sectumsempra", "confringo", "fiendfyre", "episkey","vulnera_sanentur"]
                 self.health = 375
                 self.max_health = 375
